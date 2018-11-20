@@ -4,8 +4,12 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <h>Login Screen</h>
-      <p>"Please enter your Tracking ID here.""</p>
+      <div>
+        <h>Login Screen</h>
+        <p>Please enter your Tracking ID here.</p>
+        <input type = "text"/>
+        <button>Submit</button>
+      </div>
     );
   }
 }
