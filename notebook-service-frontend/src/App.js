@@ -3,7 +3,10 @@ import './App.css';
 
 class App extends Component {
   render() {
-    return 0;
+    return (
+      <h>Login Screen</h>
+      <p>"Please enter your Tracking ID here.""</p>
+    );
   }
 }
 
