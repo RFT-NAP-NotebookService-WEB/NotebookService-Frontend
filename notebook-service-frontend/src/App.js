@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
+import './UserLogin/UserLogIn';
+import UserLogin from './UserLogin/UserLogIn';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <h>Login Screen</h>
-        <p>Please enter your Tracking ID here.</p>
-        <input type = "text"/>
-        <button>Submit</button>
+        <UserLogin />
       </div>
-    );
+    )
   }
 }
 
