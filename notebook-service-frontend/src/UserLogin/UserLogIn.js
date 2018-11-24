@@ -1,16 +1,11 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap/lib';
 import {FormGroup ,FormControl, Checkbox,Button,Image} from 'react-bootstrap/lib';
-
 
 import './UserLogin.css';
 
-
-
-
 const UserLogin = () => {
     return (
-
         <Modal.Dialog bsSize="small">
             <Modal.Header >
                 <Image src="https://cdn.pixabay.com/photo/2017/03/08/14/20/flat-2126880_960_720.png" rounded />
@@ -30,7 +25,6 @@ const UserLogin = () => {
                 </FormGroup>
             </Modal.Footer>
         </Modal.Dialog>
-
     );
 }
 
