@@ -3,7 +3,7 @@
     }
 .modal-sm {
     position: fixed;
-    top:5%;
+    top:0.25%;
 }
 .modal-header {
     background-color: rgb(32, 51, 62);
@@ -20,7 +20,7 @@
     background-color: rgb(52,152,134);
 }
 
-input[type=username], input[type=password] {
+input[type=passwordConfirm], input[type=userrole] {
     background-color: rgb(49,77,91);
     color: white;
     margin: 16px 0;
@@ -28,12 +28,14 @@ input[type=username], input[type=password] {
     position: relative;
     left: 15%;
     border: 2px solid rgb(37,58,71);
-    text-align: center;
-    
-    
+    text-align: left; 
 }
 
- Button[type=submit],Button[type=button]{
+::placeholder{
+    text-align: center;
+}
+
+Button[type=submit], Button[type=button]{
     background-color: rgb(65, 190,168);
     border: none;
     text-align: center;
