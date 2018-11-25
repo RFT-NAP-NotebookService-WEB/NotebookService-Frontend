@@ -21,8 +21,6 @@ class UserRegister extends Component {
                 <Redirect to='/' />
             )
         }
-    
-    
 
         return (
             <div>

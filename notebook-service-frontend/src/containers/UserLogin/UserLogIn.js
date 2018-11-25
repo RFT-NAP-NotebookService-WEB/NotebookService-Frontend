@@ -3,7 +3,6 @@ import { Modal, FormGroup, FormControl, Checkbox, Button} from 'react-bootstrap/
 import { Redirect, Route } from 'react-router-dom/';
 
 import './UserLogin.css';
-import UserRegister from './UserRegister/UserRegister';
 import Logo from '../../components/Logo/Logo';
 
 
@@ -37,8 +36,8 @@ class UserLogin extends Component {
                             </Modal.Header>
                             <Modal.Body>
                                 <FormGroup className="UserDataContainer">
-                                    <FormControl bsSize="large" type="username" placeholder="Username" />
-                                    <FormControl bsSize="large" type="password" placeholder="Password" />
+                                    <FormControl bsSize="large" type="username" placeholder="Username" required/>
+                                    <FormControl bsSize="large" type="password" placeholder="Password" required/>
                                 </FormGroup>
                             </Modal.Body>
                             <Modal.Footer>
@@ -50,7 +49,6 @@ class UserLogin extends Component {
                             </Modal.Footer>
                         </Modal.Dialog>
                     } />
-                    <UserRegister/>
             </div>
         );
     }
