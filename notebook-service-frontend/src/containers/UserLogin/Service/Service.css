@@ -1,5 +1,23 @@
+.container-fluid {
+    background-color: rgb(49,77,91);
+    border: 0;
+}
+
+.navbar.navbar-inverse.navbar-static-top {
+    border: 0;
+}
+
+img.NavLogo.navbar-brand {
+    height: 50px;
+    background-color: white; 
+}
+
+span.navbar-brand {
+    padding-left: 30px;
+}
+
 body {
-    background-color: rgb(49,77,91) !important;
+    background-color: rgb(49,77,91);
 }
 
 th {
@@ -25,8 +43,4 @@ Button[type=button]{
     background-color: rgb(65, 190,168);
     border: none;
     text-align: center;
-}
-
-button:hover {
-    opacity: 0.8;
 }

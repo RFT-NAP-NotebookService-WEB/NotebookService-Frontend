@@ -40,7 +40,7 @@ class UserLogin extends Component {
                     render={() =>
                         <Modal.Dialog bsSize="small">
                             <Modal.Header >
-                                <Logo />
+                                <Logo className="LoginLogo"/>
                                 <Modal.Title>Notebook-service</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
@@ -50,7 +50,7 @@ class UserLogin extends Component {
                                 </FormGroup>
                             </Modal.Body>
                             <Modal.Footer>
-                                <FormGroup className="ButtonContainer">
+                                <FormGroup className="LoginButtonContainer">
                                     <Button bsSize="large" type="submit" onClick={() => this.serviceHandler()}>Log in</Button>
                                     <Button bsSize="large" type="button" onClick={() => this.registerHandler()}>Register</Button>
                                     <Checkbox>Remember me</Checkbox>

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { FormGroup, Button, ButtonGroup, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap/lib';
+import {
+    FormGroup, Button, ButtonGroup, ButtonToolbar,
+    ListGroup, ListGroupItem, Navbar, Nav, NavItem,
+} from 'react-bootstrap/lib';
 import { Route, Redirect } from 'react-router-dom/';
 import Sidebar from "react-sidebar";
 
 import './Service.css';
+import Logo from '../../../components/Logo/Logo';
 
 class Service extends Component {
     state = {
@@ -29,6 +33,25 @@ class Service extends Component {
                 <Route exact path='/service'
                     render={() =>
                         <div>
+
+                            <Navbar inverse collapseOnSelect fluid="true" staticTop="true">
+                                <Navbar.Header>
+                                     <Navbar.Brand>
+                                        <Logo className='NavLogo' />
+                                    </Navbar.Brand>
+                                    <Navbar.Brand>
+                                        Notebook-service
+                                    </Navbar.Brand>
+                                </Navbar.Header>
+                                <Navbar.Collapse>
+                                    <Nav pullRight>
+                                        <NavItem className="LogOut" bsStyle="large" onClick={() => this.logoutHandler()}>
+                                            Log out
+                                         </NavItem>
+                                    </Nav>
+                                </Navbar.Collapse>
+                            </Navbar>
+
                             <Sidebar
                                 sidebar={<b>Sidebar content</b>}
                                 styles={{ sidebar: { background: "white" } }}
@@ -69,9 +92,6 @@ class Service extends Component {
                                     </tr>
                                 </table>
                             </body>
-                                <FormGroup className="ButtonContainer">
-                                    <Button bsSize="medium" type="button" onClick={() => this.logoutHandler()}>Logout</Button>
-                                </FormGroup>
                         </div>
                     } />
             </div>

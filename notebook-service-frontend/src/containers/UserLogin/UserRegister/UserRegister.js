@@ -28,7 +28,7 @@ class UserRegister extends Component {
                     render={() =>
                         <Modal.Dialog bsSize="small">
                             <Modal.Header >
-                                <Logo />
+                                <Logo className="RegisterLogo"/>
                                 <Modal.Title>Registration</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
@@ -40,7 +40,7 @@ class UserRegister extends Component {
                                 </FormGroup>
                             </Modal.Body>
                             <Modal.Footer>
-                                <FormGroup className="ButtonContainer">
+                                <FormGroup className="RegisterButtonContainer">
                                     <Button bsSize="large" type="submit" onClick={() => { this.homeHandler() }}>Confirm</Button>
                                     <Button bsSize="large" type="button" onClick={() => { this.homeHandler() }}>Cancel</Button>
                                 </FormGroup>
