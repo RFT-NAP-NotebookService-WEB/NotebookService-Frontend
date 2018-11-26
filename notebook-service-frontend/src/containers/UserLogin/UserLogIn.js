@@ -27,7 +27,7 @@ class UserLogin extends Component {
         return (
 
             <div>
-                <Route exact path="/"
+                <Route exact path="/login"
                     render={() =>
                         <Modal.Dialog bsSize="small">
                             <Modal.Header >

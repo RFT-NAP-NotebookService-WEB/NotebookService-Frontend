@@ -20,7 +20,7 @@
     background-color: rgb(52,152,134);
 }
 
-input[type=passwordConfirm], input[type=userrole] {
+input[type=password], input[type=userrole] {
     background-color: rgb(49,77,91);
     color: white;
     margin: 16px 0;

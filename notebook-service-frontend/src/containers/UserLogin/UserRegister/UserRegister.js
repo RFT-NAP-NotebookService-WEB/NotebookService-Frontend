@@ -18,7 +18,7 @@ class UserRegister extends Component {
 
         if (this.state.toHome === true) {
             return (
-                <Redirect to='/' />
+                <Redirect to='/login' />
             )
         }
 
@@ -35,7 +35,7 @@ class UserRegister extends Component {
                                 <FormGroup className="UserDataContainer">
                                     <FormControl bsSize="small" type="username" placeholder="Username" />
                                     <FormControl bsSize="small" type="password" placeholder="Password" />
-                                    <FormControl bsSize="small" type="passwordConfirm" placeholder="Password again" />
+                                    <FormControl bsSize="small" type="password" placeholder="Password again" />
                                     <FormControl bsSize="small" type="userrole" placeholder="User Role" />
                                 </FormGroup>
                             </Modal.Body>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 
 import UserLogin from './containers/UserLogin/UserLogIn';
@@ -11,8 +11,9 @@ class App extends Component {
     return (
       <div>
         <Switch>
-          <Route path='/'  exact component={UserLogin} />
+          <Route path='/login' exact component={UserLogin} />
           <Route path='/register' exact component={UserRegister} />
+          <Redirect to='/login' />
         </Switch>
       </div>
     )
