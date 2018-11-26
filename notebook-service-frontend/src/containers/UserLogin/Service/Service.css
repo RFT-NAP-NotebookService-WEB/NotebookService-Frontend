@@ -30,3 +30,9 @@ Button[type=button]{
 button:hover {
     opacity: 0.8;
 }
+
+.bm-menu {
+    background: #373a47;
+    padding: 2.5em 1.5em 0;
+    font-size: 2em;
+}
