@@ -10,10 +10,15 @@ import Logo from '../../components/Logo/Logo';
 class UserLogin extends Component {
     state = {
         toRegister: false,
+        toService: false,
     }
 
     registerHandler = (event) => {
         this.setState({ toRegister: true })
+    }
+
+    serviceHandler = (event) => {
+        this.setState({toService: true})
     }
 
     render() {
@@ -21,6 +26,10 @@ class UserLogin extends Component {
         if (this.state.toRegister === true) {
             return (
                 <Redirect to='/register' />
+            )
+        } else if (this.state.toService === true) {
+            return (
+                <Redirect to='/service' />
             )
         }
 
@@ -42,7 +51,7 @@ class UserLogin extends Component {
                             </Modal.Body>
                             <Modal.Footer>
                                 <FormGroup className="ButtonContainer">
-                                    <Button bsSize="large" type="submit">Log in</Button>
+                                    <Button bsSize="large" type="submit" onClick={() => this.serviceHandler()}>Log in</Button>
                                     <Button bsSize="large" type="button" onClick={() => this.registerHandler()}>Register</Button>
                                     <Checkbox>Remember me</Checkbox>
                                 </FormGroup>

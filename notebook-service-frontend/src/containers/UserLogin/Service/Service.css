@@ -10,8 +10,23 @@ th {
 
 .MainOptions {
     width: 20%;
+    text-align: left;
 }
 
 .JobsList {
     width: 70%;
+}
+
+.ButtonContainer {
+    text-align: left;
+}
+
+Button[type=button]{
+    background-color: rgb(65, 190,168);
+    border: none;
+    text-align: center;
+}
+
+button:hover {
+    opacity: 0.8;
 }
