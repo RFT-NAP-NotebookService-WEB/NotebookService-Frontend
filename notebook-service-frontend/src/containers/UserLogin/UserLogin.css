@@ -28,12 +28,14 @@ input[type=username], input[type=password] {
     position: relative;
     left: 15%;
     border: 2px solid rgb(37,58,71);
-    text-align: center;
-    
-    
+    text-align: left; 
 }
 
- Button[type=submit],Button[type=button]{
+::placeholder{
+    text-align: center;
+}
+
+ Button[type=submit], Button[type=button]{
     background-color: rgb(65, 190,168);
     border: none;
     text-align: center;

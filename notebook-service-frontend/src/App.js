@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
-import './UserLogin/UserLogIn';
-import UserLogin from './UserLogin/UserLogIn';
-import Service from './Service/Service';
+
+import UserLogin from './containers/UserLogin/UserLogIn';
+import UserRegister from './containers/UserLogin/UserRegister/UserRegister';
+
 
 class App extends Component {
   render() {
     return (
       <div>
-        <UserLogin />
-        <Service />
+        <Switch>
+          <Route path='/login' exact component={UserLogin} />
+          <Route path='/register' exact component={UserRegister} />
+          <Redirect to='/login' />
+        </Switch>
       </div>
     )
   }
