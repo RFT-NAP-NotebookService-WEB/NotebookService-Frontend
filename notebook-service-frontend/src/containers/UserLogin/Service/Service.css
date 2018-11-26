@@ -1,0 +1,17 @@
+body {
+    background-color: rgb(49,77,91) !important;
+}
+
+th {
+    background:rgb(49,77,91);
+    color: white;
+    font-size: 35px;
+}
+
+.MainOptions {
+    width: 20%;
+}
+
+.JobsList {
+    width: 70%;
+}
