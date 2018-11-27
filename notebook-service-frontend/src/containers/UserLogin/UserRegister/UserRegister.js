@@ -16,12 +16,17 @@ class UserRegister extends Component {
     }
 
     registerHandler = (props) => {
-        axios.post('http://192.168.99.100:8080/register', {
+        var headers = {
+            'Content-Type' : 'application/json'
+        }
+
+        var data = {
             username: this.usernameInput.value,
             password: this.userPasswordInput.value,
             passwordConfirm: this.userPasswordAgainInput.value,
             userRole: this.userRoleInput.value
-          })
+        }
+        axios.post('http://192.168.0.103:8080/register', data, {headers : headers})
           .then(function (response) {
             console.log(response);
           })

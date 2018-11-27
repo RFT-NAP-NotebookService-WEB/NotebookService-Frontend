@@ -62,7 +62,6 @@ class Service extends Component {
                                     <ListGroupItem href="#link1">Job gonna be here</ListGroupItem>
                                     <ListGroupItem href="#link1">Job gonna be here</ListGroupItem>
                                     <ListGroupItem href="#link1">Job gonna be here</ListGroupItem>
-
                                 </ListGroup>
                             </FormGroup>
 
