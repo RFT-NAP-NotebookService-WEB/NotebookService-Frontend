@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom/';
 import axios from 'axios';
 
 import './UserRegister.css';
-import Logo from '../../../components/Logo/Logo';
+import Logo from '../../components/Logo/Logo';
 
 class UserRegister extends Component {
     state = {
@@ -73,8 +73,10 @@ class UserRegister extends Component {
                             </Modal.Body>
                             <Modal.Footer>
                                 <FormGroup className="RegisterButtonContainer">
-                                    <Button bsSize="large" type="submit" onClick={() => { this.registerHandler() }}>Confirm</Button>
-                                    <Button bsSize="large" type="button" onClick={() => { this.homeHandler() }}>Cancel</Button>
+                                    <Button bsSize="large" type="submit"
+                                            onClick={() => { this.registerHandler() }}>Confirm</Button>
+                                    <Button bsSize="large" type="button" 
+                                            onClick={() => { this.homeHandler() }}>Cancel</Button>
                                 </FormGroup>
                             </Modal.Footer>
                         </Modal.Dialog>
