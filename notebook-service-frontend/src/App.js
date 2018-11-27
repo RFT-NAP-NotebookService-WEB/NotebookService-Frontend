@@ -3,8 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 
 import UserLogin from './containers/UserLogin/UserLogIn';
-import UserRegister from './containers/UserLogin/UserRegister/UserRegister';
-import Service from './containers/UserLogin/Service/Service';
+import UserRegister from './containers/UserRegister/UserRegister';
+import Service from './containers/Service/Service';
 
 
 class App extends Component {
