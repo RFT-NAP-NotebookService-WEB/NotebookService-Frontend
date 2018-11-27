@@ -16,20 +16,20 @@ class UserRegister extends Component {
     }
 
     registerHandler = (props) => {
-        axios.post('http://192.168.99.100:8080/register', {
+        axios.post('http://192.168.0.103:8080/register', {
             username: this.usernameInput.value,
             password: this.userPasswordInput.value,
             passwordConfirm: this.userPasswordAgainInput.value,
             userRole: this.userRoleInput.value
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
- 
+
     render() {
 
         if (this.state.toHome === true) {
@@ -44,31 +44,31 @@ class UserRegister extends Component {
                     render={() =>
                         <Modal.Dialog bsSize="small">
                             <Modal.Header >
-                                <Logo className="RegisterLogo"/>
+                                <Logo className="RegisterLogo" />
                                 <Modal.Title>Registration</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                                 <FormGroup className="UserDataContainer">
-                                    <FormControl 
-                                    inputRef={input => this.usernameInput = input}
-                                    bsSize="small" 
-                                    type="username"
-                                    placeholder="Username" />
-                                    <FormControl 
-                                    inputRef={input => this.userPasswordInput = input}
-                                    bsSize="small"
-                                    type="password"
-                                    placeholder="Password" />
-                                    <FormControl 
-                                    inputRef={input => this.userPasswordAgainInput = input}
-                                    bsSize="small" 
-                                    type="password" 
-                                    placeholder="Password again" />
-                                    <FormControl 
-                                    inputRef={input => this.userRoleInput = input}
-                                    bsSize="small" 
-                                    type="userrole" 
-                                    placeholder="User Role" />
+                                    <FormControl
+                                        inputRef={input => this.usernameInput = input}
+                                        bsSize="small"
+                                        type="username"
+                                        placeholder="Username" />
+                                    <FormControl
+                                        inputRef={input => this.userPasswordInput = input}
+                                        bsSize="small"
+                                        type="password"
+                                        placeholder="Password" />
+                                    <FormControl
+                                        inputRef={input => this.userPasswordAgainInput = input}
+                                        bsSize="small"
+                                        type="password"
+                                        placeholder="Password again" />
+                                    <FormControl
+                                        inputRef={input => this.userRoleInput = input}
+                                        bsSize="small"
+                                        type="userrole"
+                                        placeholder="User Role" />
                                 </FormGroup>
                             </Modal.Body>
                             <Modal.Footer>
