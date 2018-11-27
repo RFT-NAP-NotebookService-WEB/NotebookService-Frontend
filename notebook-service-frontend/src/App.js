@@ -4,6 +4,7 @@ import './App.css';
 
 import UserLogin from './containers/UserLogin/UserLogIn';
 import UserRegister from './containers/UserLogin/UserRegister/UserRegister';
+import Service from './containers/UserLogin/Service/Service';
 
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
         <Switch>
           <Route path='/login' exact component={UserLogin} />
           <Route path='/register' exact component={UserRegister} />
+          <Route path='/service' exact component={Service} />
           <Redirect to='/login' />
         </Switch>
       </div>

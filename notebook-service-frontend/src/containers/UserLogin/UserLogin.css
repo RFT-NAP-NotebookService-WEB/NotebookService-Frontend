@@ -49,11 +49,11 @@ button:hover {
     text-align: left;
 }
 
-.ButtonContainer {
+.LoginButtonContainer {
     text-align: center;
 }
 
-.img-rounded {
+img.LoginLogo {
     height: 200px;
     width: 200px;
 }

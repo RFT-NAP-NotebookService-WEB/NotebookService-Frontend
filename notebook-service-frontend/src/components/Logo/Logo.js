@@ -6,7 +6,7 @@ import './Logo.css';
 
 
 const logo = (props) => (
-    <Image src={NotebookLogo} rounded />
+    <Image src={NotebookLogo} className={props.className} />
 );
 
 export default logo;
