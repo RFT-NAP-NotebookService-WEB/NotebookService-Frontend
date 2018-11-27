@@ -17,7 +17,7 @@ class NavBar extends Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <NavItem>Service</NavItem>
+                        <NavItem href="/service">Service</NavItem>
                         <NavItem>Manage Clients</NavItem>
                         <NavDropdown title="Options" id="basic-nav-dropdown">
                             <MenuItem>Brands</MenuItem>

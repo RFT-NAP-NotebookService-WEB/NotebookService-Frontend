@@ -52,7 +52,6 @@ class UserLogin extends Component {
                             <Modal.Footer>
                                 <FormGroup className="LoginButtonContainer">
                                     <Button bsSize="large" type="submit" onClick={() => this.serviceHandler()}>Log in</Button>
-                                    <Button bsSize="large" type="button" onClick={() => this.registerHandler()}>Register</Button>
                                     <Checkbox>Remember me</Checkbox>
                                 </FormGroup>
                             </Modal.Footer>

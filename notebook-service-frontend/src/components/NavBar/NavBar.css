@@ -1,5 +1,5 @@
 .container-fluid {
-    background-color: rgb(49,77,91);
+    background-color:rgb(52,152,134);
     border: 0;
 }
 
@@ -9,12 +9,28 @@
     margin: 0;
 }
 
+.dropdown-menu {
+    background-color:  rgb(62, 175, 154) !important;
+}
+
+.nav.navbar-nav li.dropdown.open a{
+    background-color: rgb(62, 175, 154) !important;
+}
+
+.nav.navbar-nav li.dropdown.open a:hover{
+    background-color: rgb(34, 97, 85) !important;
+}
+
+.nav.navbar-nav li a {
+    color: black !important;
+}
+
 img.NavLogo.navbar-brand {
     height: 50px;
-    background-color: white;
 }
 
 span.navbar-brand {
     padding-left: 30px;
     padding-right: 50px;
+    color: black !important;
 }
