@@ -5,11 +5,13 @@
 
 .navbar.navbar-inverse.navbar-static-top {
     border: 0;
+    padding: 0%;
+    margin: 0;
 }
 
 img.NavLogo.navbar-brand {
     height: 50px;
-    background-color: white; 
+    background-color: white;
 }
 
 span.navbar-brand {
@@ -43,4 +45,14 @@ Button[type=button]{
     background-color: rgb(65, 190,168);
     border: none;
     text-align: center;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.bm-menu {
+    background: #373a47;
+    padding: 2.5em 1.5em 0;
+    font-size: 2em;
 }
