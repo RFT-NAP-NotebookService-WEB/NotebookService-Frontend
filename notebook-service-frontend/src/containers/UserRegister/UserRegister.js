@@ -16,7 +16,7 @@ class UserRegister extends Component {
     }
 
     registerHandler = (props) => {
-        axios.post('http://192.168.0.103:8080/register', {
+        axios.post('http://localhost:8080/register', {
             username: this.usernameInput.value,
             password: this.userPasswordInput.value,
             passwordConfirm: this.userPasswordAgainInput.value,
@@ -74,7 +74,8 @@ class UserRegister extends Component {
                             <Modal.Footer>
                                 <FormGroup className="RegisterButtonContainer">
                                     <Button bsSize="large" type="submit"
-                                            onClick={() => { this.registerHandler() }}>Confirm</Button>
+                                            onClick={() => { this.registerHandler() }}
+                                            href="/login">Confirm</Button>
                                     <Button bsSize="large" type="button" 
                                             onClick={() => { this.homeHandler() }}>Cancel</Button>
                                 </FormGroup>

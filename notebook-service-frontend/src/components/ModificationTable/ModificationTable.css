@@ -2,19 +2,12 @@
     left: 25%;
 }
 
-input[type=brandname] {
+input[type=modification] {
     background-color:white;
     color: black;
     margin: 16px 0 ;
-    width: 10%;
+    width: 20%;
     position: relative;
     border: 2px solid rgb(37,58,71);
     text-align: left; 
-}
-
-.addBrand{
-    background-color: rgb(65, 190,168);
-    border: none;
-    text-align: center;
-    left: 70%;
 }

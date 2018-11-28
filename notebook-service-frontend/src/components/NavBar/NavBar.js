@@ -5,6 +5,7 @@ import Logo from '../Logo/Logo';
 import './NavBar.css';
 import UserTable from '../UserTable/UserTable';
 import BrandTable from '../BrandTable/BrandTable';
+import ModificationTable from '../ModificationTable/ModificationTable';
 
 class NavBar extends Component {
 
@@ -13,7 +14,8 @@ class NavBar extends Component {
 
         this.state = {
             UsersOpen: false,
-            BrandsOpen: false
+            BrandsOpen: false,
+            ModificationsOpen: false
         };
     }
 
@@ -33,9 +35,20 @@ class NavBar extends Component {
                             <NavItem href="/service">Service</NavItem>
                             <NavItem>Manage Clients</NavItem>
                             <NavDropdown title="Options" id="basic-nav-dropdown">
-                                <MenuItem onClick={() => this.setState({ BrandsOpen: !this.state.BrandsOpen  })}>Brands</MenuItem>
-                                <MenuItem>Modifcations</MenuItem>
-                                <MenuItem onClick={() => this.setState({ UsersOpen: !this.state.UsersOpen })}>Users</MenuItem>
+                                <MenuItem onClick={() => this.setState({ 
+                                    BrandsOpen: !this.state.BrandsOpen,
+                                    UsersOpen: false,
+                                    ModificationsOpen: false  })}>Brands</MenuItem>
+
+                                <MenuItem onClick={() => this.setState({ 
+                                    ModificationsOpen: !this.state.ModificationsOpen,
+                                    UsersOpen: false,
+                                    BrandsOpen: false})}>Modifcations</MenuItem>
+
+                                <MenuItem onClick={() => this.setState({ 
+                                    UsersOpen: !this.state.UsersOpen,
+                                    BrandsOpen: false,
+                                    ModificationsOpen: false })}>Users</MenuItem>
                             </NavDropdown>
                         </Nav>
                         <Nav pullRight>
@@ -52,6 +65,11 @@ class NavBar extends Component {
                 <Collapse in={this.state.BrandsOpen}>
                     <div>
                         <BrandTable />
+                    </div>
+                </Collapse>
+                <Collapse in={this.state.ModificationsOpen}>
+                    <div>
+                        <ModificationTable />
                     </div>
                 </Collapse>
             </div>

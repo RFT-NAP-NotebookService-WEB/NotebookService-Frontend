@@ -1,11 +1,13 @@
-.table-responsive{
-    width: 50%;
-    margin: 40px 0 0 40px;
+.ReactTable {
+    background-color: white;
+    width: 25%;
+    height: 25%;
+
 }
 
-table.table-striped.table-bordered.table-condensed.table-hover {
+/* table.table-striped.table-bordered.table-condensed.table-hover {
     top:50%;
-}
+} */
 
 td, th {
     padding: 16px;
