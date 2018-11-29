@@ -78,7 +78,7 @@ class BrandTable extends Component {
                         placeholder="Brand" />{'  '}
                     <Button
                         onClick={() => { this.addBrandHandler() }}
-                        type="submit">Add</Button>
+                        type="submit" className="addBrandButton">Add</Button>
                 </FormGroup>
             </div>
         )
