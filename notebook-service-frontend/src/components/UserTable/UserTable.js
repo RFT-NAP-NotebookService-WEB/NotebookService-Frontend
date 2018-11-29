@@ -21,7 +21,7 @@ class UserTable extends Component {
     }
 
     componentDidMount() {
-        axios.get('localhost:8080/user/get/all', {
+        axios.get('http://localhost:8080/users', {
             responseType: 'json'
         }).then(response => {
             this.setState({ tableData: response.data });

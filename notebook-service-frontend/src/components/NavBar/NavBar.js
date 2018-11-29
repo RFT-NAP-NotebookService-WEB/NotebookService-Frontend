@@ -15,7 +15,7 @@ class NavBar extends Component {
         this.state = {
             UsersOpen: false,
             BrandsOpen: false,
-            ModificationsOpen: false
+            ModificationsOpen: false,
         };
     }
 
@@ -33,22 +33,25 @@ class NavBar extends Component {
                     <Navbar.Collapse>
                         <Nav>
                             <NavItem href="/service">Service</NavItem>
-                            <NavItem>Manage Clients</NavItem>
+                            <NavItem href="/manageClients" >Manage Clients</NavItem>
                             <NavDropdown title="Options" id="basic-nav-dropdown">
-                                <MenuItem onClick={() => this.setState({ 
+                                <MenuItem onClick={() => this.setState({
                                     BrandsOpen: !this.state.BrandsOpen,
                                     UsersOpen: false,
-                                    ModificationsOpen: false  })}>Brands</MenuItem>
+                                    ModificationsOpen: false
+                                })}>Brands</MenuItem>
 
-                                <MenuItem onClick={() => this.setState({ 
+                                <MenuItem onClick={() => this.setState({
                                     ModificationsOpen: !this.state.ModificationsOpen,
                                     UsersOpen: false,
-                                    BrandsOpen: false})}>Modifcations</MenuItem>
+                                    BrandsOpen: false
+                                })}>Modifcations</MenuItem>
 
-                                <MenuItem onClick={() => this.setState({ 
+                                <MenuItem onClick={() => this.setState({
                                     UsersOpen: !this.state.UsersOpen,
                                     BrandsOpen: false,
-                                    ModificationsOpen: false })}>Users</MenuItem>
+                                    ModificationsOpen: false
+                                })}>Users</MenuItem>
                             </NavDropdown>
                         </Nav>
                         <Nav pullRight>

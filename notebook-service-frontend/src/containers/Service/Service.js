@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-
 import NavBar from '../../components/NavBar/NavBar';
-
 import './Service.css';
 
 
@@ -16,6 +14,7 @@ class Service extends Component {
                             <NavBar/>
                         </div>
                     } />
+
             </div>
         );
     }

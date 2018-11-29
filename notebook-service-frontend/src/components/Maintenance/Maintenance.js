@@ -4,10 +4,11 @@ import { FormGroup, FormControl, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 import 'react-table/react-table.css';
-import './BrandTable.css';
+import './Maintenance.css';
 import path from '../../assets/path/Path';
 
-class BrandTable extends Component {
+
+class Maintenance extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -85,4 +86,4 @@ class BrandTable extends Component {
     }
 }
 
-export default BrandTable;
+export default Maintenance;

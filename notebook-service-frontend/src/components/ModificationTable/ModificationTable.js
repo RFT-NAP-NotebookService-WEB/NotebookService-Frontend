@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import { FormGroup, FormControl,Button, InputGroup } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Button, Col, ControlLabel } from 'react-bootstrap';
+import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
 import 'react-table/react-table.css';
 import './ModificationTable.css';
-
+import path from '../../assets/path/Path';
 
 class ModificationTable extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class ModificationTable extends Component {
     }
 
     componentWillMount() {
-        axios.get('http://localhost:8080/modification/get/all', {
+        axios.get(path + '/modification/get/all', {
             responseType: 'json'
         }).then((response) => {
             this.setState({ tableData: response.data });
@@ -30,24 +31,24 @@ class ModificationTable extends Component {
 
     addModificationHandler = () => {
 
-        var data={
+        var data = {
             name: this.newModification.value,
             price: this.newModificationPrice.value
-          };
+        };
 
-        axios.post('http://localhost:8080/modification/add', data)
+        axios.post(path + '/modification/add', data)
             .then((response) => {
                 console.log(response);
-                let tableData =  [...this.state.tableData];
+                let tableData = [...this.state.tableData];
                 tableData.push(data);
-                this.setState({tableData});
+                this.setState({ tableData });
             })
             .catch((error) => {
                 console.log(error);
             });
     }
 
-   
+
 
     render() {
 
@@ -66,26 +67,46 @@ class ModificationTable extends Component {
 
         return (
             <div>
-                <ReactTable
-                    data={tableData}
-                    columns={columns}
-                    defaultPageSize={10} />
-                <FormGroup bsSize="large">
-                    <FormControl
-                        inputRef={input => this.newModification = input}
-                        type="modification"
-                        placeholder="Modification" />
-                        <InputGroup>
-                        <InputGroup.Addon>$</InputGroup.Addon>
-                        <FormControl
-                        inputRef={input => this.newModificationPrice = input}
-                        type="modification"
-                        placeholder="Price" />
-                        </InputGroup>
-                    <Button
-                        onClick={() => { this.addModificationHandler() }}
-                        type="submit">Add</Button>
-                </FormGroup>
+                <SplitterLayout>
+                    <div>
+                        <Form horizontal>
+                            <FormGroup>
+                                <Col componentClass={ControlLabel} sm={2}>
+                                    Modification
+                                </Col>
+                                <Col sm={10}>
+                                    <FormControl
+                                        inputRef={input => this.newModification = input}
+                                        type="modification"
+                                        placeholder="Modification" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Col componentClass={ControlLabel} sm={2}>
+                                    Price
+                                </Col>
+                                <Col sm={10}>
+                                    <FormControl
+                                        inputRef={input => this.newModificationPrice = input}
+                                        type="price"
+                                        placeholder="Price" />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup>
+                                <Col sm={2}>
+                                    <Button onClick={() => { this.addModificationHandler() }} type="submit">Add</Button>
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </div>
+                    <div>
+                        <ReactTable
+                            data={tableData}
+                            columns={columns}
+                            defaultPageSize={10} />
+                    </div>
+                </SplitterLayout>
             </div>
         )
     }

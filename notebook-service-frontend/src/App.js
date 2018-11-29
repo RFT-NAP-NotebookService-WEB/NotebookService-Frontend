@@ -5,7 +5,7 @@ import './App.css';
 import UserLogin from './containers/UserLogin/UserLogIn';
 import UserRegister from './containers/UserRegister/UserRegister';
 import Service from './containers/Service/Service';
-
+import ManageClients from './containers/ManageClients/ManageClients';
 
 class App extends Component {
   render() {
@@ -15,6 +15,7 @@ class App extends Component {
           <Route path='/login' exact component={UserLogin} />
           <Route path='/register' exact component={UserRegister} />
           <Route path='/service' exact component={Service} />
+          <Route path='/manageclients' exact component={ManageClients}/>
           <Redirect to='/login' />
         </Switch>
       </div>
