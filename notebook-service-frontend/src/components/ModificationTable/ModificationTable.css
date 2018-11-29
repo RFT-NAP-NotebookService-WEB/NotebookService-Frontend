@@ -2,7 +2,7 @@
     left: 25%;
 }
 
-input[type=modification] {
+/* input[type=modification] {
     background-color:white;
     color: black;
     margin: 16px 0 ;
@@ -10,4 +10,4 @@ input[type=modification] {
     position: relative;
     border: 2px solid rgb(37,58,71);
     text-align: left; 
-}
+} */

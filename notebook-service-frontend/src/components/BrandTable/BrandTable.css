@@ -1,5 +1,6 @@
-.ReactTable {
-    left: 25%;
+.ReactTable.-striped.-highlight {
+    width: 100%;
+    left: 0;
 }
 
 input[type=brandname] {
@@ -16,5 +17,4 @@ input[type=brandname] {
     background-color: rgb(65, 190,168);
     border: none;
     text-align: center;
-    left: 70%;
 }

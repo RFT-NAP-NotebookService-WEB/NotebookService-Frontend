@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
+import { FormGroup, FormControl, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 import 'react-table/react-table.css';
 import './BrandTable.css';
-import { FormGroup, FormControl, Button } from 'react-bootstrap';
 
 
 class BrandTable extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            tableData: [],
+            tableData: [{
+                id: '',
+                name: ''
+            }],
         };
     }
 
@@ -24,25 +27,25 @@ class BrandTable extends Component {
         });
     }
 
-    addBrandHandler = (props) => {
 
-        var data={
-            name: this.refs.newBrand.value,
-          };
+    addBrandHandler = () => {
+        var data = {
+            name: this.newBrand.value,
+        };
 
         axios.post('http://localhost:8080/brand/add', data)
             .then((response) => {
                 console.log(response);
-                let tableData =  [...this.state.tableData];
+                let tableData = [...this.state.tableData];
                 tableData.push(data);
-                this.setState({tableData});
+                this.setState({ tableData });
             })
             .catch((error) => {
                 console.log(error);
             });
     }
 
-    
+
 
     render() {
 
@@ -50,13 +53,8 @@ class BrandTable extends Component {
 
         const columns = [
             {
-                Header: 'Brand Id',
-                accessor: 'id',
-                maxWidth: 200
-            }, {
                 Header: 'Brand name',
                 accessor: 'name',
-                maxWidth: 200
             }]
 
         return (
@@ -64,14 +62,20 @@ class BrandTable extends Component {
                 <ReactTable
                     data={tableData}
                     columns={columns}
-                    defaultPageSize={5}
+                    minRows={5}
+                    defaultPageSize={10}
+                    defaultSorted={[
+                        {
+                            id: "name"
+                        }
+                    ]}
                     className="-striped -highlight" />
 
                 <FormGroup>
                     <FormControl
-                        ref="newBrand"
+                        inputRef={input => this.newBrand = input}
                         type="brandname"
-                        placeholder="Brand" />
+                        placeholder="Brand" />{'  '}
                     <Button
                         onClick={() => { this.addBrandHandler() }}
                         type="submit">Add</Button>
