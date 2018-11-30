@@ -1,59 +1,71 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
+import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
 import './UserTable.css';
-
-
-
+import NavBar from '../NavBar/NavBar';
+import { Route } from 'react-router';
 
 class UserTable extends Component {
-
     constructor() {
         super();
         this.state = {
             tableData: [{
                 id: '',
-                name: '',
-                userrole: ''
+                username: '',
+                userRole: ''
             }],
         };
     }
 
     componentDidMount() {
-        axios.get('localhost:8080/user/get/all', {
+        axios.get('http://localhost:8080/users', {
             responseType: 'json'
         }).then(response => {
             this.setState({ tableData: response.data });
+            console.log(response);
         });
     }
 
-
     render() {
-
         const { tableData } = this.state;
 
         const columns = [
             {
                 Header: 'User Id',
-                accessor: 'id',
-                maxWidth: 200
+                accessor: 'id'
             }, {
                 Header: 'User name',
-                accessor: 'name',
-                maxWidth: 200
+                accessor: 'username'
             }, {
                 Header: 'Role',
-                accessor: 'role',
-                maxWidth: 200
+                accessor: 'userRole'
             }]
 
         return (
-            <ReactTable
-                data={tableData}
-                columns={columns}
-                defaultPageSize={5}
-            />
+            <div>
+                <Route exact path='/service/users'
+                    render={() =>
+                        <div>
+                            <NavBar />
+                            <SplitterLayout>
+                                <ReactTable
+                                    data={tableData}
+                                    columns={columns}
+                                    minRows={5}
+                                    defaultPageSize={10}
+                                    defaultSorted={[
+                                        {
+                                            id: "name"
+                                        }
+                                    ]}
+                                    className="-striped -highlight" />
+                            </SplitterLayout>
+                            <p>{console.log(tableData)}</p>
+                        </div>
+                    } />
+            </div>
         )
     }
 }
