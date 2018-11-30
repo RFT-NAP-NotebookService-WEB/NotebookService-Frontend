@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
+import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
 import './UserTable.css';
+import NavBar from '../NavBar/NavBar';
+import { Route } from 'react-router';
 
 
 
@@ -36,24 +39,37 @@ class UserTable extends Component {
         const columns = [
             {
                 Header: 'User Id',
-                accessor: 'id',
-                maxWidth: 200
+                accessor: 'id'
             }, {
                 Header: 'User name',
-                accessor: 'name',
-                maxWidth: 200
+                accessor: 'name'
             }, {
                 Header: 'Role',
-                accessor: 'role',
-                maxWidth: 200
+                accessor: 'role'
             }]
 
         return (
-            <ReactTable
-                data={tableData}
-                columns={columns}
-                defaultPageSize={5}
-            />
+            <div>
+                <Route exact path='/service/users'
+                    render={() =>
+                        <div>
+                            <NavBar />
+                            <SplitterLayout>
+                                <ReactTable
+                                    data={tableData}
+                                    columns={columns}
+                                    minRows={5}
+                                    defaultPageSize={10}
+                                    defaultSorted={[
+                                        {
+                                            id: "name"
+                                        }
+                                    ]}
+                                    className="-striped -highlight" />
+                            </SplitterLayout>
+                        </div>
+                    } />
+            </div>
         )
     }
 }

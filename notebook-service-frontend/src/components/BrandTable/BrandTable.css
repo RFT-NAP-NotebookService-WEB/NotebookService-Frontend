@@ -1,20 +1,13 @@
 .ReactTable.-striped.-highlight {
     width: 100%;
-    left: 0;
+
 }
 
-input[type=brandname] {
-    background-color:white;
-    color: black;
-    margin: 16px 0 ;
-    width: 10%;
-    position: relative;
-    border: 2px solid rgb(37,58,71);
-    text-align: left; 
+.form-horizontal {
+    margin-top: 10px;
 }
 
-.addBrand{
-    background-color: rgb(65, 190,168);
-    border: none;
-    text-align: center;
+.splitter-layout {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }

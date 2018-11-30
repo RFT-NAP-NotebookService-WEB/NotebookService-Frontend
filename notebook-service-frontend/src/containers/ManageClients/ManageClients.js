@@ -16,8 +16,8 @@ class ManageClients extends Component {
         this.state = {
             tableData: [{
                 id: '',
-                firstname: '',
-                lastname: '',
+                firstName: '',
+                lastName: '',
                 email: '',
                 phone: ''
             }],
@@ -36,8 +36,8 @@ class ManageClients extends Component {
 
     addClientHandler = () => {
         var data = {
-            firstname: this.firstnameInput.value,
-            lastname: this.lastnameInput.value,
+            firstName: this.firstnameInput.value,
+            lastName: this.lastnameInput.value,
             email: this.emailInput.value,
             phone: this.phoneInput.value
         };
@@ -89,7 +89,6 @@ class ManageClients extends Component {
             }]
 
         return (
-
             <div>
                 <Route exact path='/manageclients'
                     render={() =>
@@ -106,7 +105,7 @@ class ManageClients extends Component {
                                             <Col sm={10}>
                                                 <FormControl 
                                                 inputRef={input => this.firstnameInput = input}
-                                                type="firstname"
+                                                type="firstName"
                                                 placeholder="First name" />
                                             </Col>
                                         </FormGroup>
@@ -118,7 +117,7 @@ class ManageClients extends Component {
                                             <Col sm={10}>
                                                 <FormControl 
                                                 inputRef={input => this.lastnameInput = input}
-                                                type="lastname" 
+                                                type="lastName" 
                                                 placeholder="Last name" />
                                             </Col>
                                         </FormGroup>
@@ -158,8 +157,7 @@ class ManageClients extends Component {
                                     <ReactTable
                                         data={tableData}
                                         columns={columns}
-                                        minRows={5}
-                                        defaultPageSize={10}
+                                        defaultPageSize={14}
                                         defaultSorted={[
                                             {
                                                 id: "name"
