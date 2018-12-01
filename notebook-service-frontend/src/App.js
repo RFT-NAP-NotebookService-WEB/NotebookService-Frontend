@@ -9,7 +9,7 @@ import ManageClients from './containers/ManageClients/ManageClients';
 import BrandTable from './components/BrandTable/BrandTable';
 import ModificationTable from './components/ModificationTable/ModificationTable';
 import UserTable from './components/UserTable/UserTable';
-import Products from './components/Products/Products';
+import Products from './containers/Products/Products';
 
 class App extends Component {
   render() {
