@@ -7,18 +7,14 @@ import './UserTable.css';
 import NavBar from '../NavBar/NavBar';
 import { Route } from 'react-router';
 
-
-
-
 class UserTable extends Component {
-
     constructor() {
         super();
         this.state = {
             tableData: [{
                 id: '',
-                name: '',
-                userrole: ''
+                username: '',
+                userRole: ''
             }],
         };
     }
@@ -28,12 +24,11 @@ class UserTable extends Component {
             responseType: 'json'
         }).then(response => {
             this.setState({ tableData: response.data });
+            console.log(response);
         });
     }
 
-
     render() {
-
         const { tableData } = this.state;
 
         const columns = [
@@ -42,10 +37,10 @@ class UserTable extends Component {
                 accessor: 'id'
             }, {
                 Header: 'User name',
-                accessor: 'name'
+                accessor: 'username'
             }, {
                 Header: 'Role',
-                accessor: 'role'
+                accessor: 'userRole'
             }]
 
         return (
@@ -67,6 +62,7 @@ class UserTable extends Component {
                                     ]}
                                     className="-striped -highlight" />
                             </SplitterLayout>
+                            <p>{console.log(tableData)}</p>
                         </div>
                     } />
             </div>
