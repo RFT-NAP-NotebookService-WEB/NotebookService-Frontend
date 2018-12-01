@@ -23,7 +23,7 @@ class ModificationTable extends Component {
     }
 
     componentWillMount() {
-        axios.get(path + '/modification/get/all', {
+        axios.get(path + '/modifications', {
             responseType: 'json'
         }).then((response) => {
             this.setState({ tableData: response.data });
@@ -38,7 +38,7 @@ class ModificationTable extends Component {
             price: this.newModificationPrice.value
         };
 
-        axios.post(path + '/modification/add', data)
+        axios.post(path + '/modification', data)
             .then((response) => {
                 console.log(response);
                 let tableData = [...this.state.tableData];

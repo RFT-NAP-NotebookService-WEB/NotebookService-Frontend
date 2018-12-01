@@ -25,7 +25,7 @@ class ManageClients extends Component {
     }
 
     componentWillMount() {
-        axios.get(path + '/client/get/all', {
+        axios.get(path + '/clients', {
             responseType: 'json'
         }).then((response) => {
             this.setState({ tableData: response.data });
@@ -42,7 +42,7 @@ class ManageClients extends Component {
             phone: this.phoneInput.value
         };
 
-        axios.post(path + '/client/add', data)
+        axios.post(path + '/client', data)
             .then((response) => {
                 console.log(response);
                 let tableData = [...this.state.tableData];

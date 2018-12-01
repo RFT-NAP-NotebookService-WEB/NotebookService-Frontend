@@ -22,7 +22,7 @@ class BrandTable extends Component {
     }
 
     componentWillMount() {
-        axios.get(path + '/brand/get/all', {
+        axios.get(path + '/brands', {
             responseType: 'json'
         }).then((response) => {
             this.setState({ tableData: response.data });
@@ -36,7 +36,7 @@ class BrandTable extends Component {
             name: this.newBrand.value,
         };
 
-        axios.post(path + '/brand/add', data)
+        axios.post(path + '/brand', data)
             .then((response) => {
                 console.log(response);
                 let tableData = [...this.state.tableData];

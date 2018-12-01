@@ -17,15 +17,18 @@ class Products extends Component {
         this.state = {
             tableData: [{
                 description: '',
+                id: '',
                 type: '',
                 brand: {
                     name: '',
+                    id: '',
                 },
                 client: {
                     firstName: '',
                     lastName: '',
                     email: '',
-                    phone: ''
+                    phone: '',
+                    id: ''
                 }
             }],
             clientList: [],
@@ -40,14 +43,14 @@ class Products extends Component {
 
     componentDidMount() {
 
-        axios.get(path + '/product/get/all', {
+        axios.get(path + '/products', {
             responseType: 'json'
         }).then((response) => {
             this.setState({ tableData: response.data });
             console.log(response.data);
         });
 
-        axios.get(path + '/client/get/all')
+        axios.get(path + '/clients')
             .then(response => {
                 return response.data
             }).then(data => {
@@ -57,7 +60,7 @@ class Products extends Component {
                 console.log(error);
             });
 
-        axios.get(path + '/brand/get/all')
+        axios.get(path + '/brands')
             .then(response => {
                 return response.data
             }).then(data => {
@@ -77,7 +80,7 @@ class Products extends Component {
             clientId: this.state.selectedClient,
         };
 
-        axios.post(path + '/product/add', data)
+        axios.post(path + '/product', data)
             .then((response) => {
                 console.log(response);
                 let tableData = [...this.state.tableData];
