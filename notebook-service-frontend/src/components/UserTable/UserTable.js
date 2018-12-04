@@ -5,7 +5,6 @@ import axios from 'axios';
 
 import './UserTable.css';
 import NavBar from '../NavBar/NavBar';
-import { Route } from 'react-router';
 
 class UserTable extends Component {
     constructor() {
@@ -45,26 +44,22 @@ class UserTable extends Component {
 
         return (
             <div>
-                <Route exact path='/service/users'
-                    render={() =>
-                        <div>
-                            <NavBar />
-                            <SplitterLayout>
-                                <ReactTable
-                                    data={tableData}
-                                    columns={columns}
-                                    minRows={5}
-                                    defaultPageSize={10}
-                                    defaultSorted={[
-                                        {
-                                            id: "name"
-                                        }
-                                    ]}
-                                    className="-striped -highlight" />
-                            </SplitterLayout>
-                            <p>{console.log(tableData)}</p>
-                        </div>
-                    } />
+                <NavBar />
+                <SplitterLayout>
+                    <div>
+                        <ReactTable
+                            data={tableData}
+                            columns={columns}
+                            minRows={5}
+                            defaultPageSize={10}
+                            defaultSorted={[
+                                {
+                                    id: "name"
+                                }
+                            ]}
+                            className="-striped -highlight" />
+                    </div>
+                </SplitterLayout>
             </div>
         )
     }

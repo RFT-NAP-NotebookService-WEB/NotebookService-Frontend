@@ -39,6 +39,7 @@ input[type=username], input[type=password] {
     background-color: rgb(65, 190,168);
     border: none;
     text-align: center;
+    text-decoration: none;
 }
 
 button:hover {

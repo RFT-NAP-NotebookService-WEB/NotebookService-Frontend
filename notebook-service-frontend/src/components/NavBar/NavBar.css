@@ -17,12 +17,9 @@
     background-color: rgb(62, 175, 154) !important;
 }
 
-.nav.navbar-nav li.dropdown.open a:hover{
-    background-color: rgb(34, 97, 85) !important;
-}
-
 .nav.navbar-nav li a {
     color: black !important;
+    text-decoration: none;
 }
 
 img.NavLogo.navbar-brand {
@@ -34,3 +31,19 @@ span.navbar-brand {
     padding-right: 50px;
     color: black !important;
 }
+
+.navbar-nav span:hover {
+    background-color:  rgb(62, 175, 154)
+}
+
+.navbar-nav span[role=button] {
+    padding: 15px;
+    display: inline-block;
+    line-height: 20px;
+  }
+
+.navbar-nav span[role=menuitem] {
+    padding: 3px 20px;
+    display: inline-block;
+    line-height: 20px;
+  }

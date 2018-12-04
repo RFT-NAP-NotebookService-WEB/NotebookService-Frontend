@@ -1,0 +1,12 @@
+.ReactTable {
+    width: 100%;
+    background-color: white;
+}
+
+.modal-container {
+    position: relative;
+  }
+
+.modal-container .modal, .modal-container .modal-backdrop {
+    position: absolute;
+}
