@@ -1,11 +1,32 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap/lib';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import Logo from '../Logo/Logo';
 import './NavBar.css';
+import Products from '../../containers/Products/Products';
+import ManageClients from '../../containers/ManageClients/ManageClients';
 
 class NavBar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+
+        this.state = {
+            showProductModal: false,
+        };
+    }
+
+    handleClose() {
+        this.setState({ showProductModal: false });
+    }
+
+    handleShow() {
+        this.setState({ showProductModal: true });
+    }
+
     render() {
         return (
             <div>
@@ -26,8 +47,8 @@ class NavBar extends Component {
                             <NavItem componentClass="span">
                                 <Link to="/manageclients">Manage Clients</Link>
                             </NavItem>
-                            <NavItem componentClass="span">
-                                <Link to="/products">Products</Link>
+                            <NavItem componentClass="span" onClick={this.handleShow}>
+                                <Button>Add Product</Button>
                             </NavItem>
 
                             <NavDropdown title="Options" id="basic-nav-dropdown">
@@ -52,6 +73,26 @@ class NavBar extends Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar >
+
+                <div className="modal-container" style={{ height: 200 }}>
+                    <Modal
+                        bsSize="small"
+                        show={this.state.showProductModal}
+                        onHide={this.handleClose}
+                        container={this}
+                        aria-labelledby="contained-modal-title">
+                        <Modal.Header closeButton>
+                            <Modal.Title id="contianed-modal-title">New Product</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Products />
+                            <ManageClients />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={this.handleClose}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
+                </div>
             </div>
         )
     }

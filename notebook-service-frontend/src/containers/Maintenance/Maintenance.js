@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import { Form, FormGroup, FormControl, Button, Col, Jumbotron, ControlLabel } from 'react-bootstrap';
+import { Form, FormGroup, Jumbotron, ControlLabel } from 'react-bootstrap';
 import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
