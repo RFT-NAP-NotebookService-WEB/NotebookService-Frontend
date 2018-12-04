@@ -3,6 +3,10 @@
     border: 0;
 }
 
+.custom-modal {
+    width: 50%;
+}
+
 .navbar.navbar-inverse.navbar-static-top {
     border: 0;
     padding: 0%;

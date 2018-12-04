@@ -29,7 +29,9 @@ class UserRegister extends Component {
 
         return (
             <div>
-                <Modal.Dialog bsSize="small">
+                <Modal.Dialog 
+                    className="RegisterModal"
+                    bsSize="small">
                     <Modal.Header >
                         <Logo className="RegisterLogo" />
                         <Modal.Title>Registration</Modal.Title>

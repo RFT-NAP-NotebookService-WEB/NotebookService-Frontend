@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Logo from '../Logo/Logo';
 import './NavBar.css';
+import '../../assets/Modal/Modal.css';
 import Products from '../../containers/Products/Products';
 import ManageClients from '../../containers/ManageClients/ManageClients';
 
@@ -72,13 +73,15 @@ class NavBar extends Component {
 
                         </Nav>
                     </Navbar.Collapse>
-                </Navbar>
+                </Navbar >
+                <div className="modal-backdrop-asd">
                     <Modal
                         bsSize="large"
                         show={this.state.showProductModal}
                         onHide={this.handleClose}
                         container={this}
-                        aria-labelledby="contained-modal-title">
+                        aria-labelledby="contained-modal-title"
+                        dialogClassName="custom-modal">
                         <Modal.Header closeButton>
                             <Modal.Title id="contianed-modal-title">New Product</Modal.Title>
                         </Modal.Header>

@@ -10,3 +10,7 @@
 .modal-container .modal, .modal-container .modal-backdrop {
     position: absolute;
 }
+
+.ProductTextModal {
+    color: white;
+}

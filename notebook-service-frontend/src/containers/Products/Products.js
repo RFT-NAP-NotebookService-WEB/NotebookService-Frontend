@@ -93,9 +93,12 @@ class Products extends Component {
 
         return (
             <div>
-                <Form horizontal>
+                <Form 
+                    horizontal>
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col
+                            className="ProductTextModal"
+                            componentClass={ControlLabel} sm={1}>
                             Brand
                                             </Col>
                         <Col sm={10}>
@@ -112,7 +115,9 @@ class Products extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col
+                            className="ProductTextModal"
+                            componentClass={ControlLabel} sm={1}>
                             Product Type
                                             </Col>
                         <Col sm={10}>
@@ -124,7 +129,9 @@ class Products extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col
+                            className="ProductTextModal"
+                            componentClass={ControlLabel} sm={1}>
                             Description
                                             </Col>
                         <Col sm={10}>
@@ -136,7 +143,9 @@ class Products extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col 
+                            className="ProductTextModal"
+                            componentClass={ControlLabel} sm={1}>
                             Client
                                              </Col>
                         <Col sm={10}>
@@ -157,23 +166,22 @@ class Products extends Component {
                     </FormGroup>
                 </Form>
 
-                
-                    <Modal
-                        bsSize="small"
-                        show={this.state.showBrandModal}
-                        onHide={this.handleClose}
-                        container={this}
-                        aria-labelledby="contained-modal-title">
-                        <Modal.Header closeButton>
-                            <Modal.Title id="contianed-modal-title">Add brand</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Brands />
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button onClick={this.handleClose}>Close</Button>
-                        </Modal.Footer>
-                    </Modal>
+                <Modal
+                    bsSize="small"
+                    show={this.state.showBrandModal}
+                    onHide={this.handleClose}
+                    container={this}
+                    aria-labelledby="contained-modal-title">
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contianed-modal-title">Add brand</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Brands />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleClose}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }

@@ -48,10 +48,14 @@ class ManageClients extends Component {
     render() {
         return (
             <div>
-                <Form horizontal>
+                <Form
+
+                    horizontal>
 
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={2}>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
                             First Name
                                             </Col>
                         <Col sm={10}>
@@ -63,7 +67,9 @@ class ManageClients extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={2}>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
                             Last Name
                                             </Col>
                         <Col sm={10}>
@@ -75,7 +81,9 @@ class ManageClients extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={2}>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
                             Email
                                             </Col>
                         <Col sm={10}>
@@ -87,7 +95,9 @@ class ManageClients extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={2}>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
                             Phone
                                             </Col>
                         <Col sm={10}>
