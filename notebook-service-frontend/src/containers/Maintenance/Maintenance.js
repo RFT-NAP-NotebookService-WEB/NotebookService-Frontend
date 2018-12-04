@@ -154,27 +154,27 @@ class Maintenance extends Component {
                     <div>
                         <SplitterLayout horizontal>
                             <div>
-                                <Jumbotron>
+                                <Jumbotron className="ClientJumbotronPadding">
 
-                                    <h1>Clients: </h1>
-                                    <p>
+                                    <h1 className="ClientHeader">Clients: </h1>
+                                    <p className="ClientParagraph">
                                         <Form horizontal>
                                             <FormGroup>
                                                 <ControlLabel>Name</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"Kliens neve ide"</ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>Email</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"Kliens emailje ide"</ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>Phone</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"Kliens telefonszáma ide"</ControlLabel>
                                             </FormGroup>
                                         </Form>
@@ -223,39 +223,39 @@ class Maintenance extends Component {
                                 </Jumbotron>
                             </div>
                             <div>
-                                <Jumbotron>
+                                <Jumbotron className="MaintenanceJumbotronPadding">
                                     
-                                <h1>Maintenance: </h1>
-                                    <p>
+                                <h1 className="MaintenanceHeader">Maintenance: </h1>
+                                    <p className="MaintenanceParagraph">
                                         <Form horizontal>
                                             <FormGroup>
                                                 <ControlLabel>Startdate</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"startdate ide"</ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>endDate</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"endDate ide"</ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>Fault</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"fault ide"</ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>Modification</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"modification ide"</ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>price</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
+                                            <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"price ide"</ControlLabel>
                                             </FormGroup>
                                         </Form>
