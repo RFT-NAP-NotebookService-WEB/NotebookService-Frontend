@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import { FormGroup, FormControl, Button, Col } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Button, Col, Jumbotron, ControlLabel } from 'react-bootstrap';
 import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
@@ -152,46 +152,121 @@ class Maintenance extends Component {
                 <SplitterLayout vertical>
 
                     <div>
-                        <FormGroup>
+                        <SplitterLayout horizontal>
+                            <div>
+                                <Jumbotron>
 
-                            <FormControl
-                                inputRef={input => this.faultInput = input}
-                                type="fault"
-                                placeholder="Fault" />
+                                    <h1>Clients: </h1>
+                                    <p>
+                                        <Form horizontal>
+                                            <FormGroup>
+                                                <ControlLabel>Name</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"Kliens neve ide"</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>Email</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"Kliens emailje ide"</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>Phone</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"Kliens telefonszáma ide"</ControlLabel>
+                                            </FormGroup>
+                                        </Form>
+                                    </p>
 
-                            <Col sm={10}>
-                                <select
-                                    value={this.state.selectedProduct}
-                                    onChange={(selectProduct) => this.setState({ selectedProduct: selectProduct.target.value })}>
-                                    {this.state.productList.map((Product) =>
-                                        <option key={Product.value} value={Product.value}>{Product.display}</option>)}
-                                </select>
-                            </Col>
 
-                            <Col sm={10}>
-                                <select
-                                    value={this.state.selectedModification}
-                                    onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
-                                    {this.state.modificationList.map((Modification) =>
-                                        <option key={Modification.value} value={Modification.value}>{Modification.display}</option>)}
-                                </select>
-                            </Col>
+                                    {/* <FormGroup>
 
-                            <Col sm={10}>
-                                <select
-                                    value={this.state.selectedUser}
-                                    onChange={(selectUser) => this.setState({ selectedUser: selectUser.target.value })}>
-                                    {this.state.userList.map((User) =>
-                                        <option key={User.value} value={User.value}>{User.display}</option>)}
-                                </select>
-                            </Col>
+                                        <FormControl
+                                            inputRef={input => this.faultInput = input}
+                                            type="fault"
+                                            placeholder="Fault" />
 
-                            <Button
-                                onClick={() => { this.submitJobHandler() }}
-                                type="submit">Add</Button>
+                                        <Col sm={10}>
+                                            <select
+                                                value={this.state.selectedProduct}
+                                                onChange={(selectProduct) => this.setState({ selectedProduct: selectProduct.target.value })}>
+                                                {this.state.productList.map((Product) =>
+                                                    <option key={Product.value} value={Product.value}>{Product.display}</option>)}
+                                            </select>
+                                        </Col>
 
-                        </FormGroup>
+                                        <Col sm={10}>
+                                            <select
+                                                value={this.state.selectedModification}
+                                                onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
+                                                {this.state.modificationList.map((Modification) =>
+                                                    <option key={Modification.value} value={Modification.value}>{Modification.display}</option>)}
+                                            </select>
+                                        </Col>
+
+                                        <Col sm={10}>
+                                            <select
+                                                value={this.state.selectedUser}
+                                                onChange={(selectUser) => this.setState({ selectedUser: selectUser.target.value })}>
+                                                {this.state.userList.map((User) =>
+                                                    <option key={User.value} value={User.value}>{User.display}</option>)}
+                                            </select>
+                                        </Col>
+
+                                        <Button
+                                            onClick={() => { this.submitJobHandler() }}
+                                            type="submit">Add</Button>
+
+                                    </FormGroup> */}
+                                </Jumbotron>
+                            </div>
+                            <div>
+                                <Jumbotron>
+                                    
+                                <h1>Maintenance: </h1>
+                                    <p>
+                                        <Form horizontal>
+                                            <FormGroup>
+                                                <ControlLabel>Startdate</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"startdate ide"</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>endDate</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"endDate ide"</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>Fault</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"fault ide"</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>Modification</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"modification ide"</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>price</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>"price ide"</ControlLabel>
+                                            </FormGroup>
+                                        </Form>
+                                    </p>
+
+                                </Jumbotron>
+                            </div>
+
+                        </SplitterLayout>
                     </div>
+
 
                     <div>
                         <ReactTable
@@ -208,7 +283,7 @@ class Maintenance extends Component {
                     </div>
 
                 </SplitterLayout>
-            </div>
+            </div >
         )
     }
 }
