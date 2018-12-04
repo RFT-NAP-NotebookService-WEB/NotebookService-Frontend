@@ -80,7 +80,8 @@ class NavBar extends Component {
                         show={this.state.showProductModal}
                         onHide={this.handleClose}
                         container={this}
-                        aria-labelledby="contained-modal-title">
+                        aria-labelledby="contained-modal-title"
+                        dialogClassName="custom-modal">
                         <Modal.Header closeButton>
                             <Modal.Title id="contianed-modal-title">New Product</Modal.Title>
                         </Modal.Header>
