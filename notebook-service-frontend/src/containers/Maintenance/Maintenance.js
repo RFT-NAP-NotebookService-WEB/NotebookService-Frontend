@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import { Form, FormGroup, Jumbotron, ControlLabel } from 'react-bootstrap';
+import { Form, FormGroup, Jumbotron, ControlLabel, Button } from 'react-bootstrap';
 import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
@@ -14,107 +14,82 @@ class Maintenance extends Component {
         super(props);
         this.state = {
             tableData: [{
-                id: '',
-                startdate: '',
-                enddate: '',
-                status: '',
-                fault: '',
-                user: {
-                    id: '',
-                    username: '',
-                    password: '',
-                    userRole: ''
-                },
                 product: {
-                    id: '',
-                    description: '',
-                    type: '',
+                    id: "",
+                    description: "",
+                    type: "",
                     brand: {
-                        id: '',
-                        name: ''
-                    },
-                    client: {
-                        id: '',
-                        firstName: '',
-                        lastName: '',
-                        email: '',
-                        phone: ''
+                        id: "",
+                        name: ""
                     }
-                },
-                modification: [
-                    {
-                        id: '',
-                        name: '',
-                        price: ''
-                    }
-                ]
+                }
             }],
-            productList: [],
-            selectedProduct: '',
+            product: {
+                id: "",
+                description: "",
+                type: "",
+                brand: {
+                    id: "",
+                    name: ""
+                },
+                client: {
+                    id: '',
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: ""
+                }
+            },
+            modification: [{
+                id: '',
+                name: '',
+                price: ''
+            }],
 
-            userList: [],
-            selectedUser: '',
-
-            modificationList: [],
-            selectedModification: ''
+            selectedTableRow: ""
         }
-
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
-        axios.get(path + '/maintenances', {
+        axios.get(path + '/products', {
             responseType: 'json'
-        }).then((response) => {
-            this.setState({ tableData: response.data });
-            console.log(response.data);
+        }).then(response => {
+            this.setState({ 
+                tableData: response.data,
+                product: response.data
+            });
+            console.log(this.state.tableData)
+            console.log(this.state.product)
+        }).catch(error => {
+            console.log(error)
         });
 
-        axios.get(path + '/products')
-            .then(response => {
-                return response.data
-            }).then(data => {
-                let productsFromApi = data.map(Product => { return { value: Product.id, display: Product.brand.name + ' ' + Product.type + ' ' + Product.client.firstName + ' ' + Product.client.lastName } });
-                this.setState({ productList: [{ value: '', display: '(Select the product)' }].concat(productsFromApi) });
-            }).catch(error => {
-                console.log(error);
+        axios.get(path + '/modifications', {
+            responseType: 'json'
+        }).then(response => {
+            this.setState({ 
+                modification: response.data
             });
-
-        axios.get(path + '/modifications')
-            .then(response => {
-                return response.data
-            }).then(data => {
-                let modificationsFromApi = data.map(Modification => { return { value: Modification.id, display: Modification.name } });
-                this.setState({ modificationList: [{ value: '', display: '(Select the modification)' }].concat(modificationsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
-
-        axios.get(path + '/users')
-            .then(response => {
-                return response.data
-            }).then(data => {
-                let usersFromApi = data.map(User => { return { value: User.id, display: User.username + ' ' + User.userRole } });
-                this.setState({ userList: [{ value: '', display: '(Select the user)' }].concat(usersFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
+            console.log(this.state.modification)
+        });
     }
 
 
     submitJobHandler = () => {
         var data = {
-            startDate: this.startdate,
-            endDate: this.enddate,
-            status: this.status,
-            fault: this.faultInput.value,
-            productId: this.state.selectedProduct,
-            userId: this.state.selectedUser,
-            modificationsId: [this.state.selectedModification]
+            startDate: Date,
+            endDate: Date,
+            status: "RECORDED",
+            fault: "ventillator",
+            productId: this.state.product.id,
+            userId: this.state.user.id,
+            modificationsId: [this.state.modification]
         };
 
         axios.post(path + '/maintenance', data)
             .then(response => {
+                console.log(data);
                 let tableData = [...this.state.tableData];
                 tableData.push(data);
                 this.setState({ tableData });
@@ -135,13 +110,13 @@ class Maintenance extends Component {
                 columns: [
                     {
                         Header: 'Brand',
-                        accessor: 'product.brand.name'
-                    }, {
-                        Header: 'Description',
-                        accessor: 'product.description'
+                        accessor: 'brand.name'
                     }, {
                         Header: 'Type',
-                        accessor: 'product.type'
+                        accessor: 'type'
+                    }, {
+                        Header: 'Description',
+                        accessor: 'description'
                     }
                 ]
             }
@@ -157,75 +132,37 @@ class Maintenance extends Component {
                                 <Jumbotron className="ClientJumbotronPadding">
 
                                     <h1 className="ClientHeader">Clients: </h1>
-                                    <p className="ClientParagraph">
-                                        <Form horizontal>
-                                            <FormGroup>
-                                                <ControlLabel>Name</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"Kliens neve ide"</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <ControlLabel>Email</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"Kliens emailje ide"</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <ControlLabel>Phone</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"Kliens telefonszáma ide"</ControlLabel>
-                                            </FormGroup>
-                                        </Form>
-                                    </p>
+                                    <Form horizontal>
+                                        <FormGroup>
+                                            <ControlLabel>Name</ControlLabel>
+                                        </FormGroup>
+                                        <FormGroup className="InputFormGroup">
+                                            <ControlLabel>{this.original.client.firstName}</ControlLabel>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <ControlLabel>Email</ControlLabel>
+                                        </FormGroup>
+                                        <FormGroup className="InputFormGroup">
+                                            <ControlLabel>"Kliens emailje ide"</ControlLabel>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <ControlLabel>Phone</ControlLabel>
+                                        </FormGroup>
+                                        <FormGroup className="InputFormGroup">
+                                            <ControlLabel>"Kliens telefonszáma ide"</ControlLabel>
+                                        </FormGroup>
+                                    </Form>
 
-
-                                    {/* <FormGroup>
-
-                                        <FormControl
-                                            inputRef={input => this.faultInput = input}
-                                            type="fault"
-                                            placeholder="Fault" />
-
-                                        <Col sm={10}>
-                                            <select
-                                                value={this.state.selectedProduct}
-                                                onChange={(selectProduct) => this.setState({ selectedProduct: selectProduct.target.value })}>
-                                                {this.state.productList.map((Product) =>
-                                                    <option key={Product.value} value={Product.value}>{Product.display}</option>)}
-                                            </select>
-                                        </Col>
-
-                                        <Col sm={10}>
-                                            <select
-                                                value={this.state.selectedModification}
-                                                onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
-                                                {this.state.modificationList.map((Modification) =>
-                                                    <option key={Modification.value} value={Modification.value}>{Modification.display}</option>)}
-                                            </select>
-                                        </Col>
-
-                                        <Col sm={10}>
-                                            <select
-                                                value={this.state.selectedUser}
-                                                onChange={(selectUser) => this.setState({ selectedUser: selectUser.target.value })}>
-                                                {this.state.userList.map((User) =>
-                                                    <option key={User.value} value={User.value}>{User.display}</option>)}
-                                            </select>
-                                        </Col>
-
-                                        <Button
-                                            onClick={() => { this.submitJobHandler() }}
-                                            type="submit">Add</Button>
-
-                                    </FormGroup> */}
+                                    <Button
+                                        onClick={() => { this.submitJobHandler() }}
+                                        type="submit">Add
+                                    </Button>
                                 </Jumbotron>
                             </div>
                             <div>
                                 <Jumbotron className="MaintenanceJumbotronPadding">
-                                    
-                                <h1 className="MaintenanceHeader">Maintenance: </h1>
+
+                                    <h1 className="MaintenanceHeader">Maintenance: </h1>
                                     <p className="MaintenanceParagraph">
                                         <Form horizontal>
                                             <FormGroup>
@@ -274,6 +211,26 @@ class Maintenance extends Component {
                             columns={columns}
                             minRows={5}
                             defaultPageSize={10}
+                            getTrProps={(state,rowInfo) => {
+                                if (rowInfo && rowInfo.row) {
+                                  return {
+                                    onClick: (e) => {
+                                      this.setState({
+                                        selectedTableRow: rowInfo
+                                      })
+                                      console.log(this.state.selectedTableRow)
+                                    },
+                                    style: {
+                                      background: rowInfo === this.state.selectedTableRow ? '#00afec' : 'white',
+                                      color: rowInfo === this.state.selectedTableRow ? 'white' : 'black'
+                                    }
+                                  }
+                                }else{
+                                  return {}
+                                }
+                              }
+                            }
+
                             defaultSorted={[
                                 {
                                     id: "name"

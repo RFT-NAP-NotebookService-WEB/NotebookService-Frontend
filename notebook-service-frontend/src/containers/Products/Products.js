@@ -157,7 +157,7 @@ class Products extends Component {
                     </FormGroup>
                 </Form>
 
-                <div className="modal-container" style={{ height: 200 }}>
+                
                     <Modal
                         bsSize="small"
                         show={this.state.showBrandModal}
@@ -174,7 +174,6 @@ class Products extends Component {
                             <Button onClick={this.handleClose}>Close</Button>
                         </Modal.Footer>
                     </Modal>
-                </div>
             </div>
         )
     }

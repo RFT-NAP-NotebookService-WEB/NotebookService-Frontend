@@ -72,11 +72,9 @@ class NavBar extends Component {
 
                         </Nav>
                     </Navbar.Collapse>
-                </Navbar >
-
-                <div className="modal-container" style={{ height: 200 }}>
+                </Navbar>
                     <Modal
-                        bsSize="small"
+                        bsSize="large"
                         show={this.state.showProductModal}
                         onHide={this.handleClose}
                         container={this}
@@ -85,14 +83,13 @@ class NavBar extends Component {
                             <Modal.Title id="contianed-modal-title">New Product</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Products />
+                            <Products />{' '}
                             <ManageClients />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={this.handleClose}>Close</Button>
                         </Modal.Footer>
                     </Modal>
-                </div>
             </div>
         )
     }
