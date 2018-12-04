@@ -29,10 +29,10 @@ class Brands extends Component {
             <FormGroup>
                 <FormControl
                     inputRef={input => this.newBrand = input}
-                    type="brandname"/>
+                    type="brandname" />
                 <Button onClick={() => { this.addBrandHandler() }}>Add</Button>
             </FormGroup>
-            
+
         )
     }
 }

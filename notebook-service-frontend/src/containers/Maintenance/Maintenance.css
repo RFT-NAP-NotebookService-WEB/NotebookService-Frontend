@@ -1,0 +1,47 @@
+.ClientHeader {
+    font-size: 30px !important;
+    margin: 0 0 0 0;
+    background-color: rgb(207, 209, 208) !important;
+}
+
+.MaintenanceHeader {
+    font-size: 30px !important;
+    margin: 0 0 0 0;
+    background-color: rgb(207, 209, 208) !important;
+}
+
+.ClientJumbotronPadding {
+    padding: 0 0 0 0 !important;
+    background-color: rgb(234, 247, 241) !important;
+}
+
+.MaintenanceJumbotronPadding {
+    padding: 0 0 0 0 !important;
+    background-color: rgb(234, 247, 241) !important;
+}
+
+.ClientParagraph {
+    background-color: rgb(234, 247, 241) !important;
+}
+
+.MaintenanceParagraph {
+    background-color: rgb(234, 247, 241) !important;
+}
+
+.splitter-layout {
+    margin: 0 0 0 0 !important;
+    background-color: rgb(234, 247, 241) !important;
+}
+
+.form-group {
+    margin: 0 !important;
+    font-size: 17px;
+}
+
+.layout-pane.layout-pane-primary {
+    height: 300px !important;
+}
+
+.InputFormGroup {
+    margin: 0 0 10px 0 !important;
+}
