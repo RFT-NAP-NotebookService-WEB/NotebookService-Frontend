@@ -1,22 +1,24 @@
-.modal {
-    background-color: rgb(49,77,91);
-    }
-.modal-sm {
+.LoginModal.modal-sm {
     position: fixed;
     top:5%;
 }
-.modal-header {
+
+.LoginModal {
+    background-color: rgb(49,77,91);
+}
+
+.LoginModal.modal-header {
     background-color: rgb(32, 51, 62);
     color: white;
     text-align: center;
 }
 
-.modal-body {
+.LoginModal.modal-body {
     background-color: rgb(32, 51, 62);
     text-align: center;
 }
 
-.modal-footer {
+.LoginModal.modal-footer {
     background-color: rgb(52,152,134);
 }
 
