@@ -68,7 +68,7 @@ class Products extends Component {
                 return response.data
             }).then(data => {
                 this.setState({ clientList: data });
-                console.log("EZ A GET CLIENTLIST TOMB STATE: " , this.state.clientList)
+                console.log("EZ A GET CLIENTLIST TOMB STATE: ", this.state.clientList)
             }).catch(error => {
                 console.log(error);
             });
@@ -93,9 +93,9 @@ class Products extends Component {
         axios.post(path + '/client', clientData)
             .then((response) => {
                 console.log(response);
-                this.setState({product: clientData});
-                this.setState({product: productData});
-                console.log("EZ A PRODUCT STATEJE" ,this.state.product);
+                this.setState({ product: clientData });
+                this.setState({ product: productData });
+                console.log("EZ A PRODUCT STATEJE", this.state.product);
             })
             .catch((error) => {
                 console.log(error);
@@ -139,13 +139,16 @@ class Products extends Component {
                         <Col
                             className="ProductTextModal"
                             componentClass={ControlLabel} sm={1}>
-                            Product Type
-                                            </Col>
-                        <Col sm={10}>
+                            Type
+                        </Col>
+                        <Col 
+                        sm={10}
+                        className="ProductInputTextField">
                             <FormControl
                                 inputRef={input => this.typeInput = input}
                                 type="type"
-                                placeholder="Product type" />
+                                placeholder="Product type" 
+                                 />
                         </Col>
                     </FormGroup>
 
@@ -155,11 +158,14 @@ class Products extends Component {
                             componentClass={ControlLabel} sm={1}>
                             Description
                                             </Col>
-                        <Col sm={10}>
+                        <Col 
+                        sm={10}
+                        className="ProductInputTextField">
                             <FormControl
                                 inputRef={input => this.descriptionInput = input}
                                 type="description"
-                                placeholder="Description" />
+                                placeholder="Description"
+                                 />
                         </Col>
                     </FormGroup>
 
@@ -227,7 +233,9 @@ class Products extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Button onClick={this.addJobHandler}>Submit</Button>
+                        <Button 
+                        onClick={this.addJobHandler}
+                        className="SubmitJobButton">Submit</Button>
 
                     </FormGroup>
 

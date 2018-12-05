@@ -5,7 +5,6 @@ import './App.css';
 import UserLogin from './containers/UserLogin/UserLogIn';
 import UserRegister from './containers/UserRegister/UserRegister';
 import Service from './containers/Service/Service';
-import ManageClients from './containers/ManageClients/ManageClients';
 import Brands from './components/Brands/Brands';
 import ModificationTable from './components/ModificationTable/ModificationTable';
 import UserTable from './components/UserTable/UserTable';
@@ -22,7 +21,6 @@ class App extends Component {
           <Route path='/service/brands' exact component={Brands} />
           <Route path='/service/modifications' exact component={ModificationTable} />
           <Route path='/service/users' exact component={UserTable} />
-          <Route path='/manageclients' exact component={ManageClients} />
           <Route path='/products' exact component={Products} />
           <Redirect to='/login' />
         </Switch>

@@ -14,3 +14,19 @@
 .ProductTextModal {
     color: white;
 }
+
+.ProductInputTextField {
+    position: absolute;
+    left: 68px;
+}
+
+.ClientModal {
+    color: white !important;
+    text-align: left !important;
+}
+
+.SubmitJobButton {
+    position: absolute;
+    left: 17px;
+    bottom:-47px;
+}
