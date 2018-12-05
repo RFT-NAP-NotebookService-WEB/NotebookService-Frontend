@@ -94,7 +94,6 @@ class Products extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({ product: clientData });
-                this.setState({ product: productData });
                 console.log("EZ A PRODUCT STATEJE", this.state.product);
             })
             .catch((error) => {
@@ -124,26 +123,29 @@ class Products extends Component {
                                             </Col>
                         <Col sm={10}>
                             <select
+                                className="SelectBrandDropdown"
                                 value={this.state.selectedBrand}
                                 onChange={(selectBrand) => this.setState({ selectedBrand: selectBrand.target.value })}>
                                 {this.state.brandList.map((Brand) =>
                                     <option key={Brand.value} value={Brand.value}>{Brand.display}</option>)}
                             </select>{' '}
-                            <Button bsStyle="primary" onClick={this.handleShow}>
-                                Add brand
-                                    </Button>
+                            <Button 
+                                className="AddBrandButton"
+                                bsStyle="primary" 
+                                onClick={this.handleShow}>Add brand
+                            </Button>
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
                         <Col
-                            className="ProductTextModal"
+                            className="TypeTop"
                             componentClass={ControlLabel} sm={1}>
                             Type
                         </Col>
                         <Col 
                         sm={10}
-                        className="ProductInputTextField">
+                        className="TypeTopInput">
                             <FormControl
                                 inputRef={input => this.typeInput = input}
                                 type="type"
