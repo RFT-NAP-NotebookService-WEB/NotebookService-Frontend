@@ -33,6 +33,13 @@ class Maintenance extends Component {
                     brand: {
                         id: "",
                         name: ""
+                    },
+                    client: {
+                        id: '',
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        phone: ""
                     }
                 }
             }],
@@ -80,8 +87,8 @@ class Maintenance extends Component {
                 userRole: ""
             },
 
-            startDate: new Date().format('YYYY-MM-DD'),
-            endDate: new Date().format('YYYY-MM-DD')
+            startDate: new Date(),
+            endDate: new Date()
         }
     }
 
