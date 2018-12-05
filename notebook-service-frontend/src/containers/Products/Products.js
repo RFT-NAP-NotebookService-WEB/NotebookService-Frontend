@@ -51,6 +51,7 @@ class Products extends Component {
             }).then(data => {
                 let clientsFromApi = data.map(Client => { return { value: Client.id, display: Client.firstName + ' ' + Client.lastName } });
                 this.setState({ clientList: [{ value: '', display: '(Select the Client)' }].concat(clientsFromApi) });
+                console.log(this.state.clientList);
             }).catch(error => {
                 console.log(error);
             });

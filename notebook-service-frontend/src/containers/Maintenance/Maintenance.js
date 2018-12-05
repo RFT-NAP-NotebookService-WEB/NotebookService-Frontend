@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import { Form, FormGroup, Jumbotron, ControlLabel, Button } from 'react-bootstrap';
+import DatePicker from "react-datepicker";
+import { Form, FormGroup, Jumbotron, ControlLabel, Button, Modal, FormControl } from 'react-bootstrap';
 import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
 import 'react-table/react-table.css';
+import "react-datepicker/dist/react-datepicker.css";
+
 import './Maintenance.css';
 import path from '../../assets/path/Path';
 
@@ -12,7 +15,16 @@ import path from '../../assets/path/Path';
 class Maintenance extends Component {
     constructor(props) {
         super(props);
+
+
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+
         this.state = {
+
+            showProductModal: false,
+
             tableData: [{
                 product: {
                     id: "",
@@ -61,7 +73,15 @@ class Maintenance extends Component {
                     email: "",
                     phone: ""
                 }
-            }
+            },
+            user: {
+                id:"",
+                name: "",
+                userRole: ""
+            },
+
+            startDate: new Date().format('YYYY-MM-DD'),
+            endDate: new Date().format('YYYY-MM-DD')
         }
     }
 
@@ -87,15 +107,39 @@ class Maintenance extends Component {
             });
             console.log(this.state.modification)
         });
+
+        axios.get(path + '/users', {
+            responseType: 'json'
+        }).then(response => {
+            this.setState({
+                user: response.data
+            });
+            console.log("ezek a userek: ",this.state.user)
+        });
+    }
+
+    handleClose() {
+        this.setState({ showMaintenanceModal: false });
+    }
+
+    handleShow() {
+        this.setState({ showMaintenanceModal: true });
+    }
+
+    handleChange(date) {
+        this.setState({
+            startDate: date,
+            endDate: date
+        })
     }
 
 
     submitJobHandler = () => {
         var data = {
-            startDate: Date,
-            endDate: Date,
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
             status: "RECORDED",
-            fault: "ventillator",
+            fault: this.faultInput.value,
             productId: this.state.product.id,
             userId: this.state.user.id,
             modificationsId: [this.state.modification]
@@ -166,11 +210,6 @@ class Maintenance extends Component {
                                             <ControlLabel>{this.state.selectedTableRow.client.phone}</ControlLabel>
                                         </FormGroup>
                                     </Form>
-
-                                    <Button
-                                        onClick={() => { this.submitJobHandler() }}
-                                        type="submit">Add
-                                    </Button>
                                 </Jumbotron>
                             </div>
                             <div>
@@ -183,13 +222,13 @@ class Maintenance extends Component {
                                                 <ControlLabel>Startdate</ControlLabel>
                                             </FormGroup>
                                             <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"startdate ide"</ControlLabel>
+                                                <ControlLabel></ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>endDate</ControlLabel>
                                             </FormGroup>
                                             <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"endDate ide"</ControlLabel>
+                                                <ControlLabel></ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>Fault</ControlLabel>
@@ -209,6 +248,8 @@ class Maintenance extends Component {
                                             <FormGroup className="InputFormGroup">
                                                 <ControlLabel>"price ide"</ControlLabel>
                                             </FormGroup>
+
+                                            <Button onClick={this.handleShow}>Add</Button>
                                         </Form>
                                     </p>
 
@@ -256,6 +297,50 @@ class Maintenance extends Component {
                     </div>
 
                 </SplitterLayout>
+
+                <div className="modal-backdrop-asd">
+                    <Modal
+                        bsSize="large"
+                        show={this.state.showMaintenanceModal}
+                        onHide={this.handleClose}
+                        container={this}
+                        aria-labelledby="contained-modal-title"
+                        dialogClassName="custom-modal">
+                        <Modal.Header closeButton>
+                            <Modal.Title id="contianed-modal-title">Maintenance</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <FormGroup className="InputFormGroup">
+                                <ControlLabel>{this.state.selectedTableRow.brand.name + ' ' + this.state.selectedTableRow.type}</ControlLabel>
+                            </FormGroup>
+                            <FormGroup className="InputFormGroup">
+                                <ControlLabel>{this.state.selectedTableRow.description}</ControlLabel>
+                            </FormGroup>
+                            <FormGroup>
+                                <DatePicker
+                                    dateFormat="YYYY-MM-DD"
+                                    selected={this.state.startDate}
+                                    onChange={this.handleChange} />{' '}
+                                <DatePicker
+                                    selected={this.state.endDate}
+                                    onChange={this.handleChange} />
+                            </FormGroup>
+                            <FormGroup className="InputFormGroup">
+                                <FormControl placeholder="Faults" inputRef={input => this.faultInput = input}/>
+                            </FormGroup>
+                            <FormGroup className="InputFormGroup">
+                                <FormControl placeholder="Modifications" inputRef={input => this.modificationInput = input}/>
+                            </FormGroup>
+                            <FormGroup className="InputFormGroup">
+                                <FormControl placeholder="Price" inputRef={input => this.priceInput = input}/>
+                            </FormGroup>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={this.submitJobHandler}>Save</Button>
+                            <Button onClick={this.handleClose}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
+                </div>
             </div >
         )
     }
