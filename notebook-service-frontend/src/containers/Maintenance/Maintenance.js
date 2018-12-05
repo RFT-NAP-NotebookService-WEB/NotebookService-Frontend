@@ -216,7 +216,7 @@ class Maintenance extends Component {
                                 <Jumbotron className="MaintenanceJumbotronPadding">
 
                                     <h1 className="MaintenanceHeader">Maintenance: </h1>
-                                    <p className="MaintenanceParagraph">
+                                    <div className="MaintenanceParagraph">
                                         <Form horizontal>
                                             <FormGroup>
                                                 <ControlLabel>Startdate</ControlLabel>
@@ -251,7 +251,7 @@ class Maintenance extends Component {
 
                                             <Button onClick={this.handleShow}>Add</Button>
                                         </Form>
-                                    </p>
+                                    </div>
 
                                 </Jumbotron>
                             </div>
