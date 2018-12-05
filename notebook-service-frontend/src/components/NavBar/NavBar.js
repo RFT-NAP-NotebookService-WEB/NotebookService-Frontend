@@ -6,7 +6,6 @@ import Logo from '../Logo/Logo';
 import './NavBar.css';
 import '../../assets/Modal/Modal.css';
 import Products from '../../containers/Products/Products';
-import ManageClients from '../../containers/ManageClients/ManageClients';
 
 class NavBar extends Component {
     constructor(props) {
@@ -87,7 +86,6 @@ class NavBar extends Component {
                         </Modal.Header>
                         <Modal.Body>
                             <Products />{' '}
-                            <ManageClients />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={this.handleClose}>Close</Button>

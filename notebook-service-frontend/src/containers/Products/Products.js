@@ -18,12 +18,27 @@ class Products extends Component {
         this.state = {
             showBrandModal: false,
 
+            product: {
+                id: "",
+                description: "",
+                type: "",
+                brandId: {
+                    id: "",
+                    name: ""
+                },
+                client: {
+                    email: "",
+                    firstName: "",
+                    id: "",
+                    lastName: "",
+                    phone: ""
+                }
+            },
+
             clientList: [],
-            selectedClient: "",
 
             brandList: [],
             selectedBrand: ""
-
         };
     }
 
@@ -38,23 +53,6 @@ class Products extends Component {
 
     componentDidMount() {
 
-        axios.get(path + '/products', {
-            responseType: 'json'
-        }).then((response) => {
-            this.setState({ tableData: response.data });
-            console.log(response.data);
-        });
-
-        axios.get(path + '/clients')
-            .then(response => {
-                return response.data
-            }).then(data => {
-                let clientsFromApi = data.map(Client => { return { value: Client.id, display: Client.firstName + ' ' + Client.lastName } });
-                this.setState({ clientList: [{ value: '', display: '(Select the Client)' }].concat(clientsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
-
         axios.get(path + '/brands')
             .then(response => {
                 return response.data
@@ -64,36 +62,59 @@ class Products extends Component {
             }).catch(error => {
                 console.log(error);
             });
+
+        axios.get(path + '/clients')
+            .then(response => {
+                return response.data
+            }).then(data => {
+                this.setState({ clientList: data });
+                console.log("EZ A GET CLIENTLIST TOMB STATE: " , this.state.clientList)
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
-    addProductHandler = () => {
+    addJobHandler = () => {
 
-        var data = {
+        var productData = {
             description: this.descriptionInput.value,
             brandId: this.state.selectedBrand,
             type: this.typeInput.value,
-            clientId: this.state.selectedClient,
+            clientId: this.state.clientList.value,
         };
 
-        axios.post(path + '/product', data)
+        var clientData = {
+            firstName: this.firstnameInput.value,
+            lastName: this.lastnameInput.value,
+            email: this.emailInput.value,
+            phone: this.phoneInput.value
+        };
+
+        axios.post(path + '/client', clientData)
             .then((response) => {
                 console.log(response);
-                let tableData = [...this.state.tableData];
-                tableData.push(data);
-                this.setState({ tableData });
-                console.log(tableData);
+                this.setState({product: clientData});
+                this.setState({product: productData});
+                console.log("EZ A PRODUCT STATEJE" ,this.state.product);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        axios.post(path + '/product', productData)
+            .then((response) => {
+                console.log(response);
             })
             .catch((error) => {
                 console.log(error);
             });
     }
 
-
     render() {
 
         return (
             <div>
-                <Form 
+                <Form
                     horizontal>
                     <FormGroup>
                         <Col
@@ -143,28 +164,75 @@ class Products extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col 
+                        <Col
                             className="ProductTextModal"
                             componentClass={ControlLabel} sm={1}>
                             Client
                                              </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
+                            First Name
+                                            </Col>
                         <Col sm={10}>
-                            <select
-                                value={this.state.selectedClient}
-                                onChange={(selectClient) => this.setState({ selectedClient: selectClient.target.value })}>
-                                {this.state.clientList.map((Client) =>
-                                    <option key={Client.value} value={Client.value}>{Client.display}</option>)}
-                            </select>
+                            <FormControl
+                                inputRef={input => this.firstnameInput = input}
+                                type="firstName"
+                                placeholder="First name" />
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
-
-                        <Col sm={2}>
-                            <Button onClick={() => this.addProductHandler()}>Add product</Button>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
+                            Last Name
+                                            </Col>
+                        <Col sm={10}>
+                            <FormControl
+                                inputRef={input => this.lastnameInput = input}
+                                type="lastName"
+                                placeholder="Last name" />
                         </Col>
                     </FormGroup>
+
+                    <FormGroup>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
+                            Email
+                                            </Col>
+                        <Col sm={10}>
+                            <FormControl
+                                inputRef={input => this.emailInput = input}
+                                type="email"
+                                placeholder="E-mail" />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Col
+                            className="ClientModal"
+                            componentClass={ControlLabel} sm={2}>
+                            Phone
+                                            </Col>
+                        <Col sm={10}>
+                            <FormControl
+                                inputRef={input => this.phoneInput = input}
+                                type="phone"
+                                placeholder="Phone" />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Button onClick={this.addJobHandler}>Submit</Button>
+
+                    </FormGroup>
+
                 </Form>
+
 
                 <Modal
                     bsSize="small"
