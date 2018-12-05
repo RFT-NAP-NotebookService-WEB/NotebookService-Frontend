@@ -46,21 +46,35 @@ class Maintenance extends Component {
                 price: ''
             }],
 
-            selectedTableRow: ""
+            selectedTableRow: {
+                id: "",
+                description: "",
+                type: "",
+                brand: {
+                    id: '',
+                    name: ''
+                },
+                client: {
+                    id: '',
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: ""
+                }
+            }
         }
     }
 
-    componentDidMount() {
+
+    componentWillMount() {
 
         axios.get(path + '/products', {
             responseType: 'json'
         }).then(response => {
-            this.setState({ 
+            this.setState({
                 tableData: response.data,
                 product: response.data
             });
-            console.log(this.state.tableData)
-            console.log(this.state.product)
         }).catch(error => {
             console.log(error)
         });
@@ -68,7 +82,7 @@ class Maintenance extends Component {
         axios.get(path + '/modifications', {
             responseType: 'json'
         }).then(response => {
-            this.setState({ 
+            this.setState({
                 modification: response.data
             });
             console.log(this.state.modification)
@@ -137,19 +151,19 @@ class Maintenance extends Component {
                                             <ControlLabel>Name</ControlLabel>
                                         </FormGroup>
                                         <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.original.client.firstName}</ControlLabel>
+                                            <ControlLabel>{this.state.selectedTableRow.client.firstName + ' ' + this.state.selectedTableRow.client.lastName}</ControlLabel>
                                         </FormGroup>
                                         <FormGroup>
                                             <ControlLabel>Email</ControlLabel>
                                         </FormGroup>
                                         <FormGroup className="InputFormGroup">
-                                            <ControlLabel>"Kliens emailje ide"</ControlLabel>
+                                            <ControlLabel>{this.state.selectedTableRow.client.email}</ControlLabel>
                                         </FormGroup>
                                         <FormGroup>
                                             <ControlLabel>Phone</ControlLabel>
                                         </FormGroup>
                                         <FormGroup className="InputFormGroup">
-                                            <ControlLabel>"Kliens telefonszáma ide"</ControlLabel>
+                                            <ControlLabel>{this.state.selectedTableRow.client.phone}</ControlLabel>
                                         </FormGroup>
                                     </Form>
 
@@ -211,24 +225,26 @@ class Maintenance extends Component {
                             columns={columns}
                             minRows={5}
                             defaultPageSize={10}
-                            getTrProps={(state,rowInfo) => {
-                                if (rowInfo && rowInfo.row) {
-                                  return {
-                                    onClick: (e) => {
-                                      this.setState({
-                                        selectedTableRow: rowInfo
-                                      })
-                                      console.log(this.state.selectedTableRow)
-                                    },
-                                    style: {
-                                      background: rowInfo === this.state.selectedTableRow ? '#00afec' : 'white',
-                                      color: rowInfo === this.state.selectedTableRow ? 'white' : 'black'
+                            getTrProps={(state, rowInfo) => {
+                                if (rowInfo !== undefined) {
+                                    return {
+                                        onClick: (e, handleOriginal) => {
+                                            console.log('It was in this row:', rowInfo)
+                                            this.setState({
+                                                selectedTableRow: rowInfo.original
+                                            })
+                                            console.log('ez a tablerow stateje', this.state.selectedTableRow)
+                                        },
+                                        style: {
+                                            cursor: 'pointer',
+                                            background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : 'white',
+                                            color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'black'
+                                        }
                                     }
-                                  }
-                                }else{
-                                  return {}
+                                } else {
+                                    return {}
                                 }
-                              }
+                            }
                             }
 
                             defaultSorted={[

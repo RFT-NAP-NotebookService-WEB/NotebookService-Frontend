@@ -93,6 +93,7 @@ class NavBar extends Component {
                             <Button onClick={this.handleClose}>Close</Button>
                         </Modal.Footer>
                     </Modal>
+                </div>
             </div>
         )
     }
