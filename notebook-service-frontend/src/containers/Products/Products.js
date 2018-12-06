@@ -26,32 +26,32 @@ class Products extends Component {
                     id: "",
                     name: ""
                 },
-                client: {
+                client: [{
                     email: "",
                     firstName: "",
                     id: "",
                     lastName: "",
                     phone: ""
-                }
+                }]
             },
 
-            clientId: [],
+            latestClient: "",
 
             brandList: [],
             selectedBrand: ""
         };
     }
 
-    handleClose() {
-        this.setState({ showBrandModal: false });
-    }
-
     handleShow() {
         this.setState({ showBrandModal: true });
     }
 
+    handleClose() {
+        this.setState({ showBrandModal: false });
+    }
 
-    componentDidMount() {
+
+    componentWillMount() {
 
         axios.get(path + '/brands')
             .then(response => {
@@ -66,13 +66,6 @@ class Products extends Component {
 
     addJobHandler = () => {
 
-        var productData = {
-            description: this.descriptionInput.value,
-            brandId: this.state.selectedBrand,
-            type: this.typeInput.value,
-            clientId: this.state.clientList.value,
-        };
-
         var clientData = {
             firstName: this.firstnameInput.value,
             lastName: this.lastnameInput.value,
@@ -81,22 +74,40 @@ class Products extends Component {
         };
 
         axios.post(path + '/client', clientData)
-            .then((response) => {
+            .then(response => {
                 console.log(response);
+            }).then(() => {
+                axios.get(path + '/clients')
+                    .then(response => {
+
+                        console.log(response)
+
+                        var maxId = Math.max.apply(Math, response.data.map(Client => { return Client.id; }))
+                        var latestClientObj = response.data.find(Client => { return Client.id === maxId })
+                        this.setState({ latestClient: latestClientObj })
+                    }).then(() => {
+
+                        var productData = {
+                            description: this.descriptionInput.value,
+                            brandId: this.state.selectedBrand,
+                            type: this.typeInput.value,
+                            clientId: this.state.latestClient.id,
+                        };
+
+                        axios.post(path + '/product', productData)
+                            .then((response) => {
+                                console.log(response);
+                            }).catch((error) => {
+                                console.log(error);
+                            });
+                    }).catch(error => {
+                        console.log(error)
+                    });
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log(error);
             });
-
-
-        axios.post(path + '/product', productData)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
+     }
 
     render() {
 
