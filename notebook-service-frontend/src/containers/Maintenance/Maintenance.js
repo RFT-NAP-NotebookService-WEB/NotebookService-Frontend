@@ -26,6 +26,56 @@ class Maintenance extends Component {
             showProductModal: false,
 
             tableData: [{
+                maintenance: {
+                    id: "",
+                    startDate: "",
+                    endDate: "",
+                    status: "",
+                    fault: "",
+                    user: {
+                        id: "",
+                        username: "",
+                        password: "",
+                        userRole: ""
+                    },
+                    product: {
+                        id: "",
+                        description: "",
+                        type: "",
+                        brand: {
+                            id: "",
+                            name: ""
+                        },
+                        client: {
+                            id: '',
+                            firstName: "",
+                            lastName: "",
+                            email: "",
+                            phone: ""
+                        }
+                    },
+                    modification: [
+                        {
+                            id: "",
+                            name: "",
+                            price: ""
+                        }
+                    ]
+                }
+            }],
+
+            selectedTableRow: {
+                id: "",
+                startDate: "",
+                endDate: "",
+                status: "",
+                fault: "",
+                user: {
+                    id: "",
+                    username: "",
+                    password: "",
+                    userRole: ""
+                },
                 product: {
                     id: "",
                     description: "",
@@ -41,51 +91,19 @@ class Maintenance extends Component {
                         email: "",
                         phone: ""
                     }
-                }
-            }],
-            product: {
-                id: "",
-                description: "",
-                type: "",
-                brand: {
-                    id: "",
-                    name: ""
                 },
-                client: {
-                    id: '',
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    phone: ""
-                }
+                modification: [
+                    {
+                        id: "",
+                        name: "",
+                        price: ""
+                    }
+                ]
             },
-            modification: [{
-                id: '',
-                name: '',
-                price: ''
-            }],
 
-            selectedTableRow: {
-                id: "",
-                description: "",
-                type: "",
-                brand: {
-                    id: '',
-                    name: ''
-                },
-                client: {
-                    id: '',
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    phone: ""
-                }
-            },
-            user: {
-                id:"",
-                name: "",
-                userRole: ""
-            },
+            latestProduct: "",
+            latestUser: "",
+            latestModification: "",
 
             startDate: new Date(),
             endDate: new Date()
@@ -93,36 +111,36 @@ class Maintenance extends Component {
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
 
         axios.get(path + '/products', {
             responseType: 'json'
         }).then(response => {
-            this.setState({
-                tableData: response.data,
-                product: response.data
-            });
+            var maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
+            var latestProductObj = response.data.find(Product => { return Product.id === maxId })
+            this.setState({ latestProduct: latestProductObj })
         }).catch(error => {
             console.log(error)
-        });
-
-        axios.get(path + '/modifications', {
-            responseType: 'json'
-        }).then(response => {
-            this.setState({
-                modification: response.data
-            });
-            console.log(this.state.modification)
         });
 
         axios.get(path + '/users', {
             responseType: 'json'
         }).then(response => {
-            this.setState({
-                user: response.data
-            });
-            console.log("ezek a userek: ",this.state.user)
+            var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
+            var latestUserObj = response.data.find(User => { return User.id === maxId })
+            this.setState({ latestUser: latestUserObj })
         });
+
+        axios.get(path + '/maintenances', {
+            responseType: 'json'
+        }).then(response => {
+            console.log(response)
+            this.setState({ tableData: response.data })
+            console.log(this.state.tableData)
+        }).catch(error => {
+            console.log(error)
+        });
+
     }
 
     handleClose() {
@@ -140,29 +158,56 @@ class Maintenance extends Component {
         })
     }
 
+    addMaintenanceHandler = () => {
 
-    submitJobHandler = () => {
-        var data = {
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
-            status: "RECORDED",
-            fault: this.faultInput.value,
-            productId: this.state.product.id,
-            userId: this.state.user.id,
-            modificationsId: [this.state.modification]
+        var modificationData = {
+            name: " ",
+            price: "0"
         };
 
-        axios.post(path + '/maintenance', data)
+        axios.post(path + '/modification', modificationData)
             .then(response => {
-                console.log(data);
-                let tableData = [...this.state.tableData];
-                tableData.push(data);
-                this.setState({ tableData });
-                console.log(tableData);
+                console.log(response);
+            }).then(() => {
+                axios.get(path + '/modifications')
+                    .then(response => {
+
+                        console.log(response)
+
+                        var maxId = Math.max.apply(Math, response.data.map(Modification => { return Modification.id; }))
+                        var latestModificationObj = response.data.find(Modification => { return Modification.id === maxId })
+                        this.setState({ latestModification: latestModificationObj })
+                    }).then(() => {
+
+                        var maintenanceData = {
+                            startDate: " ",
+                            endDate: " ",
+                            status: "RECORDED",
+                            fault: " ",
+                            productId: this.state.latestProduct.id,
+                            userId: this.state.latestUser.id,
+                            modificationsId: [this.state.latestModification.id]
+                        };
+
+                        axios.post(path + '/maintenance', maintenanceData)
+                            .then(response => {
+                                console.log(response);
+                            }).catch(error => {
+                                console.log(error);
+                            });
+                    }).catch(error => {
+                        console.log(error)
+                    });
             })
             .catch(error => {
                 console.log(error);
             });
+
+    }
+
+
+    submitJobHandler = () => {
+        this.setState({...this.state.selectedTableRow, fault: this.faultInput.value})
     }
 
     render() {
@@ -175,13 +220,13 @@ class Maintenance extends Component {
                 columns: [
                     {
                         Header: 'Brand',
-                        accessor: 'brand.name'
+                        accessor: 'product.brand.name'
                     }, {
                         Header: 'Type',
-                        accessor: 'type'
+                        accessor: 'product.type'
                     }, {
                         Header: 'Description',
-                        accessor: 'description'
+                        accessor: 'product.description'
                     }
                 ]
             }
@@ -202,19 +247,22 @@ class Maintenance extends Component {
                                             <ControlLabel>Name</ControlLabel>
                                         </FormGroup>
                                         <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.client.firstName + ' ' + this.state.selectedTableRow.client.lastName}</ControlLabel>
+                                            <ControlLabel>{this.state.selectedTableRow.product.client.firstName + " " + this.state.selectedTableRow.product.client.lastName}</ControlLabel>
                                         </FormGroup>
                                         <FormGroup>
                                             <ControlLabel>Email</ControlLabel>
                                         </FormGroup>
                                         <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.client.email}</ControlLabel>
+                                            <ControlLabel>{this.state.selectedTableRow.product.client.email}</ControlLabel>
                                         </FormGroup>
                                         <FormGroup>
                                             <ControlLabel>Phone</ControlLabel>
                                         </FormGroup>
                                         <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.client.phone}</ControlLabel>
+                                            <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
+                                        </FormGroup>
+                                        <FormGroup >
+                                        <Button onClick={this.addMaintenanceHandler}>Add</Button>
                                         </FormGroup>
                                     </Form>
                                 </Jumbotron>
@@ -226,36 +274,23 @@ class Maintenance extends Component {
                                     <div className="MaintenanceParagraph">
                                         <Form horizontal>
                                             <FormGroup>
-                                                <ControlLabel>Startdate</ControlLabel>
+                                                <ControlLabel>Startdate</ControlLabel>{' '}
+                                                <ControlLabel>Fault</ControlLabel>{' '}
+                                                <ControlLabel>Price</ControlLabel>
                                             </FormGroup>
                                             <FormGroup className="InputFormGroup">
+                                                <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
+                                                <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
                                                 <ControlLabel></ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
-                                                <ControlLabel>endDate</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel></ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <ControlLabel>Fault</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"fault ide"</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup>
+                                                <ControlLabel>endDate</ControlLabel>{' '}
                                                 <ControlLabel>Modification</ControlLabel>
                                             </FormGroup>
                                             <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"modification ide"</ControlLabel>
+                                                <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>{' '}
+                                                <ControlLabel></ControlLabel>
                                             </FormGroup>
-                                            <FormGroup>
-                                                <ControlLabel>price</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>"price ide"</ControlLabel>
-                                            </FormGroup>
-
                                             <Button onClick={this.handleShow}>Add</Button>
                                         </Form>
                                     </div>
@@ -318,14 +353,13 @@ class Maintenance extends Component {
                         </Modal.Header>
                         <Modal.Body>
                             <FormGroup className="InputFormGroup">
-                                <ControlLabel>{this.state.selectedTableRow.brand.name + ' ' + this.state.selectedTableRow.type}</ControlLabel>
+                                <ControlLabel>{this.state.selectedTableRow.product.brand.name}</ControlLabel>
                             </FormGroup>
                             <FormGroup className="InputFormGroup">
-                                <ControlLabel>{this.state.selectedTableRow.description}</ControlLabel>
+                                <ControlLabel>{this.state.selectedTableRow.product.type}</ControlLabel>
                             </FormGroup>
                             <FormGroup>
                                 <DatePicker
-                                    dateFormat="YYYY-MM-DD"
                                     selected={this.state.startDate}
                                     onChange={this.handleChange} />{' '}
                                 <DatePicker
@@ -333,13 +367,13 @@ class Maintenance extends Component {
                                     onChange={this.handleChange} />
                             </FormGroup>
                             <FormGroup className="InputFormGroup">
-                                <FormControl placeholder="Faults" inputRef={input => this.faultInput = input}/>
+                                <FormControl placeholder="Faults" inputRef={input => this.faultInput = input} />
                             </FormGroup>
                             <FormGroup className="InputFormGroup">
-                                <FormControl placeholder="Modifications" inputRef={input => this.modificationInput = input}/>
+                                <FormControl placeholder="Modifications" inputRef={input => this.modificationInput = input} />
                             </FormGroup>
                             <FormGroup className="InputFormGroup">
-                                <FormControl placeholder="Price" inputRef={input => this.priceInput = input}/>
+                                <FormControl placeholder="Price" inputRef={input => this.priceInput = input} />
                             </FormGroup>
                         </Modal.Body>
                         <Modal.Footer>
