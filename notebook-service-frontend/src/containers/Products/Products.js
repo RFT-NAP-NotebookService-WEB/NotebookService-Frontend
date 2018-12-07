@@ -5,7 +5,7 @@ import path from '../../assets/path/Path';
 
 import 'react-table/react-table.css';
 import './Products.css';
-import Brands from '../../components/Brands/Brands';
+// import Brands from '../../components/Brands/Brands';
 
 class Products extends Component {
 
@@ -22,66 +22,66 @@ class Products extends Component {
                 id: "",
                 description: "",
                 type: "",
-                brandId: {
+                brand: {
                     id: "",
                     name: ""
                 },
-                client: {
+                client: [{
                     email: "",
                     firstName: "",
                     id: "",
                     lastName: "",
                     phone: ""
-                }
+                }]
             },
 
-            clientList: [],
+            latestClient: "",
 
             brandList: [],
             selectedBrand: ""
         };
     }
 
-    handleClose() {
-        this.setState({ showBrandModal: false });
-    }
-
     handleShow() {
         this.setState({ showBrandModal: true });
     }
 
+    handleClose() {
+        this.setState({ showBrandModal: false });
+    }
 
-    componentDidMount() {
+    componentWillMount() {
 
         axios.get(path + '/brands')
             .then(response => {
                 return response.data
             }).then(data => {
-                let brandsFromApi = data.map(Brand => { return { value: Brand.id, display: Brand.name } });
-                this.setState({ brandList: [{ value: '', display: '(Select the Brand)' }].concat(brandsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
-
-        axios.get(path + '/clients')
-            .then(response => {
-                return response.data
-            }).then(data => {
-                this.setState({ clientList: data });
-                console.log("EZ A GET CLIENTLIST TOMB STATE: ", this.state.clientList)
+                let brandsFromApi = data.map(Brand => { return { id: Brand.id, name: Brand.name } });
+                this.setState({ brandList: [{ id: '', name: '(Select the Brand)' }].concat(brandsFromApi) });
             }).catch(error => {
                 console.log(error);
             });
     }
 
-    addJobHandler = () => {
-
-        var productData = {
-            description: this.descriptionInput.value,
-            brandId: this.state.selectedBrand,
-            type: this.typeInput.value,
-            clientId: this.state.clientList.value,
+    addBrandHandler = () => {
+        var data = {
+            name: this.brandInput.value,
         };
+
+        axios.post(path + '/brand', data)
+            .then((response) => {
+                console.log(response.data);
+                let brandList = [...this.state.brandList];
+                brandList.push(response.data);
+                this.setState({brandList});
+                console.log("ez a brandlist state: ", this.state.brandList)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    addJobHandler = () => {
 
         var clientData = {
             firstName: this.firstnameInput.value,
@@ -91,21 +91,24 @@ class Products extends Component {
         };
 
         axios.post(path + '/client', clientData)
-            .then((response) => {
-                console.log(response);
-                this.setState({ product: clientData });
-                console.log("EZ A PRODUCT STATEJE", this.state.product);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            .then(response => {
+               return response.data;
+            }).then(data => {
+                var productData = {
+                    description: this.descriptionInput.value,
+                    brandId: this.state.selectedBrand,
+                    type: this.typeInput.value,
+                    clientId: data.id,
+                };
 
-        axios.post(path + '/product', productData)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
+                axios.post(path + '/product', productData)
+                    .then((response) => {
+                        console.log(response);
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+            }).catch(error => {
+                console.log(error)
             });
     }
 
@@ -127,7 +130,7 @@ class Products extends Component {
                                 value={this.state.selectedBrand}
                                 onChange={(selectBrand) => this.setState({ selectedBrand: selectBrand.target.value })}>
                                 {this.state.brandList.map((Brand) =>
-                                    <option key={Brand.value} value={Brand.value}>{Brand.display}</option>)}
+                                    <option key={Brand.id} value={Brand.id}>{Brand.name}</option>)}
                             </select>{' '}
                             <Button 
                                 className="AddBrandButton"
@@ -149,8 +152,8 @@ class Products extends Component {
                             <FormControl
                                 inputRef={input => this.typeInput = input}
                                 type="type"
-                                placeholder="Product type" 
-                                 />
+                                placeholder="Product type"
+                            />
                         </Col>
                     </FormGroup>
 
@@ -160,14 +163,14 @@ class Products extends Component {
                             componentClass={ControlLabel} sm={1}>
                             Description
                                             </Col>
-                        <Col 
-                        sm={10}
-                        className="ProductInputTextField">
+                        <Col
+                            sm={10}
+                            className="ProductInputTextField">
                             <FormControl
                                 inputRef={input => this.descriptionInput = input}
                                 type="description"
                                 placeholder="Description"
-                                 />
+                            />
                         </Col>
                     </FormGroup>
 
@@ -235,9 +238,9 @@ class Products extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Button 
-                        onClick={this.addJobHandler}
-                        className="SubmitJobButton">Submit</Button>
+                        <Button
+                            onClick={this.addJobHandler}
+                            className="SubmitJobButton">Submit</Button>
 
                     </FormGroup>
 
@@ -254,7 +257,12 @@ class Products extends Component {
                         <Modal.Title id="contianed-modal-title">Add brand</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Brands />
+                        <FormGroup>
+                            <FormControl
+                                inputRef={input => this.brandInput = input}
+                                type="brandname" />
+                            <Button onClick={() => { this.addBrandHandler() }}>Add</Button>
+                        </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleClose}>Close</Button>
