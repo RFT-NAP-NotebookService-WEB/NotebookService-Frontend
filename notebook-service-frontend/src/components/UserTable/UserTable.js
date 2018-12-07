@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import './UserTable.css';
 import NavBar from '../NavBar/NavBar';
+import path from '../../assets/path/Path';
 
 class UserTable extends Component {
     constructor() {
@@ -19,7 +20,7 @@ class UserTable extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/users', {
+        axios.get(path + '/users', {
             responseType: 'json'
         }).then(response => {
             this.setState({ tableData: response.data });
@@ -50,7 +51,6 @@ class UserTable extends Component {
                         <ReactTable
                             data={tableData}
                             columns={columns}
-                            minRows={5}
                             defaultPageSize={10}
                             defaultSorted={[
                                 {

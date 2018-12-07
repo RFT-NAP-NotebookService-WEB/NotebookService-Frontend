@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import { Form, FormGroup, Jumbotron, ControlLabel, Button, Modal, FormControl } from 'react-bootstrap';
 import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
+import moment from 'moment';
 
 import 'react-table/react-table.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -182,8 +183,8 @@ class Maintenance extends Component {
             }).then(() => {
 
                 var maintenanceData = {
-                    startDate: " ",
-                    endDate: " ",
+                    startDate: moment(this.state.startDate,'YYYY-MM-DD'),
+                    endDate: moment(this.state.endDate,'YYYY-MM-DD'),
                     status: "RECORDED",
                     fault: " ",
                     productId: this.state.latestProduct.id,
@@ -211,7 +212,7 @@ class Maintenance extends Component {
     }
 
     render() {
-
+        
         const { tableData } = this.state;
 
         const columns = [
