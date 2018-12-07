@@ -5,7 +5,8 @@ import path from '../../assets/path/Path';
 
 import 'react-table/react-table.css';
 import './Products.css';
-// import Brands from '../../components/Brands/Brands';
+import SuccessAlert from '../../components/Alerts/SuccesAlert';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 class Products extends Component {
 
@@ -15,8 +16,10 @@ class Products extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
+
         this.state = {
             showBrandModal: false,
+            alert_message: "",
 
             product: {
                 id: "",
@@ -41,6 +44,8 @@ class Products extends Component {
             selectedBrand: ""
         };
     }
+
+
 
     handleShow() {
         this.setState({ showBrandModal: true });
@@ -68,16 +73,20 @@ class Products extends Component {
             name: this.brandInput.value,
         };
 
+
+
         axios.post(path + '/brand', data)
             .then((response) => {
                 console.log(response.data);
                 let brandList = [...this.state.brandList];
                 brandList.push(response.data);
-                this.setState({brandList});
+                this.setState({ brandList });
+                this.setState({alert_message: "succes"});
                 console.log("ez a brandlist state: ", this.state.brandList)
             })
             .catch((error) => {
                 console.log(error);
+                this.setState({alert_message: "error"});
             });
     }
 
@@ -92,7 +101,7 @@ class Products extends Component {
 
         axios.post(path + '/client', clientData)
             .then(response => {
-               return response.data;
+                return response.data;
             }).then(data => {
                 var productData = {
                     description: this.descriptionInput.value,
@@ -259,6 +268,10 @@ class Products extends Component {
                                 inputRef={input => this.brandInput = input}
                                 type="brandname" />
                             <Button onClick={() => { this.addBrandHandler() }}>Add</Button>
+                        </FormGroup>
+                        <FormGroup>
+                            {this.state.alert_message==="succes"?<SuccessAlert/>:null}
+                            {this.state.alert_message==="error"?<ErrorAlert/>:null}
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>

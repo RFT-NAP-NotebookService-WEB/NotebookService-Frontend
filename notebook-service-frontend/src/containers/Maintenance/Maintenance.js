@@ -104,7 +104,6 @@ class Maintenance extends Component {
 
             latestProduct: "",
             latestUser: "",
-            latestModification: "",
 
             modificationList: [],
             selectedModification: "",
@@ -164,6 +163,7 @@ class Maintenance extends Component {
     }
 
     handleChange(date) {
+
         this.setState({
             startDate: date,
             endDate: date
@@ -172,47 +172,61 @@ class Maintenance extends Component {
 
     addMaintenanceHandler = () => {
 
-        axios.get(path + '/modifications')
+        var maintenanceData = {
+            startDate: "",
+            endDate: "",
+            status: "RECORDED",
+            fault: " ",
+            productId: this.state.latestProduct.id,
+            userId: this.state.latestUser.id,
+            modificationsId: []
+        };
+
+        axios.post(path + '/maintenance', maintenanceData)
             .then(response => {
-
-                console.log(response)
-
-                var maxId = Math.max.apply(Math, response.data.map(Modification => { return Modification.id; }))
-                var latestModificationObj = response.data.find(Modification => { return Modification.id === maxId })
-                this.setState({ latestModification: latestModificationObj })
-            }).then(() => {
-
-                var maintenanceData = {
-                    startDate: moment(this.state.startDate,'YYYY-MM-DD'),
-                    endDate: moment(this.state.endDate,'YYYY-MM-DD'),
-                    status: "RECORDED",
-                    fault: " ",
-                    productId: this.state.latestProduct.id,
-                    userId: this.state.latestUser.id,
-                    modificationsId: []
-                };
-
-                axios.post(path + '/maintenance', maintenanceData)
-                    .then(response => {
-                        console.log(response);
-                        let tableData = [...this.state.tableData];
-                        tableData.push(response.data);
-                        this.setState({ tableData });
-                    }).catch(error => {
-                        console.log(error);
-                    });
+                console.log(response);
+                let tableData = [...this.state.tableData];
+                tableData.push(response.data);
+                this.setState({ tableData });
             }).catch(error => {
-                console.log(error)
+                console.log(error);
             });
     }
 
 
-    submitJobHandler = () => {
-        this.setState({ ...this.state.selectedTableRow, fault: this.faultInput.value })
+    editMaintenanceHandler = () => {
+
+        var updatedMaintance = {
+            id: this.state.selectedTableRow.id,
+            startDate: moment(this.state.selectedTableRow.startDate, 'YYYY-MM-DD'),
+            endDate: moment(this.state.selectedTableRow.endDate, 'YYYY-MM-DD'),
+            status: this.state.selectedTableRow.status,
+            fault: this.faultInput.value,
+            user: {
+                id: this.state.selectedTableRow.user.id,
+            },
+            product: {
+                id: this.state.selectedTableRow.product.id,
+                brand: {
+                    id: this.state.selectedTableRow.product.brand.id,
+                },
+                client: {
+                    id: this.state.selectedTableRow.product.client.id,
+                }
+            },
+            modification: [this.state.selectedModification]
+        }
+
+        axios.put(path + '/maintenance', updatedMaintance)
+            .then(response => {
+                console.log(response)
+            }).catch(error => {
+                console.log(error)
+            })
     }
 
     render() {
-        
+
         const { tableData } = this.state;
 
         const columns = [
@@ -382,7 +396,7 @@ class Maintenance extends Component {
                             </FormGroup>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={this.submitJobHandler}>Save</Button>
+                            <Button onClick={this.editMaintenanceHandler}>Save</Button>
                             <Button onClick={this.handleClose}>Close</Button>
                         </Modal.Footer>
                     </Modal>
