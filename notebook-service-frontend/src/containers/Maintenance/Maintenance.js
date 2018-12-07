@@ -105,13 +105,25 @@ class Maintenance extends Component {
             latestUser: "",
             latestModification: "",
 
+            modificationList: [],
+            selectedModification: "",
+
             startDate: new Date(),
             endDate: new Date()
         }
     }
 
 
-    componentDidMount() {
+    componentWillMount() {
+
+        axios.get(path + '/maintenances', {
+            responseType: 'json'
+        }).then(response => {
+            this.setState({ tableData: response.data })
+            console.log(this.state.tableData)
+        }).catch(error => {
+            console.log(error)
+        });
 
         axios.get(path + '/products', {
             responseType: 'json'
@@ -131,16 +143,15 @@ class Maintenance extends Component {
             this.setState({ latestUser: latestUserObj })
         });
 
-        axios.get(path + '/maintenances', {
-            responseType: 'json'
-        }).then(response => {
-            console.log(response)
-            this.setState({ tableData: response.data })
-            console.log(this.state.tableData)
-        }).catch(error => {
-            console.log(error)
-        });
-
+        axios.get(path + '/modifications')
+            .then(response => {
+                return response.data
+            }).then(data => {
+                let modificationsFromApi = data.map(Modification => { return { value: Modification.id, display: Modification.name } });
+                this.setState({ modificationList: [{ value: '', display: '(Select the Modification)' }].concat(modificationsFromApi) });
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
     handleClose() {
@@ -160,54 +171,43 @@ class Maintenance extends Component {
 
     addMaintenanceHandler = () => {
 
-        var modificationData = {
-            name: " ",
-            price: "0"
-        };
-
-        axios.post(path + '/modification', modificationData)
+        axios.get(path + '/modifications')
             .then(response => {
-                console.log(response);
+
+                console.log(response)
+
+                var maxId = Math.max.apply(Math, response.data.map(Modification => { return Modification.id; }))
+                var latestModificationObj = response.data.find(Modification => { return Modification.id === maxId })
+                this.setState({ latestModification: latestModificationObj })
             }).then(() => {
-                axios.get(path + '/modifications')
+
+                var maintenanceData = {
+                    startDate: " ",
+                    endDate: " ",
+                    status: "RECORDED",
+                    fault: " ",
+                    productId: this.state.latestProduct.id,
+                    userId: this.state.latestUser.id,
+                    modificationsId: []
+                };
+
+                axios.post(path + '/maintenance', maintenanceData)
                     .then(response => {
-
-                        console.log(response)
-
-                        var maxId = Math.max.apply(Math, response.data.map(Modification => { return Modification.id; }))
-                        var latestModificationObj = response.data.find(Modification => { return Modification.id === maxId })
-                        this.setState({ latestModification: latestModificationObj })
-                    }).then(() => {
-
-                        var maintenanceData = {
-                            startDate: " ",
-                            endDate: " ",
-                            status: "RECORDED",
-                            fault: " ",
-                            productId: this.state.latestProduct.id,
-                            userId: this.state.latestUser.id,
-                            modificationsId: [this.state.latestModification.id]
-                        };
-
-                        axios.post(path + '/maintenance', maintenanceData)
-                            .then(response => {
-                                console.log(response);
-                            }).catch(error => {
-                                console.log(error);
-                            });
+                        console.log(response);
+                        let tableData = [...this.state.tableData];
+                        tableData.push(response.data);
+                        this.setState({ tableData });
                     }).catch(error => {
-                        console.log(error)
+                        console.log(error);
                     });
-            })
-            .catch(error => {
-                console.log(error);
+            }).catch(error => {
+                console.log(error)
             });
-
     }
 
 
     submitJobHandler = () => {
-        this.setState({...this.state.selectedTableRow, fault: this.faultInput.value})
+        this.setState({ ...this.state.selectedTableRow, fault: this.faultInput.value })
     }
 
     render() {
@@ -262,7 +262,7 @@ class Maintenance extends Component {
                                             <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
                                         </FormGroup>
                                         <FormGroup >
-                                        <Button onClick={this.addMaintenanceHandler}>Add</Button>
+                                            <Button onClick={this.addMaintenanceHandler}>Add</Button>
                                         </FormGroup>
                                     </Form>
                                 </Jumbotron>
@@ -306,7 +306,6 @@ class Maintenance extends Component {
                         <ReactTable
                             data={tableData}
                             columns={columns}
-                            minRows={5}
                             defaultPageSize={10}
                             getTrProps={(state, rowInfo) => {
                                 if (rowInfo !== undefined) {
@@ -369,11 +368,16 @@ class Maintenance extends Component {
                             <FormGroup className="InputFormGroup">
                                 <FormControl placeholder="Faults" inputRef={input => this.faultInput = input} />
                             </FormGroup>
-                            <FormGroup className="InputFormGroup">
-                                <FormControl placeholder="Modifications" inputRef={input => this.modificationInput = input} />
+                            <FormGroup>
+                                <select
+                                    value={this.state.selectedModification}
+                                    onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
+                                    {this.state.modificationList.map((Modification) =>
+                                        <option key={Modification.value} value={Modification.value}>{Modification.display}</option>)}
+                                </select>{' '}
                             </FormGroup>
-                            <FormGroup className="InputFormGroup">
-                                <FormControl placeholder="Price" inputRef={input => this.priceInput = input} />
+                            <FormGroup>
+                                <ControlLabel>{this.state.selectedModification.price}</ControlLabel>
                             </FormGroup>
                         </Modal.Body>
                         <Modal.Footer>

@@ -5,7 +5,7 @@ import path from '../../assets/path/Path';
 
 import 'react-table/react-table.css';
 import './Products.css';
-import Brands from '../../components/Brands/Brands';
+// import Brands from '../../components/Brands/Brands';
 
 class Products extends Component {
 
@@ -50,16 +50,33 @@ class Products extends Component {
         this.setState({ showBrandModal: false });
     }
 
-
     componentWillMount() {
 
         axios.get(path + '/brands')
             .then(response => {
                 return response.data
             }).then(data => {
-                let brandsFromApi = data.map(Brand => { return { value: Brand.id, display: Brand.name } });
-                this.setState({ brandList: [{ value: '', display: '(Select the Brand)' }].concat(brandsFromApi) });
+                let brandsFromApi = data.map(Brand => { return { id: Brand.id, name: Brand.name } });
+                this.setState({ brandList: [{ id: '', name: '(Select the Brand)' }].concat(brandsFromApi) });
             }).catch(error => {
+                console.log(error);
+            });
+    }
+
+    addBrandHandler = () => {
+        var data = {
+            name: this.brandInput.value,
+        };
+
+        axios.post(path + '/brand', data)
+            .then((response) => {
+                console.log(response.data);
+                let brandList = [...this.state.brandList];
+                brandList.push(response.data);
+                this.setState({brandList});
+                console.log("ez a brandlist state: ", this.state.brandList)
+            })
+            .catch((error) => {
                 console.log(error);
             });
     }
@@ -75,39 +92,25 @@ class Products extends Component {
 
         axios.post(path + '/client', clientData)
             .then(response => {
-                console.log(response);
-            }).then(() => {
-                axios.get(path + '/clients')
-                    .then(response => {
+               return response.data;
+            }).then(data => {
+                var productData = {
+                    description: this.descriptionInput.value,
+                    brandId: this.state.selectedBrand,
+                    type: this.typeInput.value,
+                    clientId: data.id,
+                };
 
-                        console.log(response)
-
-                        var maxId = Math.max.apply(Math, response.data.map(Client => { return Client.id; }))
-                        var latestClientObj = response.data.find(Client => { return Client.id === maxId })
-                        this.setState({ latestClient: latestClientObj })
-                    }).then(() => {
-
-                        var productData = {
-                            description: this.descriptionInput.value,
-                            brandId: this.state.selectedBrand,
-                            type: this.typeInput.value,
-                            clientId: this.state.latestClient.id,
-                        };
-
-                        axios.post(path + '/product', productData)
-                            .then((response) => {
-                                console.log(response);
-                            }).catch((error) => {
-                                console.log(error);
-                            });
-                    }).catch(error => {
-                        console.log(error)
+                axios.post(path + '/product', productData)
+                    .then((response) => {
+                        console.log(response);
+                    }).catch((error) => {
+                        console.log(error);
                     });
-            })
-            .catch(error => {
-                console.log(error);
+            }).catch(error => {
+                console.log(error)
             });
-     }
+    }
 
     render() {
 
@@ -126,7 +129,7 @@ class Products extends Component {
                                 value={this.state.selectedBrand}
                                 onChange={(selectBrand) => this.setState({ selectedBrand: selectBrand.target.value })}>
                                 {this.state.brandList.map((Brand) =>
-                                    <option key={Brand.value} value={Brand.value}>{Brand.display}</option>)}
+                                    <option key={Brand.id} value={Brand.id}>{Brand.name}</option>)}
                             </select>{' '}
                             <Button bsStyle="primary" onClick={this.handleShow}>
                                 Add brand
@@ -251,7 +254,12 @@ class Products extends Component {
                         <Modal.Title id="contianed-modal-title">Add brand</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Brands />
+                        <FormGroup>
+                            <FormControl
+                                inputRef={input => this.brandInput = input}
+                                type="brandname" />
+                            <Button onClick={() => { this.addBrandHandler() }}>Add</Button>
+                        </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleClose}>Close</Button>
