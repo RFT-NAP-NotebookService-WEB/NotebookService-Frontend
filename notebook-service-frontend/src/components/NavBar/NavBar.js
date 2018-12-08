@@ -44,9 +44,7 @@ class NavBar extends Component {
                             <NavItem componentClass="span">
                                 <Link to="/service">Service</Link>
                             </NavItem>
-                            <NavItem componentClass="span">
-                                <Link to="/manageclients">Manage Clients</Link>
-                            </NavItem>
+                           
                             <NavItem componentClass="span" onClick={this.handleShow}>
                                 <Button>Add Product</Button>
                             </NavItem>

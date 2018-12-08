@@ -19,7 +19,8 @@ class Products extends Component {
 
         this.state = {
             showBrandModal: false,
-            alert_message: "",
+            alertMessage: "",
+            productAlertMessage: "",
 
             product: {
                 id: "",
@@ -81,12 +82,12 @@ class Products extends Component {
                 let brandList = [...this.state.brandList];
                 brandList.push(response.data);
                 this.setState({ brandList });
-                this.setState({alert_message: "succes"});
+                this.setState({ alertMessage: "success" });
                 console.log("ez a brandlist state: ", this.state.brandList)
             })
             .catch((error) => {
                 console.log(error);
-                this.setState({alert_message: "error"});
+                this.setState({ alertMessage: "error" });
             });
     }
 
@@ -113,11 +114,13 @@ class Products extends Component {
                 axios.post(path + '/product', productData)
                     .then((response) => {
                         console.log(response);
+                        this.setState({ productAlertMessage: "success" })
                     }).catch((error) => {
                         console.log(error);
                     });
             }).catch(error => {
                 console.log(error)
+                this.setState({ productAlertMessage: "error" })
             });
     }
 
@@ -246,7 +249,13 @@ class Products extends Component {
                     <FormGroup>
                         <Button
                             onClick={this.addJobHandler}
-                            className="SubmitJobButton">Submit</Button>
+                            className="SubmitJobButton">Submit
+                        </Button>
+                        <FormGroup>
+                            {this.state.productAlertMessage === "success" ? <SuccessAlert /> : null}
+                            {this.state.productAlertMessage === "error" ? <ErrorAlert /> : null}
+                        </FormGroup>
+
 
                     </FormGroup>
 
@@ -270,8 +279,8 @@ class Products extends Component {
                             <Button onClick={() => { this.addBrandHandler() }}>Add</Button>
                         </FormGroup>
                         <FormGroup>
-                            {this.state.alert_message==="succes"?<SuccessAlert/>:null}
-                            {this.state.alert_message==="error"?<ErrorAlert/>:null}
+                            {this.state.alertMessage === "success" ? <SuccessAlert /> : null}
+                            {this.state.alertMessage === "error" ? <ErrorAlert /> : null}
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>

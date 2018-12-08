@@ -25,6 +25,7 @@ class Maintenance extends Component {
         this.state = {
 
             showProductModal: false,
+            alert_message: "",
 
             tableData: [{
                 maintenance: {
@@ -143,15 +144,16 @@ class Maintenance extends Component {
             this.setState({ latestUser: latestUserObj })
         });
 
-        axios.get(path + '/modifications')
-            .then(response => {
-                return response.data
-            }).then(data => {
-                let modificationsFromApi = data.map(Modification => { return { value: Modification.id, display: Modification.name } });
-                this.setState({ modificationList: [{ value: '', display: '(Select the Modification)' }].concat(modificationsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
+        axios.get(path + '/modifications', {
+            responseType: 'json'
+        }).then(response => {
+            return response.data
+        }).then(data => {
+            let modificationsFromApi = data.map(Modification => { return { value: Modification.id, display: Modification.name } });
+            this.setState({ modificationList: [{ value: '', display: '(Select the Modification)' }].concat(modificationsFromApi) });
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     handleClose() {
@@ -182,47 +184,37 @@ class Maintenance extends Component {
             modificationsId: []
         };
 
-        axios.post(path + '/maintenance', maintenanceData)
-            .then(response => {
-                console.log(response);
-                let tableData = [...this.state.tableData];
-                tableData.push(response.data);
-                this.setState({ tableData });
-            }).catch(error => {
-                console.log(error);
-            });
+        axios.post(path + '/maintenance', maintenanceData, {
+            responseType: 'json'
+        }).then(response => {
+            console.log(response);
+            let tableData = [...this.state.tableData];
+            tableData.push(response.data);
+            this.setState({ tableData });
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
 
     editMaintenanceHandler = () => {
 
-        var updatedMaintance = {
-            id: this.state.selectedTableRow.id,
-            startDate: moment(this.state.selectedTableRow.startDate, 'YYYY-MM-DD'),
-            endDate: moment(this.state.selectedTableRow.endDate, 'YYYY-MM-DD'),
-            status: this.state.selectedTableRow.status,
+        var updatedMaintenance = {
+            startDate: moment(this.state.startDate, 'YYYY-MM-DD'),
+            endDate: moment(this.state.endDate, 'YYYY-MM-DD'),
+            status: "RECORDED",
             fault: this.faultInput.value,
-            user: {
-                id: this.state.selectedTableRow.user.id,
-            },
-            product: {
-                id: this.state.selectedTableRow.product.id,
-                brand: {
-                    id: this.state.selectedTableRow.product.brand.id,
-                },
-                client: {
-                    id: this.state.selectedTableRow.product.client.id,
-                }
-            },
-            modification: [this.state.selectedModification]
+            productId: this.state.selectedTableRow.product.id,
+            userId: this.state.selectedTableRow.user.id,
+            modificationsId: [this.selectedModification]
         }
 
-        axios.put(path + '/maintenance', updatedMaintance)
-            .then(response => {
-                console.log(response)
-            }).catch(error => {
-                console.log(error)
-            })
+        axios.put(path + '/maintenance', updatedMaintenance)
+        .then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     render() {
