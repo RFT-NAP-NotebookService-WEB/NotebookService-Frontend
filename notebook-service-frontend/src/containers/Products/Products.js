@@ -138,26 +138,29 @@ class Products extends Component {
                                             </Col>
                         <Col sm={10}>
                             <select
+                                className="SelectBrandDropdown"
                                 value={this.state.selectedBrand}
                                 onChange={(selectBrand) => this.setState({ selectedBrand: selectBrand.target.value })}>
                                 {this.state.brandList.map((Brand) =>
                                     <option key={Brand.id} value={Brand.id}>{Brand.name}</option>)}
                             </select>{' '}
-                            <Button bsStyle="primary" onClick={this.handleShow}>
-                                Add brand
-                                    </Button>
+                            <Button 
+                                className="AddBrandButton"
+                                bsStyle="primary" 
+                                onClick={this.handleShow}>Add brand
+                            </Button>
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
                         <Col
-                            className="ProductTextModal"
+                            className="TypeTop"
                             componentClass={ControlLabel} sm={1}>
                             Type
                         </Col>
-                        <Col
-                            sm={10}
-                            className="ProductInputTextField">
+                        <Col 
+                        sm={10}
+                        className="TypeTopInput">
                             <FormControl
                                 inputRef={input => this.typeInput = input}
                                 type="type"
@@ -251,7 +254,7 @@ class Products extends Component {
                             onClick={this.addJobHandler}
                             className="SubmitJobButton">Submit
                         </Button>
-                        <FormGroup>
+                        <FormGroup className="ProductAlertMessage">
                             {this.state.productAlertMessage === "success" ? <SuccessAlert /> : null}
                             {this.state.productAlertMessage === "error" ? <ErrorAlert /> : null}
                         </FormGroup>
