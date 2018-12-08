@@ -25,6 +25,7 @@ class Maintenance extends Component {
         this.state = {
 
             showProductModal: false,
+            alert_message: "",
 
             tableData: [{
                 maintenance: {
@@ -104,7 +105,6 @@ class Maintenance extends Component {
 
             latestProduct: "",
             latestUser: "",
-            latestModification: "",
 
             modificationList: [],
             selectedModification: "",
@@ -144,15 +144,16 @@ class Maintenance extends Component {
             this.setState({ latestUser: latestUserObj })
         });
 
-        axios.get(path + '/modifications')
-            .then(response => {
-                return response.data
-            }).then(data => {
-                let modificationsFromApi = data.map(Modification => { return { value: Modification.id, display: Modification.name } });
-                this.setState({ modificationList: [{ value: '', display: '(Select the Modification)' }].concat(modificationsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
+        axios.get(path + '/modifications', {
+            responseType: 'json'
+        }).then(response => {
+            return response.data
+        }).then(data => {
+            let modificationsFromApi = data.map(Modification => { return { value: Modification.id, display: Modification.name } });
+            this.setState({ modificationList: [{ value: '', display: '(Select the Modification)' }].concat(modificationsFromApi) });
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     handleClose() {
@@ -164,6 +165,7 @@ class Maintenance extends Component {
     }
 
     handleChange(date) {
+
         this.setState({
             startDate: date,
             endDate: date
@@ -172,47 +174,51 @@ class Maintenance extends Component {
 
     addMaintenanceHandler = () => {
 
-        axios.get(path + '/modifications')
-            .then(response => {
+        var maintenanceData = {
+            startDate: "",
+            endDate: "",
+            status: "RECORDED",
+            fault: " ",
+            productId: this.state.latestProduct.id,
+            userId: this.state.latestUser.id,
+            modificationsId: []
+        };
 
-                console.log(response)
-
-                var maxId = Math.max.apply(Math, response.data.map(Modification => { return Modification.id; }))
-                var latestModificationObj = response.data.find(Modification => { return Modification.id === maxId })
-                this.setState({ latestModification: latestModificationObj })
-            }).then(() => {
-
-                var maintenanceData = {
-                    startDate: moment(this.state.startDate,'YYYY-MM-DD'),
-                    endDate: moment(this.state.endDate,'YYYY-MM-DD'),
-                    status: "RECORDED",
-                    fault: " ",
-                    productId: this.state.latestProduct.id,
-                    userId: this.state.latestUser.id,
-                    modificationsId: []
-                };
-
-                axios.post(path + '/maintenance', maintenanceData)
-                    .then(response => {
-                        console.log(response);
-                        let tableData = [...this.state.tableData];
-                        tableData.push(response.data);
-                        this.setState({ tableData });
-                    }).catch(error => {
-                        console.log(error);
-                    });
-            }).catch(error => {
-                console.log(error)
-            });
+        axios.post(path + '/maintenance', maintenanceData, {
+            responseType: 'json'
+        }).then(response => {
+            console.log(response);
+            let tableData = [...this.state.tableData];
+            tableData.push(response.data);
+            this.setState({ tableData });
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
 
-    submitJobHandler = () => {
-        this.setState({ ...this.state.selectedTableRow, fault: this.faultInput.value })
+    editMaintenanceHandler = () => {
+
+        var updatedMaintenance = {
+            startDate: moment(this.state.startDate, 'YYYY-MM-DD'),
+            endDate: moment(this.state.endDate, 'YYYY-MM-DD'),
+            status: "RECORDED",
+            fault: this.faultInput.value,
+            productId: this.state.selectedTableRow.product.id,
+            userId: this.state.selectedTableRow.user.id,
+            modificationsId: [this.selectedModification]
+        }
+
+        axios.put(path + '/maintenance', updatedMaintenance)
+        .then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     render() {
-        
+
         const { tableData } = this.state;
 
         const columns = [
@@ -382,7 +388,7 @@ class Maintenance extends Component {
                             </FormGroup>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={this.submitJobHandler}>Save</Button>
+                            <Button onClick={this.editMaintenanceHandler}>Save</Button>
                             <Button onClick={this.handleClose}>Close</Button>
                         </Modal.Footer>
                     </Modal>

@@ -6,21 +6,31 @@ import axios from 'axios';
 
 import './UserRegister.css';
 import Logo from '../../components/Logo/Logo';
+import SuccessAlert from '../../components/Alerts/SuccesAlert';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 class UserRegister extends Component {
+    constructor(props) {
+        super(props);
 
-    registerHandler = (props) => {
+        this.state = {
+            alertMessage: ""
+        };
+    }
+
+    registerHandler = () => {
         axios.post(path + '/register', {
             username: this.usernameInput.value,
             password: this.userPasswordInput.value,
             passwordConfirm: this.userPasswordAgainInput.value,
             userRole: this.userRoleInput.value
         })
-            .then(function (response) {
+            .then(response => {
                 console.log(response);
-            })
-            .catch(function (error) {
+                this.setState({ alertMessage: "success" })
+            }).catch(error => {
                 console.log(error);
+                this.setState({ alertMessage: "error" })
             });
     }
 
@@ -29,7 +39,7 @@ class UserRegister extends Component {
 
         return (
             <div>
-                <Modal.Dialog 
+                <Modal.Dialog
                     className="RegisterModal"
                     bsSize="small">
                     <Modal.Header >
@@ -59,12 +69,16 @@ class UserRegister extends Component {
                                 type="userrole"
                                 placeholder="User Role" />
                         </FormGroup>
+                        <FormGroup>
+                            {this.state.alertMessage === "success" ? <SuccessAlert /> : null}
+                            {this.state.alertMessage === "error" ? <ErrorAlert /> : null}
+                        </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
                         <FormGroup className="RegisterButtonContainer">
                             <Button componentClass="button" className="registerButton" bsSize="large" type="submit"
                                 onClick={() => { this.registerHandler() }}>
-                                <Link to='/login'>Confirm</Link>
+                                Confirm
                             </Button>
                             <Button componentClass="button" className="registerButton" bsSize="large" type="button">
                                 <Link to='/login'>Cancel</Link>
