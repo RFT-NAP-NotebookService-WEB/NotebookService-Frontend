@@ -8,6 +8,8 @@ import './UserRegister.css';
 import Logo from '../../components/Logo/Logo';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import WrongInputAlert from '../../components/Alerts/WrongInputAlert';
+
 
 class UserRegister extends Component {
     constructor(props) {
@@ -28,9 +30,12 @@ class UserRegister extends Component {
             .then(response => {
                 console.log(response);
                 this.setState({ alertMessage: "success" })
+                
             }).catch(error => {
                 console.log(error);
-                this.setState({ alertMessage: "error" })
+
+                error.response.status === 409 ? this.setState({ alertMessage: "error" }): this.setState({ alertMessage: "wrongInput"});
+
             });
     }
 
@@ -72,6 +77,7 @@ class UserRegister extends Component {
                         <FormGroup>
                             {this.state.alertMessage === "success" ? <SuccessAlert /> : null}
                             {this.state.alertMessage === "error" ? <ErrorAlert /> : null}
+                            {this.state.alertMessage === "wrongInput" ? <WrongInputAlert /> : null}
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>

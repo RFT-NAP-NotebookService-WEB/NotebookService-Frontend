@@ -45,3 +45,24 @@
 .InputFormGroup {
     margin: 0 0 10px 0 !important;
 }
+
+.MaintenanceAlertMessage {
+    width: 30%;
+    position: absolute;
+    left: 300px;
+    bottom: -17px;
+}
+
+.MaintenanceEditSelectedInfo {
+    color: white;
+}
+
+.FaultsInput{
+    width: 60% !important;
+}
+
+.SelectedModificationDropdown{
+    position: absolute;
+    right: 100px;
+    top: 132px;
+}

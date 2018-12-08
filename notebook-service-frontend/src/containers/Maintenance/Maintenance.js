@@ -11,6 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import './Maintenance.css';
 import path from '../../assets/path/Path';
+import SuccessAlert from '../../components/Alerts/SuccesAlert';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 
 class Maintenance extends Component {
@@ -25,7 +27,7 @@ class Maintenance extends Component {
         this.state = {
 
             showProductModal: false,
-            alert_message: "",
+            maintenanceAlertMessage: "",
 
             tableData: [{
                 maintenance: {
@@ -200,8 +202,8 @@ class Maintenance extends Component {
     editMaintenanceHandler = () => {
 
         var updatedMaintenance = {
-            startDate: moment(this.state.startDate, 'YYYY-MM-DD'),
-            endDate: moment(this.state.endDate, 'YYYY-MM-DD'),
+            startDate: moment(this.state.startDate, '2018-12-05'),
+            endDate: moment(this.state.endDate, '2018-12-21'),
             status: "RECORDED",
             fault: this.faultInput.value,
             productId: this.state.selectedTableRow.product.id,
@@ -209,12 +211,20 @@ class Maintenance extends Component {
             modificationsId: [this.selectedModification]
         }
 
-        axios.put(path + '/maintenance', updatedMaintenance)
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+
+        axios.put(path + '/maintenance/' + this.state.selectedTableRow.id, updatedMaintenance, {headers: headers})
         .then(response => {
-            console.log(response)
+            console.log(response);
+            this.setState({ maintenanceAlertMessage: "success" });
         }).catch(error => {
-            console.log(error)
-        })
+            console.log(error);
+            this.setState({ maintenanceAlertMessage: "error" });
+        });
+
+        console.log(this.state.maintenanceAlertMessage);
     }
 
     render() {
@@ -359,23 +369,25 @@ class Maintenance extends Component {
                         </Modal.Header>
                         <Modal.Body>
                             <FormGroup className="InputFormGroup">
-                                <ControlLabel>{this.state.selectedTableRow.product.brand.name}</ControlLabel>
+                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.brand.name}</ControlLabel>
                             </FormGroup>
                             <FormGroup className="InputFormGroup">
-                                <ControlLabel>{this.state.selectedTableRow.product.type}</ControlLabel>
+                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.type}</ControlLabel>
                             </FormGroup>
                             <FormGroup>
+                            <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>
                                 <DatePicker
                                     selected={this.state.startDate}
                                     onChange={this.handleChange} />{' '}
+                            <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>
                                 <DatePicker
                                     selected={this.state.endDate}
                                     onChange={this.handleChange} />
                             </FormGroup>
-                            <FormGroup className="InputFormGroup">
-                                <FormControl placeholder="Faults" inputRef={input => this.faultInput = input} />
-                            </FormGroup>
                             <FormGroup>
+                                <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} />
+                            </FormGroup>
+                            <FormGroup className="SelectedModificationDropdown">
                                 <select
                                     value={this.state.selectedModification}
                                     onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
@@ -387,9 +399,14 @@ class Maintenance extends Component {
                                 <ControlLabel>{this.state.selectedModification.price}</ControlLabel>
                             </FormGroup>
                         </Modal.Body>
+                        <FormGroup className="MaintenanceAlertMessage">
+                                {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
+                                {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
+                            </FormGroup>
                         <Modal.Footer>
                             <Button onClick={this.editMaintenanceHandler}>Save</Button>
                             <Button onClick={this.handleClose}>Close</Button>
+
                         </Modal.Footer>
                     </Modal>
                 </div>

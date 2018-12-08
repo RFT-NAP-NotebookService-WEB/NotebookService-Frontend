@@ -254,7 +254,7 @@ class Products extends Component {
                             onClick={this.addJobHandler}
                             className="SubmitJobButton">Submit
                         </Button>
-                        <FormGroup>
+                        <FormGroup className="ProductAlertMessage">
                             {this.state.productAlertMessage === "success" ? <SuccessAlert /> : null}
                             {this.state.productAlertMessage === "error" ? <ErrorAlert /> : null}
                         </FormGroup>
