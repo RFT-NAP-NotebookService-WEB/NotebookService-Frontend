@@ -22,7 +22,8 @@ class Maintenance extends Component {
 
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleStartDateChange = this.handleStartDateChange.bind(this);
+        this.handleEndDateChange = this.handleEndDateChange.bind(this);
 
         this.state = {
 
@@ -166,11 +167,17 @@ class Maintenance extends Component {
         this.setState({ showMaintenanceModal: true });
     }
 
-    handleChange(date) {
+    handleStartDateChange(startDate) {
 
         this.setState({
-            startDate: date,
-            endDate: date
+            startDate: startDate
+        })
+    }
+
+    handleEndDateChange(endDate) {
+
+        this.setState({
+            startDate: endDate,
         })
     }
 
@@ -208,21 +215,21 @@ class Maintenance extends Component {
             fault: this.faultInput.value,
             productId: this.state.selectedTableRow.product.id,
             userId: this.state.selectedTableRow.user.id,
-            modificationsId: [this.selectedModification]
+            modificationsId: [this.state.selectedModification]
         }
 
-        var headers = {
-            'Content-Type': 'application/json'
-        }
 
-        axios.put(path + '/maintenance/' + this.state.selectedTableRow.id, updatedMaintenance, {headers: headers})
-        .then(response => {
-            console.log(response);
-            this.setState({ maintenanceAlertMessage: "success" });
-        }).catch(error => {
-            console.log(error);
-            this.setState({ maintenanceAlertMessage: "error" });
-        });
+
+        axios.put(path + '/maintenance/' + this.state.selectedTableRow.id,
+            updatedMaintenance,
+            { responseType: 'json' })
+            .then(response => {
+                console.log(response);
+                this.setState({ maintenanceAlertMessage: "success" });
+            }).catch(error => {
+                console.log(error);
+                this.setState({ maintenanceAlertMessage: "error" });
+            });
 
         console.log(this.state.maintenanceAlertMessage);
     }
@@ -308,7 +315,7 @@ class Maintenance extends Component {
                                                 <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>{' '}
                                                 <ControlLabel></ControlLabel>
                                             </FormGroup>
-                                            <Button onClick={this.handleShow}>Add</Button>
+                                            <Button onClick={this.handleShow}>Edit</Button>
                                         </Form>
                                     </div>
 
@@ -375,14 +382,16 @@ class Maintenance extends Component {
                                 <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.type}</ControlLabel>
                             </FormGroup>
                             <FormGroup>
-                            <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>
+                                <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>{' '}
                                 <DatePicker
                                     selected={this.state.startDate}
-                                    onChange={this.handleChange} />{' '}
-                            <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>
+                                    onChange={this.handleStartDateChange} />
+                            </FormGroup>
+                            <FormGroup>
+                                <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
                                     selected={this.state.endDate}
-                                    onChange={this.handleChange} />
+                                    onChange={this.handleEndDateChange} />
                             </FormGroup>
                             <FormGroup>
                                 <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} />
@@ -400,9 +409,9 @@ class Maintenance extends Component {
                             </FormGroup>
                         </Modal.Body>
                         <FormGroup className="MaintenanceAlertMessage">
-                                {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
-                                {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
-                            </FormGroup>
+                            {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
+                            {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
+                        </FormGroup>
                         <Modal.Footer>
                             <Button onClick={this.editMaintenanceHandler}>Save</Button>
                             <Button onClick={this.handleClose}>Close</Button>
