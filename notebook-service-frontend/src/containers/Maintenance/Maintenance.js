@@ -298,22 +298,35 @@ class Maintenance extends Component {
                                     <div className="MaintenanceParagraph">
                                         <Form horizontal>
                                             <FormGroup>
-                                                <ControlLabel>Startdate</ControlLabel>{' '}
-                                                <ControlLabel>Fault</ControlLabel>{' '}
-                                                <ControlLabel>Price</ControlLabel>
+                                                <ControlLabel>Startdate</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
-                                                <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
-                                                <ControlLabel></ControlLabel>
+                                            <FormGroup className="MaintenanceData">
+                                                <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
-                                                <ControlLabel>endDate</ControlLabel>{' '}
+                                                <ControlLabel>endDate</ControlLabel>                                            
+                                            </FormGroup>
+                                            <FormGroup className="MaintenanceData">
+                                                <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>Fault</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup className="MaintenanceData">
+                                                <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <ControlLabel>Price</ControlLabel>
+                                            </FormGroup>
+                                            <FormGroup className="MaintenanceData">
+                                                <ControlLabel>{this.state.selectedTableRow.price}</ControlLabel>
+                                                {console.log("selectedTableRow.modification: " + this.state.selectedTableRow.modifications)}
+                                            </FormGroup>
+                                            <FormGroup>
                                                 <ControlLabel>Modification</ControlLabel>
                                             </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>{' '}
-                                                <ControlLabel></ControlLabel>
+                                            <FormGroup className="MaintenanceData">
+                                                <ControlLabel>{this.state.selectedTableRow.name}</ControlLabel>
                                             </FormGroup>
                                             <Button onClick={this.handleShow}>Edit</Button>
                                         </Form>
@@ -390,6 +403,7 @@ class Maintenance extends Component {
                             <FormGroup>
                                 <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
+                                    className="EndDatePicker"
                                     selected={this.state.endDate}
                                     onChange={this.handleEndDateChange} />
                             </FormGroup>
@@ -402,6 +416,7 @@ class Maintenance extends Component {
                                     onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
                                     {this.state.modificationList.map((Modification) =>
                                         <option key={Modification.value} value={Modification.value}>{Modification.display}</option>)}
+                                        {console.log(this.state.selectedModification)}
                                 </select>{' '}
                             </FormGroup>
                             <FormGroup>
