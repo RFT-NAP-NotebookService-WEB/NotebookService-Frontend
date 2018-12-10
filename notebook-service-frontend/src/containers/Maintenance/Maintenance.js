@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import DatePicker from "react-datepicker";
 import { Form, FormGroup, Jumbotron, ControlLabel, Button, Modal, FormControl } from 'react-bootstrap';
 import SplitterLayout from 'react-splitter-layout';
+import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -13,13 +14,14 @@ import './Maintenance.css';
 import path from '../../assets/path/Path';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import AuthService from '../../components/Authentication/Authentication';
 
 
 class Maintenance extends Component {
     constructor(props) {
         super(props);
 
-
+        this.Auth = new AuthService();
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -59,7 +61,7 @@ class Maintenance extends Component {
                             phone: ""
                         }
                     },
-                    modification: [
+                    modifications: [
                         {
                             id: "",
                             name: "",
@@ -97,7 +99,7 @@ class Maintenance extends Component {
                         phone: ""
                     }
                 },
-                modification: [
+                modifications: [
                     {
                         id: "",
                         name: "",
@@ -110,7 +112,7 @@ class Maintenance extends Component {
             latestUser: "",
 
             modificationList: [],
-            selectedModification: "",
+            selectedModification: [],
 
             startDate: new Date(),
             endDate: new Date()
@@ -120,9 +122,13 @@ class Maintenance extends Component {
 
     componentWillMount() {
 
-        axios.get(path + '/maintenances', {
-            responseType: 'json'
-        }).then(response => {
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
+        axios.get(path + '/maintenances', { headers: headers}).then(response => {
             this.setState({ tableData: response.data })
             console.log(this.state.tableData)
         }).catch(error => {
@@ -130,7 +136,7 @@ class Maintenance extends Component {
         });
 
         axios.get(path + '/products', {
-            responseType: 'json'
+            headers: headers
         }).then(response => {
             var maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
             var latestProductObj = response.data.find(Product => { return Product.id === maxId })
@@ -140,7 +146,7 @@ class Maintenance extends Component {
         });
 
         axios.get(path + '/users', {
-            responseType: 'json'
+           headers: headers
         }).then(response => {
             var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
             var latestUserObj = response.data.find(User => { return User.id === maxId })
@@ -148,12 +154,13 @@ class Maintenance extends Component {
         });
 
         axios.get(path + '/modifications', {
-            responseType: 'json'
+            headers: headers
         }).then(response => {
             return response.data
         }).then(data => {
-            let modificationsFromApi = data.map(Modification => { return { value: Modification.id, display: Modification.name } });
-            this.setState({ modificationList: [{ value: '', display: '(Select the Modification)' }].concat(modificationsFromApi) });
+            let modificationsFromApi = data.map(Modification => { return { id: Modification.id, name: Modification.name, price: Modification.price } });
+            this.setState({ modificationList: modificationsFromApi });
+            console.log(this.state.modificationList)
         }).catch(error => {
             console.log(error);
         });
@@ -181,7 +188,20 @@ class Maintenance extends Component {
         })
     }
 
+    handleModificationChange = (selectModification) => {
+        this.setState({ selectedModification: selectModification.map(Modification => {return Modification.id})});
+        console.log(`Option selected:`, selectModification);
+        console.log("selectedModification: ", this.state.selectedModification)
+        console.log(this.state.modificationList)
+    }
+
     addMaintenanceHandler = () => {
+
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
 
         var maintenanceData = {
             startDate: "",
@@ -193,9 +213,7 @@ class Maintenance extends Component {
             modificationsId: []
         };
 
-        axios.post(path + '/maintenance', maintenanceData, {
-            responseType: 'json'
-        }).then(response => {
+        axios.post(path + '/maintenance', maintenanceData, {headers: headers }).then(response => {
             console.log(response);
             let tableData = [...this.state.tableData];
             tableData.push(response.data);
@@ -207,6 +225,14 @@ class Maintenance extends Component {
 
 
     editMaintenanceHandler = () => {
+
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
+        console.log("elvileg ezek a selectedmodifications: ", this.state.selectedModification)
 
         var updatedMaintenance = {
             startDate: moment(this.state.startDate, '2018-12-05'),
@@ -221,8 +247,7 @@ class Maintenance extends Component {
 
 
         axios.put(path + '/maintenance/' + this.state.selectedTableRow.id,
-            updatedMaintenance,
-            { responseType: 'json' })
+            updatedMaintenance, {headers: headers })
             .then(response => {
                 console.log(response);
                 this.setState({ maintenanceAlertMessage: "success" });
@@ -230,8 +255,6 @@ class Maintenance extends Component {
                 console.log(error);
                 this.setState({ maintenanceAlertMessage: "error" });
             });
-
-        console.log(this.state.maintenanceAlertMessage);
     }
 
     render() {
@@ -305,15 +328,23 @@ class Maintenance extends Component {
                                             <FormGroup className="InputFormGroup">
                                                 <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
                                                 <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
-                                                <ControlLabel></ControlLabel>
+                                                <ControlLabel>{this.state.selectedTableRow.modifications
+                                                    .reduce((prev, next) =>
+                                                        prev + next.price, 0
+                                                    )}
+                                                </ControlLabel>
                                             </FormGroup>
                                             <FormGroup>
                                                 <ControlLabel>endDate</ControlLabel>{' '}
                                                 <ControlLabel>Modification</ControlLabel>
                                             </FormGroup>
                                             <FormGroup className="InputFormGroup">
-                                                <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>{' '}
-                                                <ControlLabel></ControlLabel>
+                                                <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
+                                                <ControlLabel>{this.state.selectedTableRow.modifications
+                                                    .map(Modification => {
+                                                        return Modification.name
+                                                    })}
+                                                </ControlLabel>
                                             </FormGroup>
                                             <Button onClick={this.handleShow}>Edit</Button>
                                         </Form>
@@ -397,15 +428,24 @@ class Maintenance extends Component {
                                 <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} />
                             </FormGroup>
                             <FormGroup className="SelectedModificationDropdown">
-                                <select
-                                    value={this.state.selectedModification}
+                                {/* <select multiple
+                                    value={[this.state.selectedModification]}
                                     onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
                                     {this.state.modificationList.map((Modification) =>
                                         <option key={Modification.value} value={Modification.value}>{Modification.display}</option>)}
-                                </select>{' '}
+                                </select>{' '} */}
+                                <Select
+                                    placeholder="Select a Modification"
+                                    value={this.state.selectedModification}
+                                    onChange={this.handleModificationChange.bind(this)}
+                                    options={this.state.modificationList}
+                                    getOptionLabel={Modification => Modification.name}
+                                    getOptionValue={Modification => Modification.id}
+                                    isMulti={true}
+                                />
                             </FormGroup>
                             <FormGroup>
-                                <ControlLabel>{this.state.selectedModification.price}</ControlLabel>
+                                {/* <ControlLabel>{this.state.selectedModification.price}</ControlLabel> */}
                             </FormGroup>
                         </Modal.Body>
                         <FormGroup className="MaintenanceAlertMessage">

@@ -8,10 +8,12 @@ import 'react-table/react-table.css';
 import './ModificationTable.css';
 import path from '../../assets/path/Path';
 import NavBar from '../NavBar/NavBar';
+import AuthService from '../Authentication/Authentication';
 
 class ModificationTable extends Component {
     constructor(props) {
         super(props);
+        this.Auth = new AuthService()
         this.state = {
             tableData: [{
                 id: '',
@@ -22,8 +24,15 @@ class ModificationTable extends Component {
     }
 
     componentWillMount() {
+
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
         axios.get(path + '/modifications', {
-            responseType: 'json'
+            headers: headers
         }).then((response) => {
             this.setState({ tableData: response.data });
             console.log(response.data);
@@ -32,18 +41,24 @@ class ModificationTable extends Component {
 
     addModificationHandler = () => {
 
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
         var data = {
             name: this.newModification.value,
             price: this.newModificationPrice.value
         };
 
-        axios.post(path + '/modification', data)
-            .then((response) => {
-                console.log(response);
-                let tableData = [...this.state.tableData];
-                tableData.push(data);
-                this.setState({ tableData });
-            })
+        axios.post(path + '/modification', data, { headers: headers }
+        ).then((response) => {
+            console.log(response);
+            let tableData = [...this.state.tableData];
+            tableData.push(data);
+            this.setState({ tableData });
+        })
             .catch((error) => {
                 console.log(error);
             });
