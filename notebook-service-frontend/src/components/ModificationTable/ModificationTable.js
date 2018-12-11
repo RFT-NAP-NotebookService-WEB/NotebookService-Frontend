@@ -5,7 +5,7 @@ import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
 import 'react-table/react-table.css';
-import './ModificationTable.css';
+import '../../assets/CSS/ModificationTable.css';
 import path from '../../assets/path/Path';
 import NavBar from '../NavBar/NavBar';
 import AuthService from '../Authentication/Authentication';

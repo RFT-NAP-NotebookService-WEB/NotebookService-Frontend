@@ -3,7 +3,7 @@ import ReactTable from 'react-table';
 import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
-import './UserTable.css';
+import '../../assets/CSS/UserTable.css';
 import NavBar from '../NavBar/NavBar';
 import path from '../../assets/path/Path';
 import AuthService from '../Authentication/Authentication';

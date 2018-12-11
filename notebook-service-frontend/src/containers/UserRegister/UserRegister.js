@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom/';
 import path from '../../assets/path/Path';
 import axios from 'axios';
 
-import './UserRegister.css';
+import '../../assets/CSS/UserRegister.css';
 import Logo from '../../components/Logo/Logo';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, FormGroup, FormControl, Button } from 'react-bootstrap/lib';
 import { withRouter} from 'react-router-dom';
 
-import './UserLogin.css';
+import '../../assets/CSS/UserLogin.css';
 import AuthService from '../../components/Authentication/Authentication';
 import LoginAlert from '../../components/Alerts/LoginAlert';
 import Logo from '../../components/Logo/Logo';

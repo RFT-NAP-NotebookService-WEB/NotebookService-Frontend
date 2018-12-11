@@ -3,8 +3,8 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Modal, Button } from 'reac
 import { Link } from 'react-router-dom';
 
 import Logo from '../Logo/Logo';
-import './NavBar.css';
-import '../../assets/Modal/Modal.css';
+import '../../assets/CSS/NavBar.css';
+import '../../assets/CSS/Modal.css';
 import Products from '../../containers/Products/Products';
 import AuthService from '../Authentication/Authentication';
 

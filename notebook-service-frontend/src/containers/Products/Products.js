@@ -4,7 +4,7 @@ import axios from 'axios';
 import path from '../../assets/path/Path';
 
 import 'react-table/react-table.css';
-import './Products.css';
+import '../../assets/CSS/Products.css';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AuthService from '../../components/Authentication/Authentication';

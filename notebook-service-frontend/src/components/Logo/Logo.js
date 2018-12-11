@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-bootstrap/lib';
 
 import NotebookLogo from '../../assets/images/notebook-logo.png';
-import './Logo.css';
+import '../../assets/CSS/Logo.css';
 
 
 const logo = (props) => (
