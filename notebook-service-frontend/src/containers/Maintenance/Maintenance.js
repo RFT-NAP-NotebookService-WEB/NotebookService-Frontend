@@ -285,12 +285,8 @@ class Maintenance extends Component {
         return (
             <div>
                 <SplitterLayout vertical>
-
-                    <div>
-                        <SplitterLayout horizontal>
-                            <div>
+                    <div className="MainServiceScreen">
                                 <Jumbotron className="ClientJumbotronPadding">
-
                                     <h1 className="ClientHeader">Clients: </h1>
                                     <Form horizontal>
                                         <FormGroup>
@@ -316,8 +312,6 @@ class Maintenance extends Component {
                                         </FormGroup>
                                     </Form>
                                 </Jumbotron>
-                            </div>
-                            <div>
                                 <Jumbotron className="MaintenanceJumbotronPadding">
 
                                     <h1 className="MaintenanceHeader">Maintenance: </h1>
@@ -343,10 +337,11 @@ class Maintenance extends Component {
                                             </FormGroup>
                                             <FormGroup className="InputFormGroup">
                                                 <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
-                                                <ControlLabel>{this.state.selectedTableRow.modifications
+                                                <ControlLabel>
+                                                    <li>{this.state.selectedTableRow.modifications
                                                     .map(Modification => {
                                                         return Modification.name + ' '
-                                                    })}
+                                                    })}</li>
                                                 </ControlLabel>
                                             </FormGroup>
                                             <Button onClick={this.handleShow}>Edit</Button>
@@ -354,9 +349,6 @@ class Maintenance extends Component {
                                     </div>
 
                                 </Jumbotron>
-                            </div>
-
-                        </SplitterLayout>
                     </div>
 
 
