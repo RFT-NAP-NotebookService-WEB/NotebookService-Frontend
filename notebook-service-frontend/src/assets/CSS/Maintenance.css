@@ -1,23 +1,27 @@
 .ClientHeader {
     font-size: 30px !important;
     margin: 0 0 0 0;
-    background-color: rgb(175, 216, 208) !important;
+    background-color: rgb(52,152,134);
+    color: black !important;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
 .MaintenanceHeader {
     font-size: 30px !important;
-    margin: 0 0 0 0;
-    background-color: rgb(175, 216, 208) !important;
+    margin: 0 0 0 0 ;
+    background-color: rgb(52,152,134);
+    color: black !important;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
 .ClientJumbotronPadding {
     padding-top: 0px !important;
-    padding-right: 20px !important;
     padding-bottom: 20px !important;
-    padding-left: 20px !important;
     margin-left: 30px;
     margin-top: 30px;
-    background-color: rgb(234, 247, 241) !important;
+    background-color:rgb(32, 51, 62) !important;
     width: 45%;
     border-radius: 5px;
 }
@@ -29,33 +33,24 @@
 
 .MaintenanceJumbotronPadding {
     padding-top: 0px !important;
-    padding-right: 20px !important;
     padding-bottom: 20px !important;
-    padding-left: 20px !important;
     margin-right: 30px;
     margin-top: 30px;
     margin-left: 20px;
-    background-color: rgb(234, 247, 241) !important;
+    background-color:  rgb(32, 51, 62) !important;
     width: 45%;
     border-radius: 5px;
 }
 
-.ClientParagraph {
-    background-color: rgb(234, 247, 241) !important;
-}
-
 .MaintenanceParagraph {
-    background-color: rgb(234, 247, 241) !important;
-}
-
-.splitter-layout {
-    margin: 0 0 0 0 !important;
-    background-color: rgb(234, 247, 241) !important;
+    background-color:  rgb(32, 51, 62) !important;
 }
 
 .form-group {
     margin: 0 !important;
     font-size: 17px;
+    color:  white;
+    padding-left: 10px;
 }
 
 .MaintenanceSplitter {
@@ -63,9 +58,11 @@
     background-color: rgb(49,77,91) !important;
 }
 
-.InputFormGroup {
+ .InputFormGroup {
     margin: 0 0 10px 0 !important;
-}
+    color: white;
+    padding-left: 20px;
+} 
 
 .MaintenanceAlertMessage {
     width: 40%;
@@ -73,10 +70,6 @@
     position: absolute;
     left: 87px;
     bottom: -15px;
-}
-
-.MaintenanceEditSelectedInfo {
-    color: white;
 }
 
 .FaultsInput {
@@ -109,3 +102,5 @@
 .ModificationsListItems {
     text-align: left;
 }
+
+
