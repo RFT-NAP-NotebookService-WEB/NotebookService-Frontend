@@ -158,7 +158,7 @@ class Maintenance extends Component {
             console.log(error);
         });
 
-        
+
         axios.get(path + '/maintenances', { headers: headers }).then(response => {
             this.setState({ tableData: response.data })
             console.log(this.state.tableData)
@@ -284,71 +284,74 @@ class Maintenance extends Component {
 
         return (
             <div>
-                <SplitterLayout vertical>
+                <SplitterLayout vertical className="MaintenanceSplitter">
                     <div className="MainServiceScreen">
-                                <Jumbotron className="ClientJumbotronPadding">
-                                    <h1 className="ClientHeader">Clients: </h1>
-                                    <Form horizontal>
-                                        <FormGroup>
-                                            <ControlLabel>Name</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.product.client.firstName + " " + this.state.selectedTableRow.product.client.lastName}</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <ControlLabel>Email</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.product.client.email}</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <ControlLabel>Phone</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup >
-                                            <Button onClick={this.addMaintenanceHandler}>Add</Button>
-                                        </FormGroup>
-                                    </Form>
-                                </Jumbotron>
-                                <Jumbotron className="MaintenanceJumbotronPadding">
+                        <Jumbotron className="ClientJumbotronPadding">
+                            <h1 className="ClientHeader">Clients: </h1>
+                            <Form horizontal>
+                                <FormGroup>
+                                    <ControlLabel>Name</ControlLabel>
+                                </FormGroup>
+                                <FormGroup className="InputFormGroup">
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.firstName + " " + this.state.selectedTableRow.product.client.lastName}</ControlLabel>
+                                </FormGroup>
+                                <FormGroup>
+                                    <ControlLabel>Email</ControlLabel>
+                                </FormGroup>
+                                <FormGroup className="InputFormGroup">
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.email}</ControlLabel>
+                                </FormGroup>
+                                <FormGroup>
+                                    <ControlLabel>Phone</ControlLabel>
+                                </FormGroup>
+                                <FormGroup className="InputFormGroup">
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
+                                </FormGroup>
+                                <FormGroup >
+                                    <Button onClick={this.addMaintenanceHandler}>Add</Button>
+                                </FormGroup>
+                            </Form>
+                        </Jumbotron>
+                        <Jumbotron className="MaintenanceJumbotronPadding">
 
-                                    <h1 className="MaintenanceHeader">Maintenance: </h1>
-                                    <div className="MaintenanceParagraph">
-                                        <Form horizontal>
-                                            <FormGroup>
-                                                <ControlLabel>Startdate</ControlLabel>{' '}
-                                                <ControlLabel>Fault</ControlLabel>{' '}
-                                                <ControlLabel>Price</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
-                                                <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
-                                                <ControlLabel>{this.state.selectedTableRow.modifications
-                                                    .reduce((prev, next) =>
-                                                        prev + next.price, 0
-                                                    )}
-                                                </ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <ControlLabel>endDate</ControlLabel>{' '}
-                                                <ControlLabel>Modification</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
-                                                <ControlLabel>
-                                                    <li>{this.state.selectedTableRow.modifications
-                                                    .map(Modification => {
-                                                        return Modification.name + ' '
-                                                    })}</li>
-                                                </ControlLabel>
-                                            </FormGroup>
-                                            <Button onClick={this.handleShow}>Edit</Button>
-                                        </Form>
-                                    </div>
+                            <h1 className="MaintenanceHeader">Maintenance: </h1>
+                            <div className="MaintenanceParagraph">
+                                <Form horizontal>
+                                    <FormGroup>
+                                        <ControlLabel className="StartDateHeader">Startdate</ControlLabel>{' '}
+                                        <ControlLabel className="FaultHeader">Fault</ControlLabel>{' '}
+                                        <ControlLabel className="PriceHeader">Price</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel className="StartDateData">{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
+                                        <ControlLabel className="FaultData">{this.state.selectedTableRow.fault}</ControlLabel>{' '}
+                                        <ControlLabel className="PriceData">{this.state.selectedTableRow.modifications
+                                            .reduce((prev, next) =>
+                                                prev + next.price, 0
+                                            )}
+                                        </ControlLabel>
+                                    </FormGroup>
 
-                                </Jumbotron>
+                                    <FormGroup>
+                                        <ControlLabel className="EndDateHeader">endDate</ControlLabel>{' '}
+                                        <ControlLabel className="pull-right">Modification</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel className="EndDateData">{this.state.selectedTableRow.endDate}</ControlLabel>
+                                        <ControlLabel className="pull-right">
+
+                                            {this.state.selectedTableRow.modifications
+                                                .map(Modification => {
+                                                    return <li className="ModificationsListItems">{Modification.name + ' '}</li>
+                                                })}
+                                        </ControlLabel>
+                                    </FormGroup>
+
+                                    <Button onClick={this.handleShow}>Edit</Button>
+                                </Form>
+                            </div>
+
+                        </Jumbotron>
                     </div>
 
 
@@ -391,7 +394,7 @@ class Maintenance extends Component {
 
                 <div className="modal-backdrop-asd">
                     <Modal
-                        bsSize="large"
+                        bsSize="small"
                         show={this.state.showMaintenanceModal}
                         onHide={this.handleClose}
                         container={this}
@@ -401,19 +404,20 @@ class Maintenance extends Component {
                             <Modal.Title id="contianed-modal-title">Maintenance</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <FormGroup className="InputFormGroup">
-                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.brand.name}</ControlLabel>
-                            </FormGroup>
-                            <FormGroup className="InputFormGroup">
+                            <FormGroup className="BrandAndType">
+                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.brand.name}</ControlLabel>{' '}
                                 <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.type}</ControlLabel>
+                            </FormGroup>
+                            <FormGroup className="Description">
+                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.description}</ControlLabel>
                             </FormGroup>
                             <FormGroup>
                                 <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>{' '}
                                 <DatePicker
                                     selected={this.state.startDate}
                                     onChange={this.handleStartDateChange} />
-                            </FormGroup>
-                            <FormGroup>
+
+
                                 <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
                                     selected={this.state.endDate}
@@ -422,8 +426,9 @@ class Maintenance extends Component {
                             <FormGroup>
                                 <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} />
                             </FormGroup>
-                            <FormGroup className="SelectedModificationDropdown">
+                            <FormGroup>
                                 <Select
+                                    className="SelectedModificationDropdown"
                                     placeholder="Select a Modification"
                                     value={this.state.selectedModification}
                                     onChange={this.handleModificationChange.bind(this)}
@@ -434,14 +439,19 @@ class Maintenance extends Component {
                                 />
                             </FormGroup>
                         </Modal.Body>
-                        <FormGroup className="MaintenanceAlertMessage">
-                            {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
-                            {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
-                        </FormGroup>
-                        <Modal.Footer>
-                            <Button onClick={this.editMaintenanceHandler}>Save</Button>
-                            <Button onClick={this.handleClose}>Close</Button>
 
+                        <Modal.Footer>
+                            <FormGroup>
+                            <Button
+                                className="pull-left"
+                                onClick={this.editMaintenanceHandler}>Save</Button></FormGroup>
+                            <FormGroup className="MaintenanceAlertMessage">
+                                {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
+                                {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
+                            </FormGroup>
+                            <FormGroup>
+                            <Button onClick={this.handleClose}>Close</Button>
+                            </FormGroup>
                         </Modal.Footer>
                     </Modal>
                 </div>

@@ -5,7 +5,7 @@ class ErrorAlert extends Component {
     render() {
         return (
             <Alert bsStyle="danger">
-                Wrong username/password
+                <strong>Wrong username/password</strong>
             </Alert>
         );
     }
