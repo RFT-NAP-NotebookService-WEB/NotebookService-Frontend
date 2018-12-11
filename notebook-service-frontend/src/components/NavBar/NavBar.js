@@ -6,17 +6,24 @@ import Logo from '../Logo/Logo';
 import './NavBar.css';
 import '../../assets/Modal/Modal.css';
 import Products from '../../containers/Products/Products';
+import AuthService from '../Authentication/Authentication';
 
 class NavBar extends Component {
     constructor(props) {
         super(props);
 
+        this.Auth = new AuthService();
+        this.logoutHandler = this.logoutHandler.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
         this.state = {
             showProductModal: false,
         };
+    }
+
+    logoutHandler = () => {
+        this.Auth.logout();
     }
 
     handleClose() {
@@ -35,7 +42,7 @@ class NavBar extends Component {
                         <Navbar.Brand>
                             <Logo className='NavLogo' />
                         </Navbar.Brand>
-                        <Navbar.Brand>Notebook-service</Navbar.Brand>
+                        <Navbar.Brand>Notebook-service </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
@@ -46,7 +53,7 @@ class NavBar extends Component {
                             </NavItem>
                            
                             <NavItem componentClass="span" onClick={this.handleShow}>
-                                <Button>Add Product</Button>
+                                Add Product
                             </NavItem>
 
                             <NavDropdown title="Options" id="basic-nav-dropdown">
@@ -65,7 +72,7 @@ class NavBar extends Component {
                                 <Link to="/register">Register</Link>
                             </NavItem>
                             <NavItem componentClass="span">
-                                <Link to="/login">Log out</Link>
+                                <Link onClick={this.logoutHandler} to="/login">Log out</Link>
                             </NavItem>
 
                         </Nav>

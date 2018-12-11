@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, FormGroup, FormControl, Checkbox, Button } from 'react-bootstrap/lib';
+import { Modal, FormGroup, FormControl, Button } from 'react-bootstrap/lib';
 import { withRouter} from 'react-router-dom';
 
 import './UserLogin.css';
 import AuthService from '../../components/Authentication/Authentication';
+import LoginAlert from '../../components/Alerts/LoginAlert';
 import Logo from '../../components/Logo/Logo';
 import axios from 'axios';
 import path from '../../assets/path/Path';
@@ -15,8 +16,14 @@ class UserLogin extends Component {
 
         this.Auth = new AuthService();
         this.state = {
-            login: false
+            login: false,
+            alertMessage: ""
         }
+    }
+
+    componentWillMount(){
+        if(this.Auth.loggedIn())
+            this.props.history.replace('/service');
     }
 
 
@@ -32,7 +39,7 @@ class UserLogin extends Component {
                 this.Auth.setToken(response.data.token)
                 this.props.history.push("/service");
             }).catch(error => {
-                console.log(error)
+                this.setState({ alertMessage: "error" });
             })
     }
 
@@ -68,9 +75,11 @@ class UserLogin extends Component {
                     <Modal.Footer>
                         <FormGroup className="LoginButtonContainer">
                             <Button onClick={this.loginHandler} componentClass="button" bsSize="large" type="submit">
-                              Login  {/* <Link to='/service'>Log in</Link> */}
+                              Login 
                             </Button>
-                            <Checkbox>Remember me</Checkbox>
+                        </FormGroup>
+                        <FormGroup className="LoginAlertMessage">
+                            {this.state.alertMessage === "error" ? <LoginAlert /> : null}
                         </FormGroup>
                     </Modal.Footer>
                 </Modal.Dialog>
