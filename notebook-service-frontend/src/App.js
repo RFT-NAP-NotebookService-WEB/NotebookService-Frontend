@@ -19,7 +19,7 @@ class App extends Component {
           <Route path='/service' exact component={Service} />
           <Route path='/service/modifications' exact component={ModificationTable} />
           <Route path='/service/users' exact component={UserTable} />
-          <Route path='/products' exact component={Products} />
+          <Route path='/service/products' exact component={Products} />
           <Redirect to='/login' />
         </Switch>
       </div>

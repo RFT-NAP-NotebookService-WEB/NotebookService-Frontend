@@ -9,7 +9,7 @@ class Service extends Component {
     render() {
         return (
             <div>
-                <NavBar />
+                 <NavBar/>
                 <Maintenance />
             </div>
         );

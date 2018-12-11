@@ -16,7 +16,6 @@ import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AuthService from '../../components/Authentication/Authentication';
 
-
 class Maintenance extends Component {
     constructor(props) {
         super(props);
@@ -119,8 +118,7 @@ class Maintenance extends Component {
         }
     }
 
-
-    componentWillMount() {
+    componentDidMount() {
 
         const headers = {
             'Accept': 'application/json',
@@ -128,44 +126,13 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
-        axios.get(path + '/products', {
-            headers: headers
-        }).then(response => {
-            var maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
-            var latestProductObj = response.data.find(Product => { return Product.id === maxId })
-            this.setState({ latestProduct: latestProductObj })
-        }).catch(error => {
-            console.log(error)
-        });
-
-        axios.get(path + '/users', {
-            headers: headers
-        }).then(response => {
-            var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
-            var latestUserObj = response.data.find(User => { return User.id === maxId })
-            this.setState({ latestUser: latestUserObj })
-        });
-
-        axios.get(path + '/modifications', {
-            headers: headers
-        }).then(response => {
-            return response.data
-        }).then(data => {
-            let modificationsFromApi = data.map(Modification => { return { id: Modification.id, name: Modification.name } });
-            this.setState({ modificationList: modificationsFromApi });
-            console.log(this.state.modificationList)
-        }).catch(error => {
-            console.log(error);
-        });
-
-        
         axios.get(path + '/maintenances', { headers: headers }).then(response => {
             this.setState({ tableData: response.data })
             console.log(this.state.tableData)
         }).catch(error => {
             console.log(error)
         });
-
+        
     }
 
     handleClose() {
@@ -206,23 +173,51 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
-        var maintenanceData = {
-            startDate: "",
-            endDate: "",
-            status: "RECORDED",
-            fault: " ",
-            productId: this.state.latestProduct.id,
-            userId: this.state.latestUser.id,
-            modificationsId: []
-        };
+        axios.get(path + '/products', {
+            headers: headers
+        }).then(response => {
+            var maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
+            var latestProductObj = response.data.find(Product => { return Product.id === maxId })
+            this.setState({ latestProduct: latestProductObj }, () => {
+                console.log(this.state.latestProduct.id)
+            })
 
-        axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
-            console.log(response);
-            let tableData = [...this.state.tableData];
-            tableData.push(response.data);
-            this.setState({ tableData });
+            axios.get(path + '/users', {
+                headers: headers
+            }).then(response => {
+                var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
+                var latestUserObj = response.data.find(User => { return User.id === maxId })
+                this.setState({ latestUser: latestUserObj }, () => {
+                    console.log(this.state.latestUser.id)
+                })
+
+                var maintenanceData = {
+                    startDate: "",
+                    endDate: "",
+                    status: "RECORDED",
+                    fault: " ",
+                    productId: this.state.latestProduct.id,
+                    userId: this.state.latestUser.id,
+                    modificationsId: []
+                };
+
+                axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
+                    console.log(maintenanceData)
+                    console.log(response);
+                    let tableData = [...this.state.tableData];
+                    tableData.push(response.data);
+                    this.setState({ tableData });
+                }).catch(error => {
+                    console.log(error);
+                    console.log(maintenanceData)
+                });
+
+            }).catch(error => {
+                console.log(error)
+            });
+
         }).catch(error => {
-            console.log(error);
+            console.log(error)
         });
     }
 
@@ -286,69 +281,69 @@ class Maintenance extends Component {
             <div>
                 <SplitterLayout vertical>
                     <div className="MainServiceScreen">
-                                <Jumbotron className="ClientJumbotronPadding">
-                                    <h1 className="ClientHeader">Clients: </h1>
-                                    <Form horizontal>
-                                        <FormGroup>
-                                            <ControlLabel>Name</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.product.client.firstName + " " + this.state.selectedTableRow.product.client.lastName}</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <ControlLabel>Email</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.product.client.email}</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <ControlLabel>Phone</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup className="InputFormGroup">
-                                            <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
-                                        </FormGroup>
-                                        <FormGroup >
-                                            <Button onClick={this.addMaintenanceHandler}>Add</Button>
-                                        </FormGroup>
-                                    </Form>
-                                </Jumbotron>
-                                <Jumbotron className="MaintenanceJumbotronPadding">
+                        <Jumbotron className="ClientJumbotronPadding">
+                            <h1 className="ClientHeader">Clients: </h1>
+                            <Form horizontal>
+                                <FormGroup>
+                                    <ControlLabel>Name</ControlLabel>
+                                </FormGroup>
+                                <FormGroup className="InputFormGroup">
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.firstName + " " + this.state.selectedTableRow.product.client.lastName}</ControlLabel>
+                                </FormGroup>
+                                <FormGroup>
+                                    <ControlLabel>Email</ControlLabel>
+                                </FormGroup>
+                                <FormGroup className="InputFormGroup">
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.email}</ControlLabel>
+                                </FormGroup>
+                                <FormGroup>
+                                    <ControlLabel>Phone</ControlLabel>
+                                </FormGroup>
+                                <FormGroup className="InputFormGroup">
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
+                                </FormGroup>
+                                <FormGroup >
+                                    <Button onClick={this.addMaintenanceHandler}>Add</Button>
+                                </FormGroup>
+                            </Form>
+                        </Jumbotron>
+                        <Jumbotron className="MaintenanceJumbotronPadding">
 
-                                    <h1 className="MaintenanceHeader">Maintenance: </h1>
-                                    <div className="MaintenanceParagraph">
-                                        <Form horizontal>
-                                            <FormGroup>
-                                                <ControlLabel>Startdate</ControlLabel>{' '}
-                                                <ControlLabel>Fault</ControlLabel>{' '}
-                                                <ControlLabel>Price</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
-                                                <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
-                                                <ControlLabel>{this.state.selectedTableRow.modifications
-                                                    .reduce((prev, next) =>
-                                                        prev + next.price, 0
-                                                    )}
-                                                </ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <ControlLabel>endDate</ControlLabel>{' '}
-                                                <ControlLabel>Modification</ControlLabel>
-                                            </FormGroup>
-                                            <FormGroup className="InputFormGroup">
-                                                <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
-                                                <ControlLabel>
-                                                    <li>{this.state.selectedTableRow.modifications
-                                                    .map(Modification => {
-                                                        return Modification.name + ' '
-                                                    })}</li>
-                                                </ControlLabel>
-                                            </FormGroup>
-                                            <Button onClick={this.handleShow}>Edit</Button>
-                                        </Form>
-                                    </div>
+                            <h1 className="MaintenanceHeader">Maintenance: </h1>
+                            <div className="MaintenanceParagraph">
+                                <Form horizontal>
+                                    <FormGroup>
+                                        <ControlLabel>Startdate</ControlLabel>{' '}
+                                        <ControlLabel>Fault</ControlLabel>{' '}
+                                        <ControlLabel>Price</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
+                                        <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
+                                        <ControlLabel>{this.state.selectedTableRow.modifications
+                                            .reduce((prev, next) =>
+                                                prev + next.price, 0
+                                            )}
+                                        </ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <ControlLabel>endDate</ControlLabel>{' '}
+                                        <ControlLabel>Modification</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
+                                        <ControlLabel>
+                                            <li>{this.state.selectedTableRow.modifications
+                                                .map(Modification => {
+                                                    return Modification.name + ' '
+                                                })}</li>
+                                        </ControlLabel>
+                                    </FormGroup>
+                                    <Button onClick={this.handleShow}>Edit</Button>
+                                </Form>
+                            </div>
 
-                                </Jumbotron>
+                        </Jumbotron>
                     </div>
 
 

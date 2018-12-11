@@ -89,8 +89,6 @@ class Products extends Component {
             name: this.brandInput.value,
         };
 
-
-
         axios.post(path + '/brand', data, {headers:headers})
             .then((response) => {
                 console.log(response.data);
