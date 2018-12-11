@@ -128,13 +128,6 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
-        axios.get(path + '/maintenances', { headers: headers }).then(response => {
-            this.setState({ tableData: response.data })
-            console.log(this.state.tableData)
-        }).catch(error => {
-            console.log(error)
-        });
-
         axios.get(path + '/products', {
             headers: headers
         }).then(response => {
@@ -164,6 +157,15 @@ class Maintenance extends Component {
         }).catch(error => {
             console.log(error);
         });
+
+        
+        axios.get(path + '/maintenances', { headers: headers }).then(response => {
+            this.setState({ tableData: response.data })
+            console.log(this.state.tableData)
+        }).catch(error => {
+            console.log(error)
+        });
+
     }
 
     handleClose() {
@@ -236,8 +238,8 @@ class Maintenance extends Component {
         console.log("elvileg ezek a selectedmodifications: ", this.state.selectedModification)
 
         var updatedMaintenance = {
-            startDate: moment(this.state.startDate, '2018-12-05'),
-            endDate: moment(this.state.endDate, '2018-12-21'),
+            startDate: moment(this.state.startDate, 'YYYY-MM-DD'),
+            endDate: moment(this.state.endDate, 'YYYY-MM-DD'),
             status: "RECORDED",
             fault: this.faultInput.value,
             productId: this.state.selectedTableRow.product.id,
@@ -421,12 +423,6 @@ class Maintenance extends Component {
                                 <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} />
                             </FormGroup>
                             <FormGroup className="SelectedModificationDropdown">
-                                {/* <select multiple
-                                    value={[this.state.selectedModification]}
-                                    onChange={(selectModification) => this.setState({ selectedModification: selectModification.target.value })}>
-                                    {this.state.modificationList.map((Modification) =>
-                                        <option key={Modification.value} value={Modification.value}>{Modification.display}</option>)}
-                                </select>{' '} */}
                                 <Select
                                     placeholder="Select a Modification"
                                     value={this.state.selectedModification}
@@ -436,9 +432,6 @@ class Maintenance extends Component {
                                     getOptionValue={Modification => Modification.id}
                                     isMulti={true}
                                 />
-                            </FormGroup>
-                            <FormGroup>
-                                {/* <ControlLabel>{this.state.selectedModification.price}</ControlLabel> */}
                             </FormGroup>
                         </Modal.Body>
                         <FormGroup className="MaintenanceAlertMessage">
