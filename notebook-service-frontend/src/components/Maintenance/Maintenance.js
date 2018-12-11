@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import DatePicker from "react-datepicker";
 import { Form, FormGroup, Jumbotron, ControlLabel, Button, Modal, FormControl } from 'react-bootstrap';
-import SplitterLayout from 'react-splitter-layout';
 import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
@@ -10,7 +9,7 @@ import moment from 'moment';
 import 'react-table/react-table.css';
 import "react-datepicker/dist/react-datepicker.css";
 
-import './Maintenance.css';
+import '../../assets/CSS/Maintenance.css';
 import path from '../../assets/path/Path';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
@@ -113,6 +112,9 @@ class Maintenance extends Component {
             modificationList: [],
             selectedModification: [],
 
+            userList: [],
+            selectedUser: [],
+
             startDate: new Date(),
             endDate: new Date()
         }
@@ -126,47 +128,35 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
-<<<<<<< HEAD
-=======
-        axios.get(path + '/products', {
-            headers: headers
-        }).then(response => {
-            var maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
-            var latestProductObj = response.data.find(Product => { return Product.id === maxId })
-            this.setState({ latestProduct: latestProductObj })
-        }).catch(error => {
-            console.log(error)
-        });
-
-        axios.get(path + '/users', {
-            headers: headers
-        }).then(response => {
-            var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
-            var latestUserObj = response.data.find(User => { return User.id === maxId })
-            this.setState({ latestUser: latestUserObj })
-        });
-
-        axios.get(path + '/modifications', {
-            headers: headers
-        }).then(response => {
-            return response.data
-        }).then(data => {
-            let modificationsFromApi = data.map(Modification => { return { id: Modification.id, name: Modification.name } });
-            this.setState({ modificationList: modificationsFromApi });
-            console.log(this.state.modificationList)
-        }).catch(error => {
-            console.log(error);
-        });
-
-
->>>>>>> halo2
         axios.get(path + '/maintenances', { headers: headers }).then(response => {
             this.setState({ tableData: response.data })
             console.log(this.state.tableData)
         }).catch(error => {
             console.log(error)
         });
-        
+
+        axios.get(path + '/modifications', { headers: headers })
+            .then(response => {
+                return response.data
+            }).then(data => {
+                let modificationsFromApi = data.map(Modification => { return { id: Modification.id, name: Modification.name } });
+                this.setState({ modificationList: modificationsFromApi });
+                console.log(this.state.modificationList)
+            }).catch(error => {
+                console.log(error);
+            });
+
+        axios.get(path + '/users', { headers: headers })
+            .then(response => {
+                return response.data
+            }).then(data => {
+                let usersFromApi = data.map(User => { return { id: User.id, username: User.username } });
+                this.setState({ userList: usersFromApi });
+                console.log(this.state.userList)
+            }).catch(error => {
+                console.log(error);
+            });
+
     }
 
     handleClose() {
@@ -187,16 +177,18 @@ class Maintenance extends Component {
     handleEndDateChange(endDate) {
 
         this.setState({
-            startDate: endDate,
+            endDate: endDate,
         })
     }
 
     handleModificationChange = (selectModification) => {
         this.setState({ selectedModification: selectModification });
-        console.log(`Option selected:`, selectModification);
-        console.log("selectedModification: ", this.state.selectedModification)
-        console.log(this.state.modificationList)
-        console.log(this.state.selectedModification)
+    }
+
+    handleUserChange = (selectUser) => {
+        this.setState({ selectedUser: selectUser });
+        console.log("User selected: ", selectUser)
+        console.log(this.state.selectedUser)
     }
 
     addMaintenanceHandler = () => {
@@ -216,38 +208,25 @@ class Maintenance extends Component {
                 console.log(this.state.latestProduct.id)
             })
 
-            axios.get(path + '/users', {
-                headers: headers
-            }).then(response => {
-                var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
-                var latestUserObj = response.data.find(User => { return User.id === maxId })
-                this.setState({ latestUser: latestUserObj }, () => {
-                    console.log(this.state.latestUser.id)
-                })
+            var maintenanceData = {
+                startDate: "",
+                endDate: "",
+                status: "RECORDED",
+                fault: "",
+                productId: this.state.latestProduct.id,
+                userId: "",
+                modificationsId: []
+            };
 
-                var maintenanceData = {
-                    startDate: "",
-                    endDate: "",
-                    status: "RECORDED",
-                    fault: " ",
-                    productId: this.state.latestProduct.id,
-                    userId: this.state.latestUser.id,
-                    modificationsId: []
-                };
-
-                axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
-                    console.log(maintenanceData)
-                    console.log(response);
-                    let tableData = [...this.state.tableData];
-                    tableData.push(response.data);
-                    this.setState({ tableData });
-                }).catch(error => {
-                    console.log(error);
-                    console.log(maintenanceData)
-                });
-
+            axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
+                console.log(maintenanceData)
+                console.log(response);
+                let tableData = [...this.state.tableData];
+                tableData.push(response.data);
+                this.setState({ tableData });
             }).catch(error => {
-                console.log(error)
+                console.log(error);
+                console.log(maintenanceData)
             });
 
         }).catch(error => {
@@ -272,7 +251,7 @@ class Maintenance extends Component {
             status: "RECORDED",
             fault: this.faultInput.value,
             productId: this.state.selectedTableRow.product.id,
-            userId: this.state.selectedTableRow.user.id,
+            userId: this.state.selectedUser.id,
             modificationsId: this.state.selectedModification.map(Modification => Modification.id)
         }
 
@@ -282,7 +261,10 @@ class Maintenance extends Component {
             updatedMaintenance, { headers: headers })
             .then(response => {
                 console.log(response);
-                this.setState({ maintenanceAlertMessage: "success" });
+                this.setState({
+                    maintenanceAlertMessage: "success",
+                    selectedTableRow: response.data
+                });
             }).catch(error => {
                 console.log(error);
                 this.setState({ maintenanceAlertMessage: "error" });
@@ -306,6 +288,9 @@ class Maintenance extends Component {
                     }, {
                         Header: 'Description',
                         accessor: 'product.description'
+                    }, {
+                        Header: 'Assigned',
+                        accessor: 'user.username'
                     }
                 ]
             }
@@ -313,7 +298,6 @@ class Maintenance extends Component {
 
         return (
             <div>
-                <SplitterLayout vertical className="MaintenanceSplitter">
                     <div className="MainServiceScreen">
                         <Jumbotron className="ClientJumbotronPadding">
                             <h1 className="ClientHeader">Clients: </h1>
@@ -347,17 +331,7 @@ class Maintenance extends Component {
                             <div className="MaintenanceParagraph">
                                 <Form horizontal>
                                     <FormGroup>
-<<<<<<< HEAD
-                                        <ControlLabel>Startdate</ControlLabel>{' '}
-                                        <ControlLabel>Fault</ControlLabel>{' '}
-                                        <ControlLabel>Price</ControlLabel>
-                                    </FormGroup>
-                                    <FormGroup className="InputFormGroup">
-                                        <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
-                                        <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
-                                        <ControlLabel>{this.state.selectedTableRow.modifications
-=======
-                                        <ControlLabel className="StartDateHeader">Startdate</ControlLabel>{' '}
+                                        <ControlLabel className="StartDateHeader">Start date</ControlLabel>{' '}
                                         <ControlLabel className="FaultHeader">Fault</ControlLabel>{' '}
                                         <ControlLabel className="PriceHeader">Price</ControlLabel>
                                     </FormGroup>
@@ -365,30 +339,14 @@ class Maintenance extends Component {
                                         <ControlLabel className="StartDateData">{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
                                         <ControlLabel className="FaultData">{this.state.selectedTableRow.fault}</ControlLabel>{' '}
                                         <ControlLabel className="PriceData">{this.state.selectedTableRow.modifications
->>>>>>> halo2
                                             .reduce((prev, next) =>
                                                 prev + next.price, 0
                                             )}
                                         </ControlLabel>
                                     </FormGroup>
-<<<<<<< HEAD
-                                    <FormGroup>
-                                        <ControlLabel>endDate</ControlLabel>{' '}
-                                        <ControlLabel>Modification</ControlLabel>
-                                    </FormGroup>
-                                    <FormGroup className="InputFormGroup">
-                                        <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
-                                        <ControlLabel>
-                                            <li>{this.state.selectedTableRow.modifications
-                                                .map(Modification => {
-                                                    return Modification.name + ' '
-                                                })}</li>
-                                        </ControlLabel>
-                                    </FormGroup>
-=======
 
                                     <FormGroup>
-                                        <ControlLabel className="EndDateHeader">endDate</ControlLabel>{' '}
+                                        <ControlLabel className="EndDateHeader">End date</ControlLabel>{' '}
                                         <ControlLabel className="pull-right">Modification</ControlLabel>
                                     </FormGroup>
                                     <FormGroup className="InputFormGroup">
@@ -397,12 +355,11 @@ class Maintenance extends Component {
 
                                             {this.state.selectedTableRow.modifications
                                                 .map(Modification => {
-                                                    return <li className="ModificationsListItems">{Modification.name + ' '}</li>
+                                                    return <li key={Modification.id} className="ModificationsListItems">{Modification.name + ' '}</li>
                                                 })}
                                         </ControlLabel>
                                     </FormGroup>
 
->>>>>>> halo2
                                     <Button onClick={this.handleShow}>Edit</Button>
                                 </Form>
                             </div>
@@ -412,41 +369,41 @@ class Maintenance extends Component {
 
 
                     <div>
-                        <ReactTable
-                            data={tableData}
-                            columns={columns}
-                            defaultPageSize={10}
-                            getTrProps={(state, rowInfo) => {
-                                if (rowInfo !== undefined) {
-                                    return {
-                                        onClick: (e, handleOriginal) => {
-                                            console.log('It was in this row:', rowInfo)
-                                            this.setState({
-                                                selectedTableRow: rowInfo.original
-                                            })
-                                            console.log('ez a tablerow stateje', this.state.selectedTableRow)
-                                        },
-                                        style: {
-                                            cursor: 'pointer',
-                                            background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : 'white',
-                                            color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'black'
+                        <Jumbotron>
+                            <ReactTable
+                                data={tableData}
+                                columns={columns}
+                                defaultPageSize={10}
+                                getTrProps={(state, rowInfo) => {
+                                    if (rowInfo !== undefined) {
+                                        return {
+                                            onClick: (e, handleOriginal) => {
+                                                console.log('It was in this row:', rowInfo)
+                                                this.setState({
+                                                    selectedTableRow: rowInfo.original
+                                                })
+                                                console.log('ez a tablerow stateje', this.state.selectedTableRow)
+                                            },
+                                            style: {
+                                                cursor: 'pointer',
+                                                background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : 'white',
+                                                color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'black'
+                                            }
                                         }
+                                    } else {
+                                        return {}
                                     }
-                                } else {
-                                    return {}
                                 }
-                            }
-                            }
+                                }
 
-                            defaultSorted={[
-                                {
-                                    id: "name"
-                                }
-                            ]}
-                            className="-striped -highlight" />
+                                defaultSorted={[
+                                    {
+                                        id: "name"
+                                    }
+                                ]}
+                                className="-striped -highlight" />
+                        </Jumbotron>
                     </div>
-
-                </SplitterLayout>
 
                 <div className="modal-backdrop-asd">
                     <Modal
@@ -494,19 +451,30 @@ class Maintenance extends Component {
                                     isMulti={true}
                                 />
                             </FormGroup>
+                            <FormGroup>
+                                <Select
+                                    className="SelectedModificationDropdown"
+                                    placeholder="Select a User"
+                                    value={this.state.selectedUser}
+                                    onChange={this.handleUserChange.bind(this)}
+                                    options={this.state.userList}
+                                    getOptionLabel={User => User.username}
+                                    getOptionValue={User => User.id}
+                                />
+                            </FormGroup>
                         </Modal.Body>
 
                         <Modal.Footer>
                             <FormGroup>
-                            <Button
-                                className="pull-left"
-                                onClick={this.editMaintenanceHandler}>Save</Button></FormGroup>
+                                <Button
+                                    className="pull-left"
+                                    onClick={this.editMaintenanceHandler}>Save</Button></FormGroup>
                             <FormGroup className="MaintenanceAlertMessage">
                                 {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
                                 {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
                             </FormGroup>
                             <FormGroup>
-                            <Button onClick={this.handleClose}>Close</Button>
+                                <Button onClick={this.handleClose}>Close</Button>
                             </FormGroup>
                         </Modal.Footer>
                     </Modal>
