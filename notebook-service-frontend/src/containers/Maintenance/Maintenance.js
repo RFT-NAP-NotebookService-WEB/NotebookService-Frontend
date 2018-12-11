@@ -128,7 +128,7 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
-        axios.get(path + '/maintenances', { headers: headers}).then(response => {
+        axios.get(path + '/maintenances', { headers: headers }).then(response => {
             this.setState({ tableData: response.data })
             console.log(this.state.tableData)
         }).catch(error => {
@@ -146,7 +146,7 @@ class Maintenance extends Component {
         });
 
         axios.get(path + '/users', {
-           headers: headers
+            headers: headers
         }).then(response => {
             var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
             var latestUserObj = response.data.find(User => { return User.id === maxId })
@@ -158,7 +158,7 @@ class Maintenance extends Component {
         }).then(response => {
             return response.data
         }).then(data => {
-            let modificationsFromApi = data.map(Modification => { return { id: Modification.id, name: Modification.name, price: Modification.price } });
+            let modificationsFromApi = data.map(Modification => { return { id: Modification.id, name: Modification.name } });
             this.setState({ modificationList: modificationsFromApi });
             console.log(this.state.modificationList)
         }).catch(error => {
@@ -189,10 +189,11 @@ class Maintenance extends Component {
     }
 
     handleModificationChange = (selectModification) => {
-        this.setState({ selectedModification: selectModification.map(Modification => {return Modification.id})});
+        this.setState({ selectedModification: selectModification });
         console.log(`Option selected:`, selectModification);
         console.log("selectedModification: ", this.state.selectedModification)
         console.log(this.state.modificationList)
+        console.log(this.state.selectedModification)
     }
 
     addMaintenanceHandler = () => {
@@ -213,7 +214,7 @@ class Maintenance extends Component {
             modificationsId: []
         };
 
-        axios.post(path + '/maintenance', maintenanceData, {headers: headers }).then(response => {
+        axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
             console.log(response);
             let tableData = [...this.state.tableData];
             tableData.push(response.data);
@@ -241,13 +242,13 @@ class Maintenance extends Component {
             fault: this.faultInput.value,
             productId: this.state.selectedTableRow.product.id,
             userId: this.state.selectedTableRow.user.id,
-            modificationsId: [this.state.selectedModification]
+            modificationsId: this.state.selectedModification.map(Modification => Modification.id)
         }
 
 
 
         axios.put(path + '/maintenance/' + this.state.selectedTableRow.id,
-            updatedMaintenance, {headers: headers })
+            updatedMaintenance, { headers: headers })
             .then(response => {
                 console.log(response);
                 this.setState({ maintenanceAlertMessage: "success" });
@@ -342,7 +343,7 @@ class Maintenance extends Component {
                                                 <ControlLabel>{this.state.selectedTableRow.endDate}</ControlLabel>
                                                 <ControlLabel>{this.state.selectedTableRow.modifications
                                                     .map(Modification => {
-                                                        return Modification.name
+                                                        return Modification.name + ' '
                                                     })}
                                                 </ControlLabel>
                                             </FormGroup>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, FormGroup, FormControl, Checkbox, Button } from 'react-bootstrap/lib';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 
 import './UserLogin.css';
 import AuthService from '../../components/Authentication/Authentication';
@@ -14,6 +14,9 @@ class UserLogin extends Component {
         super(props);
 
         this.Auth = new AuthService();
+        this.state = {
+            login: false
+        }
     }
 
 
@@ -27,6 +30,7 @@ class UserLogin extends Component {
         axios.post(path + '/login', loginData)
             .then(response => {
                 this.Auth.setToken(response.data.token)
+                this.props.history.push("/service");
             }).catch(error => {
                 console.log(error)
             })
@@ -35,7 +39,9 @@ class UserLogin extends Component {
 
 
     render() {
+
         return (
+            
 
             <div>
                 <Modal.Dialog bsSize="small">
@@ -62,7 +68,7 @@ class UserLogin extends Component {
                     <Modal.Footer>
                         <FormGroup className="LoginButtonContainer">
                             <Button onClick={this.loginHandler} componentClass="button" bsSize="large" type="submit">
-                                <Link to='/service'>Log in</Link>
+                              Login  {/* <Link to='/service'>Log in</Link> */}
                             </Button>
                             <Checkbox>Remember me</Checkbox>
                         </FormGroup>

@@ -6,10 +6,12 @@ import axios from 'axios';
 import './UserTable.css';
 import NavBar from '../NavBar/NavBar';
 import path from '../../assets/path/Path';
+import AuthService from '../Authentication/Authentication';
 
 class UserTable extends Component {
     constructor() {
         super();
+        this.Auth = new AuthService();
         this.state = {
             tableData: [{
                 id: '',
@@ -20,8 +22,15 @@ class UserTable extends Component {
     }
 
     componentDidMount() {
+
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
         axios.get(path + '/users', {
-            responseType: 'json'
+            headers: headers
         }).then(response => {
             this.setState({ tableData: response.data });
             console.log(response);
