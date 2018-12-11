@@ -87,7 +87,7 @@ class UserRegister extends Component {
                                 Confirm
                             </Button>
                             <Button componentClass="button" className="registerButton" bsSize="large" type="button">
-                                <Link to='/login'>Cancel</Link>
+                                <Link to='/service'>Cancel</Link>
                             </Button>
                         </FormGroup>
                     </Modal.Footer>

@@ -1,23 +1,49 @@
 .ClientHeader {
     font-size: 30px !important;
     margin: 0 0 0 0;
-    background-color: rgb(207, 209, 208) !important;
+    background-color: rgb(52,152,134) !important;
 }
 
 .MaintenanceHeader {
     font-size: 30px !important;
     margin: 0 0 0 0;
-    background-color: rgb(207, 209, 208) !important;
+    background-color: rgb(52,152,134) !important;
 }
 
 .ClientJumbotronPadding {
-    padding: 0 0 0 0 !important;
+    padding-top: 0px !important;
+    padding-right: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 20px !important;
+    margin-left: 30px;
+    margin-top: 30px;
     background-color: rgb(234, 247, 241) !important;
+    width: 45%;
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    border-radius: 15px;
+}
+
+.MainServiceScreen {
+    display: flex;
+    background-color: rgb(49,77,91);
 }
 
 .MaintenanceJumbotronPadding {
-    padding: 0 0 0 0 !important;
+    padding-top: 0px !important;
+    padding-right: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 20px !important;
+    margin-right: 30px;
+    margin-top: 30px;
+    margin-left: 20px;
     background-color: rgb(234, 247, 241) !important;
+    width: 45%;
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    border-radius: 15px;
 }
 
 .ClientParagraph {
@@ -40,6 +66,7 @@
 
 .layout-pane.layout-pane-primary {
     height: 300px !important;
+    background-color: rgb(49,77,91);
 }
 
 .InputFormGroup {

@@ -7,12 +7,14 @@ import 'react-table/react-table.css';
 import './Products.css';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import AuthService from '../../components/Authentication/Authentication';
 
 class Products extends Component {
 
     constructor(props) {
         super(props);
 
+        this.Auth = new AuthService();
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
@@ -58,7 +60,13 @@ class Products extends Component {
 
     componentWillMount() {
 
-        axios.get(path + '/brands')
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
+        axios.get(path + '/brands', { headers: headers })
             .then(response => {
                 return response.data
             }).then(data => {
@@ -70,13 +78,20 @@ class Products extends Component {
     }
 
     addBrandHandler = () => {
+
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
         var data = {
             name: this.brandInput.value,
         };
 
 
 
-        axios.post(path + '/brand', data)
+        axios.post(path + '/brand', data, {headers:headers})
             .then((response) => {
                 console.log(response.data);
                 let brandList = [...this.state.brandList];
@@ -93,6 +108,13 @@ class Products extends Component {
 
     addJobHandler = () => {
 
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
+        console.log("selectedBrand: ", this.state.selectedBrand)
         var clientData = {
             firstName: this.firstnameInput.value,
             lastName: this.lastnameInput.value,
@@ -100,7 +122,7 @@ class Products extends Component {
             phone: this.phoneInput.value
         };
 
-        axios.post(path + '/client', clientData)
+        axios.post(path + '/client', clientData, {headers:headers})
             .then(response => {
                 return response.data;
             }).then(data => {
@@ -111,7 +133,7 @@ class Products extends Component {
                     clientId: data.id,
                 };
 
-                axios.post(path + '/product', productData)
+                axios.post(path + '/product', productData, {headers:headers})
                     .then((response) => {
                         console.log(response);
                         this.setState({ productAlertMessage: "success" })
