@@ -1,13 +1,13 @@
 .ClientHeader {
     font-size: 30px !important;
     margin: 0 0 0 0;
-    background-color: rgb(52,152,134) !important;
+    background-color: rgb(175, 216, 208) !important;
 }
 
 .MaintenanceHeader {
     font-size: 30px !important;
     margin: 0 0 0 0;
-    background-color: rgb(52,152,134) !important;
+    background-color: rgb(175, 216, 208) !important;
 }
 
 .ClientJumbotronPadding {
@@ -20,9 +20,9 @@
     background-color: rgb(234, 247, 241) !important;
     width: 45%;
     border-style: solid;
-    border-width: 5px;
-    border-color: black;
-    border-radius: 15px;
+    border-width: 2px;
+    border-color: rgb(52,152,134);
+    border-radius: 7px;
 }
 
 .MainServiceScreen {
@@ -41,9 +41,9 @@
     background-color: rgb(234, 247, 241) !important;
     width: 45%;
     border-style: solid;
-    border-width: 5px;
-    border-color: black;
-    border-radius: 15px;
+    border-width: 2px;
+    border-color: rgb(52,152,134);
+    border-radius: 7px;
 }
 
 .ClientParagraph {
@@ -64,9 +64,9 @@
     font-size: 17px;
 }
 
-.layout-pane.layout-pane-primary {
+.MaintenanceSplitter {
     height: 300px !important;
-    background-color: rgb(49,77,91);
+    background-color: rgb(49,77,91) !important;
 }
 
 .InputFormGroup {
@@ -74,26 +74,44 @@
 }
 
 .MaintenanceAlertMessage {
-    width: 30%;
+    width: 40%;
+    size: 0in;
     position: absolute;
-    left: 300px;
-    bottom: -17px;
+    left: 87px;
+    bottom: -15px;
 }
 
 .MaintenanceEditSelectedInfo {
     color: white;
 }
 
-.FaultsInput{
-    width: 60% !important;
+.FaultsInput {
+    display: inline-block !important;
+    width: 100% !important;
+    margin-top: 5px;
+}
+
+.BrandAndType {
+    text-align: left;
+}
+
+.Description {
+    text-align: left !important;
 }
 
 .SelectedModificationDropdown {
-    position: absolute;
-    right: 150px;
-    top: 163px;
+    width: 100%;
+    margin-top: 5px;
 }
 
 .MaintenanceData {
     margin-bottom: 10px !important;
+}
+
+.StartDateHeader,.FaultHeader,.PriceHeader,.StartDateData,.FaultData,.PriceData,.EndDateHeader,.EndDateData,.ModificationHeader,.ModificationData {
+    width: 30%;
+}
+
+.ModificationsListItems {
+    text-align: left;
 }

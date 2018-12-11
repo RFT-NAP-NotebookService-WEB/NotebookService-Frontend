@@ -126,6 +126,40 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
+<<<<<<< HEAD
+=======
+        axios.get(path + '/products', {
+            headers: headers
+        }).then(response => {
+            var maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
+            var latestProductObj = response.data.find(Product => { return Product.id === maxId })
+            this.setState({ latestProduct: latestProductObj })
+        }).catch(error => {
+            console.log(error)
+        });
+
+        axios.get(path + '/users', {
+            headers: headers
+        }).then(response => {
+            var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
+            var latestUserObj = response.data.find(User => { return User.id === maxId })
+            this.setState({ latestUser: latestUserObj })
+        });
+
+        axios.get(path + '/modifications', {
+            headers: headers
+        }).then(response => {
+            return response.data
+        }).then(data => {
+            let modificationsFromApi = data.map(Modification => { return { id: Modification.id, name: Modification.name } });
+            this.setState({ modificationList: modificationsFromApi });
+            console.log(this.state.modificationList)
+        }).catch(error => {
+            console.log(error);
+        });
+
+
+>>>>>>> halo2
         axios.get(path + '/maintenances', { headers: headers }).then(response => {
             this.setState({ tableData: response.data })
             console.log(this.state.tableData)
@@ -279,7 +313,7 @@ class Maintenance extends Component {
 
         return (
             <div>
-                <SplitterLayout vertical>
+                <SplitterLayout vertical className="MaintenanceSplitter">
                     <div className="MainServiceScreen">
                         <Jumbotron className="ClientJumbotronPadding">
                             <h1 className="ClientHeader">Clients: </h1>
@@ -313,6 +347,7 @@ class Maintenance extends Component {
                             <div className="MaintenanceParagraph">
                                 <Form horizontal>
                                     <FormGroup>
+<<<<<<< HEAD
                                         <ControlLabel>Startdate</ControlLabel>{' '}
                                         <ControlLabel>Fault</ControlLabel>{' '}
                                         <ControlLabel>Price</ControlLabel>
@@ -321,11 +356,22 @@ class Maintenance extends Component {
                                         <ControlLabel>{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
                                         <ControlLabel>{this.state.selectedTableRow.fault}</ControlLabel>{' '}
                                         <ControlLabel>{this.state.selectedTableRow.modifications
+=======
+                                        <ControlLabel className="StartDateHeader">Startdate</ControlLabel>{' '}
+                                        <ControlLabel className="FaultHeader">Fault</ControlLabel>{' '}
+                                        <ControlLabel className="PriceHeader">Price</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel className="StartDateData">{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
+                                        <ControlLabel className="FaultData">{this.state.selectedTableRow.fault}</ControlLabel>{' '}
+                                        <ControlLabel className="PriceData">{this.state.selectedTableRow.modifications
+>>>>>>> halo2
                                             .reduce((prev, next) =>
                                                 prev + next.price, 0
                                             )}
                                         </ControlLabel>
                                     </FormGroup>
+<<<<<<< HEAD
                                     <FormGroup>
                                         <ControlLabel>endDate</ControlLabel>{' '}
                                         <ControlLabel>Modification</ControlLabel>
@@ -339,6 +385,24 @@ class Maintenance extends Component {
                                                 })}</li>
                                         </ControlLabel>
                                     </FormGroup>
+=======
+
+                                    <FormGroup>
+                                        <ControlLabel className="EndDateHeader">endDate</ControlLabel>{' '}
+                                        <ControlLabel className="pull-right">Modification</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel className="EndDateData">{this.state.selectedTableRow.endDate}</ControlLabel>
+                                        <ControlLabel className="pull-right">
+
+                                            {this.state.selectedTableRow.modifications
+                                                .map(Modification => {
+                                                    return <li className="ModificationsListItems">{Modification.name + ' '}</li>
+                                                })}
+                                        </ControlLabel>
+                                    </FormGroup>
+
+>>>>>>> halo2
                                     <Button onClick={this.handleShow}>Edit</Button>
                                 </Form>
                             </div>
@@ -386,7 +450,7 @@ class Maintenance extends Component {
 
                 <div className="modal-backdrop-asd">
                     <Modal
-                        bsSize="large"
+                        bsSize="small"
                         show={this.state.showMaintenanceModal}
                         onHide={this.handleClose}
                         container={this}
@@ -396,19 +460,20 @@ class Maintenance extends Component {
                             <Modal.Title id="contianed-modal-title">Maintenance</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <FormGroup className="InputFormGroup">
-                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.brand.name}</ControlLabel>
-                            </FormGroup>
-                            <FormGroup className="InputFormGroup">
+                            <FormGroup className="BrandAndType">
+                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.brand.name}</ControlLabel>{' '}
                                 <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.type}</ControlLabel>
+                            </FormGroup>
+                            <FormGroup className="Description">
+                                <ControlLabel className="MaintenanceEditSelectedInfo">{this.state.selectedTableRow.product.description}</ControlLabel>
                             </FormGroup>
                             <FormGroup>
                                 <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>{' '}
                                 <DatePicker
                                     selected={this.state.startDate}
                                     onChange={this.handleStartDateChange} />
-                            </FormGroup>
-                            <FormGroup>
+
+
                                 <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
                                     selected={this.state.endDate}
@@ -417,8 +482,9 @@ class Maintenance extends Component {
                             <FormGroup>
                                 <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} />
                             </FormGroup>
-                            <FormGroup className="SelectedModificationDropdown">
+                            <FormGroup>
                                 <Select
+                                    className="SelectedModificationDropdown"
                                     placeholder="Select a Modification"
                                     value={this.state.selectedModification}
                                     onChange={this.handleModificationChange.bind(this)}
@@ -429,14 +495,19 @@ class Maintenance extends Component {
                                 />
                             </FormGroup>
                         </Modal.Body>
-                        <FormGroup className="MaintenanceAlertMessage">
-                            {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
-                            {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
-                        </FormGroup>
-                        <Modal.Footer>
-                            <Button onClick={this.editMaintenanceHandler}>Save</Button>
-                            <Button onClick={this.handleClose}>Close</Button>
 
+                        <Modal.Footer>
+                            <FormGroup>
+                            <Button
+                                className="pull-left"
+                                onClick={this.editMaintenanceHandler}>Save</Button></FormGroup>
+                            <FormGroup className="MaintenanceAlertMessage">
+                                {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
+                                {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
+                            </FormGroup>
+                            <FormGroup>
+                            <Button onClick={this.handleClose}>Close</Button>
+                            </FormGroup>
                         </Modal.Footer>
                     </Modal>
                 </div>
