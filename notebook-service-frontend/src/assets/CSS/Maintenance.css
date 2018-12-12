@@ -144,3 +144,8 @@
 .ReactTable .-pagination input, .ReactTable .-pagination select {
     background-color: rgb(49,77,91);
 }
+
+.SelectedProgressDropdown {
+    color: black;
+    margin-top: 5px;
+}

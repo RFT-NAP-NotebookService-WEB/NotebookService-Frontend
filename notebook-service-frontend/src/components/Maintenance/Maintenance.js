@@ -477,14 +477,6 @@ class Maintenance extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Select
-                                    placeholder="Select a Progress"
-                                    value={this.state.selectedOption}
-                                    onChange={this.handleProgressChange}
-                                    options={progressOptions}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Select
                                     className="SelectedModificationDropdown"
                                     placeholder="Select a User"
                                     value={this.state.selectedUser}
@@ -492,6 +484,15 @@ class Maintenance extends Component {
                                     options={this.state.userList}
                                     getOptionLabel={User => User.username}
                                     getOptionValue={User => User.id}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Select
+                                    className="SelectedProgressDropdown"
+                                    placeholder="Select a Progress"
+                                    value={this.state.selectedOption}
+                                    onChange={this.handleProgressChange}
+                                    options={progressOptions}
                                 />
                             </FormGroup>
                         </Modal.Body>
