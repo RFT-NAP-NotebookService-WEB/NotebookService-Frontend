@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import { Form, FormGroup, FormControl, Button, Col, ControlLabel } from 'react-bootstrap';
-import SplitterLayout from 'react-splitter-layout';
+import { Form, FormGroup, FormControl, Button, Col, ControlLabel, Jumbotron } from 'react-bootstrap';
+
 import axios from 'axios';
 
 import 'react-table/react-table.css';
@@ -82,8 +82,8 @@ class ModificationTable extends Component {
         return (
             <div>
                 <NavBar />
-                <SplitterLayout primaryIndex={0}>
-                    <div>
+                <div>
+                    <Jumbotron className="ModificationInputJumbotron">
                         <Form horizontal>
                             <FormGroup>
                                 <Col componentClass={ControlLabel} sm={2}>
@@ -114,12 +114,14 @@ class ModificationTable extends Component {
                                 </Col>
                             </FormGroup>
                         </Form>
-                    </div>
-                    <div>
+                    </Jumbotron>
+                </div>
+                <div>
+                    <Jumbotron className="ModificationReactTableJumbotron">
                         <ReactTable
                             data={tableData}
                             columns={columns}
-                            minRows={15}
+                            minRows={10}
                             defaultPageSize={10}
                             defaultSorted={[
                                 {
@@ -127,8 +129,8 @@ class ModificationTable extends Component {
                                 }
                             ]}
                             className="-striped -highlight" />
-                    </div>
-                </SplitterLayout>
+                    </Jumbotron>
+                </div>
             </div>
         )
     }

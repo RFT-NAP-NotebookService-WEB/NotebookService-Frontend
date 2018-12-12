@@ -393,8 +393,8 @@ class Maintenance extends Component {
 
 
                 <div>
-                    <Jumbotron>
                         <ReactTable
+                            
                             data={tableData}
                             columns={columns}
                             defaultPageSize={10}
@@ -410,8 +410,8 @@ class Maintenance extends Component {
                                         },
                                         style: {
                                             cursor: 'pointer',
-                                            background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : 'white',
-                                            color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'black'
+                                            background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : '#20333e',
+                                            color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'white'
                                         }
                                     }
                                 } else {
@@ -424,9 +424,7 @@ class Maintenance extends Component {
                                 {
                                     id: "name"
                                 }
-                            ]}
-                            className="-striped -highlight" />
-                    </Jumbotron>
+                            ]}className="-striped -highlight" />
                 </div>
 
                 <div className="modal-backdrop-asd">
@@ -451,12 +449,14 @@ class Maintenance extends Component {
                             <FormGroup>
                                 <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>{' '}
                                 <DatePicker
+                                    className="DatePicker"
                                     selected={this.state.startDate}
                                     onChange={this.handleStartDateChange} />
 
 
                                 <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
+                                    className="DatePicker"
                                     selected={this.state.endDate}
                                     onChange={this.handleEndDateChange} />
                             </FormGroup>

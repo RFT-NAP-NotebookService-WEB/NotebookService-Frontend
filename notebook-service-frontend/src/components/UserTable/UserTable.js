@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import SplitterLayout from 'react-splitter-layout';
 import axios from 'axios';
 
 import '../../assets/CSS/UserTable.css';
@@ -55,8 +54,7 @@ class UserTable extends Component {
         return (
             <div>
                 <NavBar />
-                <SplitterLayout>
-                    <div>
+                    
                         <ReactTable
                             data={tableData}
                             columns={columns}
@@ -66,9 +64,8 @@ class UserTable extends Component {
                                     id: "name"
                                 }
                             ]}
-                            className="-striped -highlight" />
-                    </div>
-                </SplitterLayout>
+                            className="-striped -highlight -usersTable" />
+                    
             </div>
         )
     }
