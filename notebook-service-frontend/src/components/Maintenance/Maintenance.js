@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import '../../assets/CSS/Maintenance.css';
 import path from '../../assets/path/Path';
+import progressOptions from '../../assets/Progress/Progress';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AuthService from '../../components/Authentication/Authentication';
@@ -105,6 +106,7 @@ class Maintenance extends Component {
                     }
                 ]
             },
+            selectedProgress: "",
 
             latestProduct: "",
             latestUser: "",
@@ -191,6 +193,11 @@ class Maintenance extends Component {
         console.log(this.state.selectedUser)
     }
 
+    handleProgressChange = (selectedProgress) => {
+        this.setState({ selectedProgress });
+        console.log(`Option selected:`, selectedProgress);
+    }
+
     addMaintenanceHandler = () => {
 
         const headers = {
@@ -211,8 +218,8 @@ class Maintenance extends Component {
             axios.get(path + '/users', {
                 headers: headers
             }).then(response => {
-                var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
-                var latestUserObj = response.data.find(User => { return User.id === maxId })
+                // var adminID = response.data.map(User => { return User.username === "admin"; })
+                var latestUserObj = response.data.find(User => { return User.username === "admin" })
                 this.setState({ latestUser: latestUserObj }, () => {
                     console.log(this.state.latestUser.id)
                 })
@@ -262,7 +269,7 @@ class Maintenance extends Component {
         var updatedMaintenance = {
             startDate: moment(this.state.startDate, 'YYYY-MM-DD'),
             endDate: moment(this.state.endDate, 'YYYY-MM-DD'),
-            status: "RECORDED",
+            status: this.state.selectedProgress.value,
             fault: this.faultInput.value,
             productId: this.state.selectedTableRow.product.id,
             userId: this.state.selectedUser.id,
@@ -277,7 +284,7 @@ class Maintenance extends Component {
                 console.log(response);
                 this.setState({
                     maintenanceAlertMessage: "success",
-                    selectedTableRow: response.data
+                    selectedTableRow: response.data,
                 });
             }).catch(error => {
                 console.log(error);
@@ -466,6 +473,14 @@ class Maintenance extends Component {
                                     getOptionLabel={Modification => Modification.name}
                                     getOptionValue={Modification => Modification.id}
                                     isMulti={true}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Select
+                                    placeholder="Select a Progress"
+                                    value={this.state.selectedOption}
+                                    onChange={this.handleProgressChange}
+                                    options={progressOptions}
                                 />
                             </FormGroup>
                             <FormGroup>
