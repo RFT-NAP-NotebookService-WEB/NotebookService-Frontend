@@ -6,7 +6,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
 
-import 'react-table/react-table.css';
+//import 'react-table/react-table.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 import '../../assets/CSS/Maintenance.css';
@@ -369,7 +369,6 @@ class Maintenance extends Component {
 
 
                     <div>
-                        <Jumbotron>
                             <ReactTable
                                 data={tableData}
                                 columns={columns}
@@ -402,7 +401,6 @@ class Maintenance extends Component {
                                     }
                                 ]}
                                 className="-striped -highlight" />
-                        </Jumbotron>
                     </div>
 
                 <div className="modal-backdrop-asd">
@@ -427,12 +425,14 @@ class Maintenance extends Component {
                             <FormGroup>
                                 <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>{' '}
                                 <DatePicker
+                                    className="DatePicker"
                                     selected={this.state.startDate}
                                     onChange={this.handleStartDateChange} />
 
 
                                 <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
+                                    className="DatePicker"
                                     selected={this.state.endDate}
                                     onChange={this.handleEndDateChange} />
                             </FormGroup>
