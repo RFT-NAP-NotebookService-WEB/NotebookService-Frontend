@@ -6,7 +6,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
 
-import 'react-table/react-table.css';
+//import 'react-table/react-table.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 import '../../assets/CSS/Maintenance.css';
@@ -208,39 +208,25 @@ class Maintenance extends Component {
                 console.log(this.state.latestProduct.id)
             })
 
-            axios.get(path + '/users', {
-                headers: headers
-            }).then(response => {
-                var maxId = Math.max.apply(Math, response.data.map(User => { return User.id; }))
-                var latestUserObj = response.data.find(User => { return User.id === maxId })
-                this.setState({ latestUser: latestUserObj }, () => {
-                    console.log(this.state.latestUser.id)
-                })
+            var maintenanceData = {
+                startDate: "",
+                endDate: "",
+                status: "RECORDED",
+                fault: "",
+                productId: this.state.latestProduct.id,
+                userId: "",
+                modificationsId: []
+            };
 
-
-                var maintenanceData = {
-                    startDate: "",
-                    endDate: "",
-                    status: "RECORDED",
-                    fault: "",
-                    productId: this.state.latestProduct.id,
-                    userId: this.state.latestUser.id,
-                    modificationsId: []
-                };
-
-                axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
-                    console.log(maintenanceData)
-                    console.log(response);
-                    let tableData = [...this.state.tableData];
-                    tableData.push(response.data);
-                    this.setState({ tableData });
-                }).catch(error => {
-                    console.log(error);
-                    console.log(maintenanceData)
-                });
-
+            axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
+                console.log(maintenanceData)
+                console.log(response);
+                let tableData = [...this.state.tableData];
+                tableData.push(response.data);
+                this.setState({ tableData });
             }).catch(error => {
-                console.log(error)
+                console.log(error);
+                console.log(maintenanceData)
             });
 
         }).catch(error => {
@@ -312,112 +298,110 @@ class Maintenance extends Component {
 
         return (
             <div>
-                <div className="MainServiceScreen">
-                    <Jumbotron className="ClientJumbotronPadding">
-                        <h1 className="ClientHeader">Clients: </h1>
-                        <Form horizontal>
-                            <FormGroup>
-                                <ControlLabel>Name</ControlLabel>
-                            </FormGroup>
-                            <FormGroup className="InputFormGroup">
-                                <ControlLabel>{this.state.selectedTableRow.product.client.firstName + " " + this.state.selectedTableRow.product.client.lastName}</ControlLabel>
-                            </FormGroup>
-                            <FormGroup>
-                                <ControlLabel>Email</ControlLabel>
-                            </FormGroup>
-                            <FormGroup className="InputFormGroup">
-                                <ControlLabel>{this.state.selectedTableRow.product.client.email}</ControlLabel>
-                            </FormGroup>
-                            <FormGroup>
-                                <ControlLabel>Phone</ControlLabel>
-                            </FormGroup>
-                            <FormGroup className="InputFormGroup">
-                                <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
-                            </FormGroup>
-                            <FormGroup >
-                                <Button onClick={this.addMaintenanceHandler}>Add</Button>
-                            </FormGroup>
-                        </Form>
-                    </Jumbotron>
-                    <Jumbotron className="MaintenanceJumbotronPadding">
-
-                        <h1 className="MaintenanceHeader">Maintenance: </h1>
-                        <div className="MaintenanceParagraph">
+                    <div className="MainServiceScreen">
+                        <Jumbotron className="ClientJumbotronPadding">
+                            <h1 className="ClientHeader">Clients: </h1>
                             <Form horizontal>
                                 <FormGroup>
-                                    <ControlLabel className="StartDateHeader">Start date</ControlLabel>{' '}
-                                    <ControlLabel className="FaultHeader">Fault</ControlLabel>{' '}
-                                    <ControlLabel className="PriceHeader">Price</ControlLabel>
+                                    <ControlLabel>Name</ControlLabel>
                                 </FormGroup>
                                 <FormGroup className="InputFormGroup">
-                                    <ControlLabel className="StartDateData">{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
-                                    <ControlLabel className="FaultData">{this.state.selectedTableRow.fault}</ControlLabel>{' '}
-                                    <ControlLabel className="PriceData">{this.state.selectedTableRow.modifications
-                                        .reduce((prev, next) =>
-                                            prev + next.price, 0
-                                        )}
-                                    </ControlLabel>
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.firstName + " " + this.state.selectedTableRow.product.client.lastName}</ControlLabel>
                                 </FormGroup>
-
                                 <FormGroup>
-                                    <ControlLabel className="EndDateHeader">End date</ControlLabel>{' '}
-                                    <ControlLabel className="pull-right">Modification</ControlLabel>
+                                    <ControlLabel>Email</ControlLabel>
                                 </FormGroup>
                                 <FormGroup className="InputFormGroup">
-                                    <ControlLabel className="EndDateData">{this.state.selectedTableRow.endDate}</ControlLabel>
-                                    <ControlLabel className="pull-right">
-
-                                        {this.state.selectedTableRow.modifications
-                                            .map(Modification => {
-                                                return <li key={Modification.id} className="ModificationsListItems">{Modification.name + ' '}</li>
-                                            })}
-                                    </ControlLabel>
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.email}</ControlLabel>
                                 </FormGroup>
-
-                                <Button onClick={this.handleShow}>Edit</Button>
+                                <FormGroup>
+                                    <ControlLabel>Phone</ControlLabel>
+                                </FormGroup>
+                                <FormGroup className="InputFormGroup">
+                                    <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
+                                </FormGroup>
+                                <FormGroup >
+                                    <Button onClick={this.addMaintenanceHandler}>Add</Button>
+                                </FormGroup>
                             </Form>
-                        </div>
+                        </Jumbotron>
+                        <Jumbotron className="MaintenanceJumbotronPadding">
 
-                    </Jumbotron>
-                </div>
+                            <h1 className="MaintenanceHeader">Maintenance: </h1>
+                            <div className="MaintenanceParagraph">
+                                <Form horizontal>
+                                    <FormGroup>
+                                        <ControlLabel className="StartDateHeader">Start date</ControlLabel>{' '}
+                                        <ControlLabel className="FaultHeader">Fault</ControlLabel>{' '}
+                                        <ControlLabel className="PriceHeader">Price</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel className="StartDateData">{this.state.selectedTableRow.startDate}</ControlLabel>{' '}
+                                        <ControlLabel className="FaultData">{this.state.selectedTableRow.fault}</ControlLabel>{' '}
+                                        <ControlLabel className="PriceData">{this.state.selectedTableRow.modifications
+                                            .reduce((prev, next) =>
+                                                prev + next.price, 0
+                                            )}
+                                        </ControlLabel>
+                                    </FormGroup>
+
+                                    <FormGroup>
+                                        <ControlLabel className="EndDateHeader">End date</ControlLabel>{' '}
+                                        <ControlLabel className="pull-right">Modification</ControlLabel>
+                                    </FormGroup>
+                                    <FormGroup className="InputFormGroup">
+                                        <ControlLabel className="EndDateData">{this.state.selectedTableRow.endDate}</ControlLabel>
+                                        <ControlLabel className="pull-right">
+
+                                            {this.state.selectedTableRow.modifications
+                                                .map(Modification => {
+                                                    return <li key={Modification.id} className="ModificationsListItems">{Modification.name + ' '}</li>
+                                                })}
+                                        </ControlLabel>
+                                    </FormGroup>
+
+                                    <Button onClick={this.handleShow}>Edit</Button>
+                                </Form>
+                            </div>
+
+                        </Jumbotron>
+                    </div>
 
 
-                <div>
-                    <Jumbotron>
-                        <ReactTable
-                            data={tableData}
-                            columns={columns}
-                            defaultPageSize={10}
-                            getTrProps={(state, rowInfo) => {
-                                if (rowInfo !== undefined) {
-                                    return {
-                                        onClick: (e, handleOriginal) => {
-                                            console.log('It was in this row:', rowInfo)
-                                            this.setState({
-                                                selectedTableRow: rowInfo.original
-                                            })
-                                            console.log('ez a tablerow stateje', this.state.selectedTableRow)
-                                        },
-                                        style: {
-                                            cursor: 'pointer',
-                                            background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : 'white',
-                                            color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'black'
+                    <div>
+                            <ReactTable
+                                data={tableData}
+                                columns={columns}
+                                defaultPageSize={10}
+                                getTrProps={(state, rowInfo) => {
+                                    if (rowInfo !== undefined) {
+                                        return {
+                                            onClick: (e, handleOriginal) => {
+                                                console.log('It was in this row:', rowInfo)
+                                                this.setState({
+                                                    selectedTableRow: rowInfo.original
+                                                })
+                                                console.log('ez a tablerow stateje', this.state.selectedTableRow)
+                                            },
+                                            style: {
+                                                cursor: 'pointer',
+                                                background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : 'white',
+                                                color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'black'
+                                            }
                                         }
+                                    } else {
+                                        return {}
                                     }
-                                } else {
-                                    return {}
                                 }
-                            }
-                            }
+                                }
 
-                            defaultSorted={[
-                                {
-                                    id: "name"
-                                }
-                            ]}
-                            className="-striped -highlight" />
-                    </Jumbotron>
-                </div>
+                                defaultSorted={[
+                                    {
+                                        id: "name"
+                                    }
+                                ]}
+                                className="-striped -highlight" />
+                    </div>
 
                 <div className="modal-backdrop-asd">
                     <Modal
@@ -441,12 +425,14 @@ class Maintenance extends Component {
                             <FormGroup>
                                 <ControlLabel className="MaintenanceEditSelectedInfo">Start Date</ControlLabel>{' '}
                                 <DatePicker
+                                    className="DatePicker"
                                     selected={this.state.startDate}
                                     onChange={this.handleStartDateChange} />
 
 
                                 <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
+                                    className="DatePicker"
                                     selected={this.state.endDate}
                                     onChange={this.handleEndDateChange} />
                             </FormGroup>
