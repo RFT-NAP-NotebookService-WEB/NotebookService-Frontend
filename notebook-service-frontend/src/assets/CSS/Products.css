@@ -54,6 +54,7 @@
     position: absolute;
     left: 275px;
     top: -5px;
+    color: black !important;
 }
 
 .ProductAlertMessage {

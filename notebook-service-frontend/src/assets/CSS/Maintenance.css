@@ -93,12 +93,21 @@
     margin-top: 5px;
 }
 
+.SelectBrandDropdown {
+    color: gray;
+}
+
 .MaintenanceData {
     margin-bottom: 10px !important;
 }
 
-.StartDateHeader,.FaultHeader,.PriceHeader,.StartDateData,.FaultData,.PriceData,.EndDateHeader,.EndDateData,.ModificationHeader,.ModificationData {
+.FaultHeader,.PriceHeader,.FaultData,.PriceData,.ModificationHeader,.ModificationData {
     width: 30%;
+}
+
+.StartDateHeader,.StartDateData,.EndDateHeader,.EndDateData {
+    width: 30% !important;
+    text-align: left !important;
 }
 
 .ModificationsListItems {
@@ -107,4 +116,31 @@
 
 .DatePicker {
     color: black;
+}
+
+.ReactTable.-striped.-highlight {
+    margin-right: 60px;
+    margin-left: 60px;
+    margin-bottom: 20px;
+    width: 92% !important;
+    border-radius: 5px;
+    background-color: rgb(32, 51, 62);
+    color: white;
+}
+
+.rt-tr-group {
+    background-color: rgb(32, 51, 62) !important;
+}
+
+.ReactTable .-pagination .-btn {
+    background-color: rgb(65,190,168);
+    color: white !important;
+}
+
+.rt-th {
+    background-color: rgb(52,152,134);
+}
+
+.ReactTable .-pagination input, .ReactTable .-pagination select {
+    background-color: rgb(49,77,91);
 }

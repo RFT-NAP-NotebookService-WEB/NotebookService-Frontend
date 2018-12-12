@@ -1,18 +1,4 @@
-.ReactTable.-striped.-highlight {
+.ReactTable.-striped.-highlight.-usersTable {
     width: 100%;
-
-}
-
-.form-horizontal {
-    margin-top: 10px;
-    width: 95%;
-}
-
-.splitter-layout {
     margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.layout-pane.layout-pane-primary {
-    height: 50%;
 }
