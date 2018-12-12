@@ -1,6 +1,7 @@
 .container-fluid {
     background-color:rgb(52,152,134);
     border: 0;
+    border-bottom: solid rgb(229, 229, 229) 1px;
 }
 
 .custom-modal {
