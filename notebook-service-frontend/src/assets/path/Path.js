@@ -1,3 +1,3 @@
-const path="http://localhost:8080";
+const path="http://appcloud.ovh:11291";
 
 export default path;

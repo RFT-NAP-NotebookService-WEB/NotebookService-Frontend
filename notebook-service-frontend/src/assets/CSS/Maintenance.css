@@ -151,3 +151,7 @@
     color: black;
     margin-top: 5px;
 }
+
+.EditButton {
+    margin-top: 60px !important;
+}
