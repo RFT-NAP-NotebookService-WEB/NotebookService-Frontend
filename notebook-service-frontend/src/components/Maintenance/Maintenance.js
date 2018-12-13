@@ -207,8 +207,8 @@ class Maintenance extends Component {
         axios.get(path + '/products', {
             headers: headers
         }).then(response => {
-            var maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
-            var latestProductObj = response.data.find(Product => { return Product.id === maxId })
+            let maxId = Math.max.apply(Math, response.data.map(Product => { return Product.id; }))
+            let latestProductObj = response.data.find(Product => { return Product.id === maxId })
             this.setState({ latestProduct: latestProductObj }, () => {
                 console.log(this.state.latestProduct.id)
             })
@@ -216,13 +216,13 @@ class Maintenance extends Component {
             axios.get(path + '/users', {
                 headers: headers
             }).then(response => {
-                var latestUserObj = response.data.find(User => { return User.username === "admin" })
+                let latestUserObj = response.data.find(User => { return User.username === "admin" })
                 this.setState({ latestUser: latestUserObj }, () => {
                     console.log(this.state.latestUser.id)
                 })
 
 
-                var maintenanceData = {
+                let maintenanceData = {
                     startDate: "",
                     endDate: "",
                     status: "RECORDED",
@@ -258,7 +258,9 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
-        var updatedMaintenance = {
+        console.log("elvileg ezek a selectedmodifications: ", this.state.selectedModification)
+
+        let updatedMaintenance = {
             startDate: moment(this.state.startDate, 'YYYY-MM-DD'),
             endDate: moment(this.state.endDate, 'YYYY-MM-DD'),
             status: this.state.selectedProgress.value,
@@ -384,8 +386,9 @@ class Maintenance extends Component {
                                             })}
                                     </ControlLabel>
                                 </FormGroup>
-
-                                <Button onClick={this.handleShow}>Edit</Button>
+                                <FormGroup className="EditButton">
+                                    <Button onClick={this.handleShow}>Edit</Button>
+                                </FormGroup>
                             </Form>
                         </div>
 

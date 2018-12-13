@@ -84,12 +84,12 @@ class ModificationTable extends Component {
                 <NavBar />
                 <div>
                     <Jumbotron className="ModificationInputJumbotron">
-                        <Form horizontal>
+                        <Form horizontal className="ModificationInputFormHorizontal">
                             <FormGroup>
                                 <Col componentClass={ControlLabel} sm={2}>
                                     Modification
                                 </Col>
-                                <Col sm={10}>
+                                <Col sm={10} className="ModificationInputRow">
                                     <FormControl
                                         inputRef={input => this.newModification = input}
                                         type="modification"
@@ -108,7 +108,7 @@ class ModificationTable extends Component {
                                         placeholder="Price" />
                                 </Col>
                             </FormGroup>
-                            <FormGroup>
+                            <FormGroup className="AddButton">
                                 <Col sm={2}>
                                     <Button onClick={() => { this.addModificationHandler() }}>Add</Button>
                                 </Col>
