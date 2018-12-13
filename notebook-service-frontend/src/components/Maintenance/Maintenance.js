@@ -17,6 +17,7 @@ import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AuthService from '../../components/Authentication/Authentication';
 
 class Maintenance extends Component {
+
     constructor(props) {
         super(props);
 
@@ -189,13 +190,10 @@ class Maintenance extends Component {
 
     handleUserChange = (selectUser) => {
         this.setState({ selectedUser: selectUser });
-        console.log("User selected: ", selectUser)
-        console.log(this.state.selectedUser)
     }
 
     handleProgressChange = (selectedProgress) => {
         this.setState({ selectedProgress });
-        console.log(`Option selected:`, selectedProgress);
     }
 
     addMaintenanceHandler = () => {
@@ -218,7 +216,6 @@ class Maintenance extends Component {
             axios.get(path + '/users', {
                 headers: headers
             }).then(response => {
-                // var adminID = response.data.map(User => { return User.username === "admin"; })
                 var latestUserObj = response.data.find(User => { return User.username === "admin" })
                 this.setState({ latestUser: latestUserObj }, () => {
                     console.log(this.state.latestUser.id)
@@ -236,14 +233,11 @@ class Maintenance extends Component {
                 };
 
                 axios.post(path + '/maintenance', maintenanceData, { headers: headers }).then(response => {
-                    console.log(maintenanceData)
-                    console.log(response);
                     let tableData = [...this.state.tableData];
                     tableData.push(response.data);
                     this.setState({ tableData });
+                    console.log(response);
                 }).catch(error => {
-                    console.log(error);
-                    console.log(maintenanceData)
                 });
 
             }).catch(error => {
@@ -263,8 +257,6 @@ class Maintenance extends Component {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
-
-        console.log("elvileg ezek a selectedmodifications: ", this.state.selectedModification)
 
         var updatedMaintenance = {
             startDate: moment(this.state.startDate, 'YYYY-MM-DD'),
@@ -286,10 +278,19 @@ class Maintenance extends Component {
                     maintenanceAlertMessage: "success",
                     selectedTableRow: response.data,
                 });
+
+                axios.get(path + '/maintenances', { headers: headers }).then(response => {
+                    this.setState({ tableData: response.data })
+                    console.log(this.state.tableData)
+                }).catch(error => {
+                    console.log(error)
+                });
+
             }).catch(error => {
                 console.log(error);
                 this.setState({ maintenanceAlertMessage: "error" });
             });
+
     }
 
     render() {
@@ -393,38 +394,36 @@ class Maintenance extends Component {
 
 
                 <div>
-                        <ReactTable
-                            
-                            data={tableData}
-                            columns={columns}
-                            defaultPageSize={10}
-                            getTrProps={(state, rowInfo) => {
-                                if (rowInfo !== undefined) {
-                                    return {
-                                        onClick: (e, handleOriginal) => {
-                                            console.log('It was in this row:', rowInfo)
-                                            this.setState({
-                                                selectedTableRow: rowInfo.original
-                                            })
-                                            console.log('ez a tablerow stateje', this.state.selectedTableRow)
-                                        },
-                                        style: {
-                                            cursor: 'pointer',
-                                            background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : '#20333e',
-                                            color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'white'
-                                        }
-                                    }
-                                } else {
-                                    return {}
-                                }
-                            }
-                            }
+                    <ReactTable
 
-                            defaultSorted={[
-                                {
-                                    id: "name"
+                        data={tableData}
+                        columns={columns}
+                        defaultPageSize={10}
+                        getTrProps={(state, rowInfo) => {
+                            if (rowInfo !== undefined) {
+                                return {
+                                    onClick: (e, handleOriginal) => {
+                                        this.setState({
+                                            selectedTableRow: rowInfo.original
+                                        })
+                                    },
+                                    style: {
+                                        cursor: 'pointer',
+                                        background: rowInfo.original.id === this.state.selectedTableRow.id ? '#00afec' : '#20333e',
+                                        color: rowInfo.original.id === this.state.selectedTableRow.id ? 'white' : 'white'
+                                    }
                                 }
-                            ]}className="-striped -highlight" />
+                            } else {
+                                return {}
+                            }
+                        }
+                        }
+
+                        defaultSorted={[
+                            {
+                                id: "name"
+                            }
+                        ]} className="-striped -highlight" />
                 </div>
 
                 <div className="modal-backdrop-asd">
