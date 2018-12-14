@@ -131,12 +131,13 @@ class Maintenance extends Component {
             'Authorization': 'Bearer ' + this.Auth.getToken()
         }
 
-        axios.get(path + '/maintenances', { headers: headers }).then(response => {
-            this.setState({ tableData: response.data })
-            console.log(this.state.tableData)
-        }).catch(error => {
-            console.log(error)
-        });
+        axios.get(path + '/maintenances/work', { headers: headers })
+            .then(response => {
+                this.setState({ tableData: response.data })
+                console.log(this.state.tableData)
+            }).catch(error => {
+                console.log(error)
+            });
 
         axios.get(path + '/modifications', { headers: headers })
             .then(response => {
@@ -192,8 +193,8 @@ class Maintenance extends Component {
         this.setState({ selectedUser: selectUser });
     }
 
-    handleProgressChange = (selectedProgress) => {
-        this.setState({ selectedProgress });
+    handleProgressChange = (selectProgress) => {
+        this.setState({ selectedProgress: selectProgress });
     }
 
     addMaintenanceHandler = () => {
@@ -280,8 +281,7 @@ class Maintenance extends Component {
                     maintenanceAlertMessage: "success",
                     selectedTableRow: response.data,
                 });
-
-                axios.get(path + '/maintenances', { headers: headers }).then(response => {
+                axios.get(path + '/maintenances/work', { headers: headers }).then(response => {
                     this.setState({ tableData: response.data })
                     console.log(this.state.tableData)
                 }).catch(error => {
@@ -409,6 +409,7 @@ class Maintenance extends Component {
                                         this.setState({
                                             selectedTableRow: rowInfo.original
                                         })
+                                        console.log("ez van a selectedRowban:", this.state.selectedTableRow)
                                     },
                                     style: {
                                         cursor: 'pointer',
@@ -453,24 +454,25 @@ class Maintenance extends Component {
                                 <DatePicker
                                     className="DatePicker"
                                     selected={this.state.startDate}
-                                    onChange={this.handleStartDateChange} />
-
-
+                                    onChange={this.handleStartDateChange}
+                                    defaultvalue={this.state.selectedTableRow.startDate}
+                                />
                                 <ControlLabel className="MaintenanceEditSelectedInfo">End Date</ControlLabel>{' '}
                                 <DatePicker
                                     className="DatePicker"
                                     selected={this.state.endDate}
-                                    onChange={this.handleEndDateChange} />
+                                    onChange={this.handleEndDateChange}
+                                    defaultvalue={this.state.selectedTableRow.endDate} />
                             </FormGroup>
                             <FormGroup>
-                                <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} />
+                                <FormControl className="FaultsInput" placeholder="Faults" inputRef={input => this.faultInput = input} defaultValue={this.state.selectedTableRow.fault} />
                             </FormGroup>
                             <FormGroup>
                                 <Select
                                     className="SelectedModificationDropdown"
                                     placeholder="Select a Modification"
-                                    value={this.state.selectedModification}
-                                    onChange={this.handleModificationChange.bind(this)}
+                                    defaultValue={this.state.selectedTableRow.modifications}
+                                    onChange={this.handleModificationChange}
                                     options={this.state.modificationList}
                                     getOptionLabel={Modification => Modification.name}
                                     getOptionValue={Modification => Modification.id}
@@ -481,7 +483,7 @@ class Maintenance extends Component {
                                 <Select
                                     className="SelectedModificationDropdown"
                                     placeholder="Select a User"
-                                    value={this.state.selectedUser}
+                                    defaultValue={this.state.selectedTableRow.user}
                                     onChange={this.handleUserChange.bind(this)}
                                     options={this.state.userList}
                                     getOptionLabel={User => User.username}
@@ -492,21 +494,22 @@ class Maintenance extends Component {
                                 <Select
                                     className="SelectedProgressDropdown"
                                     placeholder="Select a Progress"
-                                    value={this.state.selectedOption}
-                                    onChange={this.handleProgressChange}
+                                    defaultValue={this.state.selectedTableRow.status}
+                                    onChange={this.handleProgressChange.bind(this)}
                                     options={progressOptions}
                                 />
                             </FormGroup>
                         </Modal.Body>
 
                         <Modal.Footer>
-                            <FormGroup>
-                                <Button
-                                    className="pull-left"
-                                    onClick={this.editMaintenanceHandler}>Save</Button></FormGroup>
                             <FormGroup className="MaintenanceAlertMessage">
                                 {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
                                 {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
+                            </FormGroup>
+                            <FormGroup>
+                                <Button
+                                    className="pull-left"
+                                    onClick={this.editMaintenanceHandler}>Save</Button>
                             </FormGroup>
                             <FormGroup>
                                 <Button onClick={this.handleClose}>Close</Button>

@@ -122,6 +122,7 @@ class Products extends Component {
 
         axios.post(path + '/client', clientData, {headers:headers})
             .then(response => {
+                console.log(response.violationMessage)
                 return response.data;
             }).then(data => {
                 var productData = {
@@ -139,7 +140,7 @@ class Products extends Component {
                         console.log(error);
                     });
             }).catch(error => {
-                console.log(error)
+                console.log(error.response.data.errors[0].violationMessage)
                 this.setState({ productAlertMessage: "error" })
             });
     }
