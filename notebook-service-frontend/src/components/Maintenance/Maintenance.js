@@ -271,8 +271,6 @@ class Maintenance extends Component {
             modificationsId: this.state.selectedModification.map(Modification => Modification.id)
         }
 
-
-
         axios.put(path + '/maintenance/' + this.state.selectedTableRow.id,
             updatedMaintenance, { headers: headers })
             .then(response => {
@@ -290,6 +288,7 @@ class Maintenance extends Component {
 
             }).catch(error => {
                 console.log(error);
+                console.log(this.state.selectedTableRow)
                 this.setState({ maintenanceAlertMessage: "error" });
             });
 
