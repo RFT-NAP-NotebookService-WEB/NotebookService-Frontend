@@ -68,11 +68,7 @@
 } 
 
 .MaintenanceAlertMessage {
-    width: 40%;
-    size: 0in;
-    position: absolute;
-    left: 87px;
-    bottom: -15px;
+    margin-top: 5px !important;
 }
 
 .FaultsInput {
@@ -154,4 +150,8 @@
 
 .EditButton {
     margin-top: 60px !important;
+}
+
+.alert {
+    margin-top: 10px !important;
 }

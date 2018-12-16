@@ -9,6 +9,9 @@ import '../../assets/CSS/ModificationTable.css';
 import path from '../../assets/path/Path';
 import NavBar from '../NavBar/NavBar';
 import AuthService from '../Authentication/Authentication';
+import SuccessAlert from '../../components/Alerts/SuccesAlert';
+import WrongInputAlert from '../../components/Alerts/WrongInputAlert';
+import TokenExpired from '../../components/Alerts/TokenExpired';
 
 class ModificationTable extends Component {
     constructor(props) {
@@ -20,6 +23,7 @@ class ModificationTable extends Component {
                 name: '',
                 price: ''
             }],
+            maintenanceAlertMessage: ""
         };
     }
 
@@ -57,10 +61,14 @@ class ModificationTable extends Component {
             console.log(response);
             let tableData = [...this.state.tableData];
             tableData.push(data);
-            this.setState({ tableData });
+            this.setState({ tableData, maintenanceAlertMessage: "success" });
         })
             .catch((error) => {
                 console.log(error);
+                this.setState({ maintenanceAlertMessage: "error"});
+                if(error.response.status === 403) {
+                    this.setState({ maintenanceAlertMessage: "expired"});
+                };
             });
     }
 
@@ -112,6 +120,11 @@ class ModificationTable extends Component {
                                 <Col sm={2}>
                                     <Button onClick={() => { this.addModificationHandler() }}>Add</Button>
                                 </Col>
+                            </FormGroup>
+                            <FormGroup className="ModificationAlertMessage">        
+                                {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
+                                {this.state.maintenanceAlertMessage === "error" ? <WrongInputAlert /> : null}
+                                {this.state.maintenanceAlertMessage === "expired" ? <TokenExpired /> : null}
                             </FormGroup>
                         </Form>
                     </Jumbotron>

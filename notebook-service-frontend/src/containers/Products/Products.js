@@ -8,6 +8,8 @@ import '../../assets/CSS/Products.css';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AuthService from '../../components/Authentication/Authentication';
+import TokenExpired from '../../components/Alerts/TokenExpired';
+import WrongInputAlert from '../../components/Alerts/WrongInputAlert';
 
 class Products extends Component {
 
@@ -21,7 +23,7 @@ class Products extends Component {
 
         this.state = {
             showBrandModal: false,
-            alertMessage: "",
+            addBrandAlertMessage: "",
             productAlertMessage: "",
 
             product: {
@@ -55,7 +57,7 @@ class Products extends Component {
     }
 
     handleClose() {
-        this.setState({ showBrandModal: false });
+        this.setState({ showBrandModal: false, addBrandAlertMessage: "" });
     }
 
     componentWillMount() {
@@ -74,6 +76,9 @@ class Products extends Component {
                 this.setState({ brandList: [{ id: '', name: '(Select the Brand)' }].concat(brandsFromApi) });
             }).catch(error => {
                 console.log(error);
+                if(error.response.status === 403) {
+                    this.setState({ addBrandAlertMessage: "expired"});
+                };
             });
     }
 
@@ -95,12 +100,15 @@ class Products extends Component {
                 let brandList = [...this.state.brandList];
                 brandList.push(response.data);
                 this.setState({ brandList });
-                this.setState({ alertMessage: "success" });
+                this.setState({ addBrandAlertMessage: "success" });
                 console.log("ez a brandlist state: ", this.state.brandList)
             })
             .catch((error) => {
                 console.log(error);
-                this.setState({ alertMessage: "error" });
+                this.setState({ addBrandAlertMessage: "error" });
+                if(error.response.status === 403) {
+                    this.setState({ addBrandAlertMessage: "expired"});
+                };
             });
     }
 
@@ -138,10 +146,22 @@ class Products extends Component {
                         this.setState({ productAlertMessage: "success" })
                     }).catch((error) => {
                         console.log(error);
+                        if(error.response.status === 403) {
+                            this.setState({ productAlertMessage: "expired"});
+                        };
+                        if(error.response.status === 500) {
+                            this.setState({ productAlertMessage: "error"});
+                        };
                     });
             }).catch(error => {
                 console.log(error.response.data.errors[0].violationMessage)
-                this.setState({ productAlertMessage: "error" })
+                this.setState({ productAlertMessage: "error" });
+                if(error.response.status === 403) {
+                    this.setState({ productAlertMessage: "expired"});
+                };
+                if(error.response.status === 500) {
+                    this.setState({ productAlertMessage: "error"});
+                };
             });
     }
 
@@ -277,14 +297,11 @@ class Products extends Component {
                         </Button>
                         <FormGroup className="ProductAlertMessage">
                             {this.state.productAlertMessage === "success" ? <SuccessAlert /> : null}
-                            {this.state.productAlertMessage === "error" ? <ErrorAlert /> : null}
+                            {this.state.productAlertMessage === "error" ? <WrongInputAlert /> : null}
+                            {this.state.productAlertMessage === "expired" ? <TokenExpired /> : null}
                         </FormGroup>
-
-
                     </FormGroup>
-
                 </Form>
-
 
                 <Modal
                     bsSize="small"
@@ -302,9 +319,10 @@ class Products extends Component {
                                 type="brandname" />
                             <Button onClick={() => { this.addBrandHandler() }}>Add</Button>
                         </FormGroup>
-                        <FormGroup>
-                            {this.state.alertMessage === "success" ? <SuccessAlert /> : null}
-                            {this.state.alertMessage === "error" ? <ErrorAlert /> : null}
+                        <FormGroup className="addBrandAlertMessage">
+                            {this.state.addBrandAlertMessage === "success" ? <SuccessAlert /> : null}
+                            {this.state.addBrandAlertMessage === "error" ? <ErrorAlert /> : null}
+                            {this.state.addBrandAlertMessage === "expired" ? <TokenExpired /> : null}
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
