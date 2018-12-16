@@ -37,3 +37,10 @@
 .ModificationInputRow {
     margin-bottom: 10px;
 }
+
+.ModificationAlertMessage {
+    width: 10%;
+    position: absolute;
+    top: 165px;
+    left: 700px;
+}

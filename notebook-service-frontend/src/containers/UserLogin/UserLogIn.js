@@ -77,9 +77,10 @@ class UserLogin extends Component {
                             <Button onClick={this.loginHandler} componentClass="button" bsSize="large" type="submit">
                               Login 
                             </Button>
-                        </FormGroup>
+                            
                         <FormGroup className="LoginAlertMessage">
                             {this.state.alertMessage === "error" ? <LoginAlert /> : null}
+                        </FormGroup>
                         </FormGroup>
                     </Modal.Footer>
                 </Modal.Dialog>

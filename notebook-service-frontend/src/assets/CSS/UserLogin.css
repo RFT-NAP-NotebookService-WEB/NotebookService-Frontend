@@ -60,3 +60,7 @@ img.LoginLogo {
     height: 200px;
     width: 200px;
 }
+
+.LoginAlertMessage {
+    margin-right: 10px !important;
+}

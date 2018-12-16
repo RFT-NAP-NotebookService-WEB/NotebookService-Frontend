@@ -15,6 +15,7 @@ import progressOptions from '../../assets/Progress/Progress';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AuthService from '../../components/Authentication/Authentication';
+import TokenExpired from '../../components/Alerts/TokenExpired';
 
 class Maintenance extends Component {
 
@@ -136,7 +137,10 @@ class Maintenance extends Component {
                 this.setState({ tableData: response.data })
                 console.log(this.state.tableData)
             }).catch(error => {
-                console.log(error)
+                console.log(error);
+                if(error.response.status === 403) {
+                    this.setState({ maintenanceAlertMessage: "expired"});
+                };
             });
 
         axios.get(path + '/modifications', { headers: headers })
@@ -284,12 +288,16 @@ class Maintenance extends Component {
                     console.log(this.state.tableData)
                 }).catch(error => {
                     console.log(error)
+
                 });
 
             }).catch(error => {
                 console.log(error);
                 console.log(this.state.selectedTableRow)
                 this.setState({ maintenanceAlertMessage: "error" });
+                if(error.response.status === 403) {
+                    this.setState({ maintenanceAlertMessage: "expired"});
+                };
             });
 
     }
@@ -406,7 +414,8 @@ class Maintenance extends Component {
                                 return {
                                     onClick: (e, handleOriginal) => {
                                         this.setState({
-                                            selectedTableRow: rowInfo.original
+                                            selectedTableRow: rowInfo.original,
+                                            maintenanceAlertMessage: ""
                                         })
                                         console.log("ez van a selectedRowban:", this.state.selectedTableRow)
                                     },
@@ -504,6 +513,7 @@ class Maintenance extends Component {
                             <FormGroup className="MaintenanceAlertMessage">
                                 {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
                                 {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
+                                {this.state.alertMessage === "expired" ? <TokenExpired /> : null}
                             </FormGroup>
                             <FormGroup>
                                 <Button

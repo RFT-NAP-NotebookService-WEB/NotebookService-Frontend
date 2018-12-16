@@ -10,7 +10,7 @@ import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import WrongInputAlert from '../../components/Alerts/WrongInputAlert';
 import AuthService from '../../components/Authentication/Authentication';
-
+import TokenExpired from '../../components/Alerts/TokenExpired';
 
 class UserRegister extends Component {
     constructor(props) {
@@ -52,6 +52,9 @@ class UserRegister extends Component {
 
                 error.response.status === 409 ? this.setState({ alertMessage: "error" }) : this.setState({ alertMessage: "wrongInput" });
 
+                if(error.response.status === 403) {
+                    this.setState({ maintenanceAlertMessage: "expired"});
+                };
             });
     }
 
@@ -94,6 +97,7 @@ class UserRegister extends Component {
                             {this.state.alertMessage === "success" ? <SuccessAlert /> : null}
                             {this.state.alertMessage === "error" ? <ErrorAlert /> : null}
                             {this.state.alertMessage === "wrongInput" ? <WrongInputAlert /> : null}
+                            {this.state.alertMessage === "expired" ? <TokenExpired /> : null}
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>

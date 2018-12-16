@@ -45,10 +45,14 @@ span.navbar-brand {
     padding: 15px;
     display: inline-block;
     line-height: 20px;
-  }
+}
 
 .navbar-nav span[role=menuitem] {
     padding: 3px 20px;
     display: inline-block;
     line-height: 20px;
-  }
+}
+
+.NavBarAddProductButton {
+    color: black;
+}

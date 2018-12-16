@@ -63,3 +63,7 @@
     left: 300px;
     bottom: -80px;
 }
+
+.addBrandAlertMessage {
+    margin-top: 15px !important;
+}
