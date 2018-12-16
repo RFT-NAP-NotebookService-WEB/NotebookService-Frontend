@@ -9,32 +9,48 @@ import Logo from '../../components/Logo/Logo';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import WrongInputAlert from '../../components/Alerts/WrongInputAlert';
+import AuthService from '../../components/Authentication/Authentication';
 
 
 class UserRegister extends Component {
     constructor(props) {
+
+        
         super(props);
 
+        this.Auth = new AuthService();
+        
         this.state = {
             alertMessage: ""
         };
     }
 
     registerHandler = () => {
-        axios.post(path + '/register', {
+
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.Auth.getToken()
+        }
+
+
+        let registerData = {
             username: this.usernameInput.value,
             password: this.userPasswordInput.value,
             passwordConfirm: this.userPasswordAgainInput.value,
             userRole: this.userRoleInput.value
+        }
+        axios.post(path + '/register', registerData ,{
+            headers: headers
         })
             .then(response => {
                 console.log(response);
                 this.setState({ alertMessage: "success" })
-                
+
             }).catch(error => {
                 console.log(error);
 
-                error.response.status === 409 ? this.setState({ alertMessage: "error" }): this.setState({ alertMessage: "wrongInput"});
+                error.response.status === 409 ? this.setState({ alertMessage: "error" }) : this.setState({ alertMessage: "wrongInput" });
 
             });
     }
