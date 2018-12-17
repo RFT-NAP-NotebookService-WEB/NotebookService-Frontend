@@ -169,9 +169,8 @@ class Products extends Component {
 
         return (
             <div>
-                <Form
-                    horizontal>
-                    <FormGroup>
+                <Form className="ClientInputs" horizontal>
+                    <FormGroup >
                         <Col
                             className="ProductTextModal"
                             componentClass={ControlLabel} sm={1}>
@@ -317,7 +316,7 @@ class Products extends Component {
                             <FormControl
                                 inputRef={input => this.brandInput = input}
                                 type="brandname" />
-                            <Button onClick={() => { this.addBrandHandler() }}>Add</Button>
+                            <Button className="AddBrandButtonInModal"onClick={() => { this.addBrandHandler() }}>Add</Button>
                         </FormGroup>
                         <FormGroup className="addBrandAlertMessage">
                             {this.state.addBrandAlertMessage === "success" ? <SuccessAlert /> : null}
