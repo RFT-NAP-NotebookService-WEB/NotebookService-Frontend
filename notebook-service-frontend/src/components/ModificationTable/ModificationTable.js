@@ -65,9 +65,9 @@ class ModificationTable extends Component {
         })
             .catch((error) => {
                 console.log(error);
-                this.setState({ maintenanceAlertMessage: "error"});
-                if(error.response.status === 403) {
-                    this.setState({ maintenanceAlertMessage: "expired"});
+                this.setState({ maintenanceAlertMessage: "error" });
+                if (error.response.status === 403) {
+                    this.setState({ maintenanceAlertMessage: "expired" });
                 };
             });
     }
@@ -120,11 +120,12 @@ class ModificationTable extends Component {
                                 <Col sm={2}>
                                     <Button onClick={() => { this.addModificationHandler() }}>Add</Button>
                                 </Col>
-                            </FormGroup>
-                            <FormGroup className="ModificationAlertMessage">        
-                                {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
-                                {this.state.maintenanceAlertMessage === "error" ? <WrongInputAlert /> : null}
-                                {this.state.maintenanceAlertMessage === "expired" ? <TokenExpired /> : null}
+                                <Col sm={10} className="ModificationAlertMessage">
+                                
+                                    {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
+                                    {this.state.maintenanceAlertMessage === "error" ? <WrongInputAlert /> : null}
+                                    {this.state.maintenanceAlertMessage === "expired" ? <TokenExpired /> : null}
+                                </Col>
                             </FormGroup>
                         </Form>
                     </Jumbotron>

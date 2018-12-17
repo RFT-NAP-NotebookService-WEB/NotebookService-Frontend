@@ -39,6 +39,9 @@
     width: 45%;
     border-radius: 5px;
 }
+.form-group>.control-label {
+    padding-left: 10px;
+}
 
 .MaintenanceParagraph {
     background-color:  rgb(32, 51, 62) !important;
@@ -53,7 +56,13 @@
     margin: 0 !important;
     font-size: 17px;
     color:  white;
-    padding-left: 10px;
+}
+.MaintenanceAddButton{
+    margin-left: 10px;
+}
+
+.MaintenanceEditButton{
+    margin-left: 10px;
 }
 
 .MaintenanceSplitter {
@@ -64,7 +73,7 @@
  .InputFormGroup {
     margin: 0 0 10px 0 !important;
     color: white;
-    padding-left: 20px;
+    padding-left: 20px !important;
 } 
 
 .MaintenanceAlertMessage {
@@ -154,4 +163,5 @@
 
 .alert {
     margin-top: 10px !important;
+    text-align: center;
 }

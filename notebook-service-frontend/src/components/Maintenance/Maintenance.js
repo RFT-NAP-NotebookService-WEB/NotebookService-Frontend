@@ -13,9 +13,9 @@ import '../../assets/CSS/Maintenance.css';
 import path from '../../assets/path/Path';
 import progressOptions from '../../assets/Progress/Progress';
 import SuccessAlert from '../../components/Alerts/SuccesAlert';
-import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AuthService from '../../components/Authentication/Authentication';
 import TokenExpired from '../../components/Alerts/TokenExpired';
+import WrongInputAlert from '../Alerts/WrongInputAlert';
 
 class Maintenance extends Component {
 
@@ -294,7 +294,7 @@ class Maintenance extends Component {
             }).catch(error => {
                 console.log(error);
                 console.log(this.state.selectedTableRow)
-                this.setState({ maintenanceAlertMessage: "error" });
+                this.setState({ maintenanceAlertMessage: "wrongInput" });
                 if(error.response.status === 403) {
                     this.setState({ maintenanceAlertMessage: "expired"});
                 };
@@ -355,7 +355,7 @@ class Maintenance extends Component {
                                 <ControlLabel>{this.state.selectedTableRow.product.client.phone}</ControlLabel>
                             </FormGroup>
                             <FormGroup >
-                                <Button onClick={this.addMaintenanceHandler}>Add</Button>
+                                <Button className="MaintenanceAddButton" onClick={this.addMaintenanceHandler}>Add</Button>
                             </FormGroup>
                         </Form>
                     </Jumbotron>
@@ -394,7 +394,7 @@ class Maintenance extends Component {
                                     </ControlLabel>
                                 </FormGroup>
                                 <FormGroup className="EditButton">
-                                    <Button onClick={this.handleShow}>Edit</Button>
+                                    <Button className="MaintenanceEditButton" onClick={this.handleShow}>Edit</Button>
                                 </FormGroup>
                             </Form>
                         </div>
@@ -512,7 +512,7 @@ class Maintenance extends Component {
                         <Modal.Footer>
                             <FormGroup className="MaintenanceAlertMessage">
                                 {this.state.maintenanceAlertMessage === "success" ? <SuccessAlert /> : null}
-                                {this.state.maintenanceAlertMessage === "error" ? <ErrorAlert /> : null}
+                                {this.state.maintenanceAlertMessage === "wrongInput" ? <WrongInputAlert /> : null}
                                 {this.state.alertMessage === "expired" ? <TokenExpired /> : null}
                             </FormGroup>
                             <FormGroup>

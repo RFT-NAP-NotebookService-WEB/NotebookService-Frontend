@@ -38,9 +38,11 @@
     margin-bottom: 10px;
 }
 
-.ModificationAlertMessage {
-    width: 10%;
-    position: absolute;
-    top: 165px;
-    left: 700px;
+.ModificationAlertMessage{
+    padding-left: 0px;
+}
+.ModificationAlertMessage>.alert {
+    width: 20%;
+    text-align: center;
+    margin-left: -8px;
 }
